@@ -51,23 +51,47 @@ file is a tracked file and is swept like any other)**.
    and `Get-Command cmake` both fail) and that nothing in this brief depends on either. Paste the
    version strings — not the install paths — into the completion note.
 2. **Re-probe the venv exclusion:** `git check-ignore -v epppsynth/.venv/probe` must match.
-3. **Create the uv project at `epppsynth/`.** `pyproject.toml` with `[project]` name `epppsynth`,
+3. **Assert the line-ending normalisation; commit it separately only if it is not already true.**
+   EP-0 added `.gitattributes` (`* text=auto eol=lf`) but deliberately rewrote no blob. Settle that
+   before this brief creates a single file: run `git add --renormalize .` **first**, while the tree
+   is still small, so that if it does stage anything the diff is provably line-endings-only and
+   reviewable as such.
+   - If it stages **nothing**, record that in the completion note and move on. No commit is made,
+     and none is needed — this is the expected outcome, because EP-0 verified the repository is
+     already fully LF-normalised.
+   - If it stages anything, require `git diff --cached --ignore-cr-at-eol` to print **nothing** — a
+     genuine content change means **stop**, that is a defect and not a normalisation — then commit
+     it **on its own** as `chore(repo): renormalise line endings to LF (EP-1)`, so the
+     normalisation never rides along with new project files.
+
+   Then assert the invariant that must hold either way: **no committed blob may contain a carriage
+   return**, checked with `git grep -P -c "\r" HEAD -- .` (no output, exit 1). Read blobs with
+   `git cat-file blob`, **never** with `git show <rev>:<path>` — `git show` applies the checkout
+   (smudge) conversion, so on a machine with `core.autocrlf=true` it reports CRLF for content that
+   is LF in the blob, and a sweep built on it reports a problem that does not exist. This matters
+   beyond tidiness: until EP-0, normalisation depended on a machine-level `core.autocrlf`, which is
+   a property of the machine and not of the repository. `.gitattributes` makes it repo-local and
+   portable to any clone or CI runner; this step proves the repository no longer depends on the
+   machine setting. Re-run the assertion at the end of the brief, once the uv project, the ADRs and
+   the workflow exist. **EP-6** turns it into an enforced check.
+
+4. **Create the uv project at `epppsynth/`.** `pyproject.toml` with `[project]` name `epppsynth`,
    `version = "0.0.0"` (it tracks the maturity badge, which is `status: design` — EP-2 owns the
    badge itself), `requires-python = ">=3.14"`, a deliberately empty runtime dependency list, and a
    `[project.scripts]` entry `epppsynth = "epppsynth.cli:main"`. Build backend: `hatchling`, pinned.
-4. **`src/` layout** per D-40: `epppsynth/src/epppsynth/__init__.py` exporting `__version__`, and
+5. **`src/` layout** per D-40: `epppsynth/src/epppsynth/__init__.py` exporting `__version__`, and
    `epppsynth/src/epppsynth/cli.py` with a `main()` that prints the version and the
    `(contract, registry, template)` version triple placeholders and exits 0. The CLI exists from
    day one because D-21 requires it and because a CLI entry point is the cheapest end-to-end smoke
    test the project will ever have.
-5. **Test root.** `epppsynth/tests/test_smoke.py` asserting the package imports, `__version__` is a
+6. **Test root.** `epppsynth/tests/test_smoke.py` asserting the package imports, `__version__` is a
    string, and `main()` exits 0. Register the two skip markers (`requires_index`, `requires_model`)
    in `[tool.pytest.ini_options]` with `--strict-markers`.
-6. **Dev dependency group** (`[dependency-groups] dev`): `pytest`, `ruff`. No formatter beyond
+7. **Dev dependency group** (`[dependency-groups] dev`): `pytest`, `ruff`. No formatter beyond
    `ruff format`, no type checker in P0 — a type checker is a P2 decision once the contracts package
    exists. Configure `ruff` in `pyproject.toml` (line length 100, `E,F,I,UP,B` rule set).
-7. **Lock and sync:** `uv lock` then `uv sync --locked`. Commit `uv.lock`.
-8. **ADR framework.** `epppsynth/docs/adr/` with `_TEMPLATE.md` (Status · Context · Decision ·
+8. **Lock and sync:** `uv lock` then `uv sync --locked`. Commit `uv.lock`.
+9. **ADR framework.** `epppsynth/docs/adr/` with `_TEMPLATE.md` (Status · Context · Decision ·
    Consequences · Alternatives considered · Date · Related `D-n`), and stubs for the four ADRs the
    plan already knows it needs:
    - `ADR-001-python-uv-src-layout.md` — written now, in full, since this brief is its subject.
@@ -76,21 +100,23 @@ file is a tracked file and is swept like any other)**.
    - `ADR-009-storage-roots-and-limits.md` — stub; **EP-7** writes the floor and ceiling.
    A stub is a title, `Status: proposed`, and one line naming the EP that will fill it. An empty
    file is not acceptable — a cold session must be able to tell a stub from an omission.
-9. **CI workflow** at `.github/workflows/ci.yml`:
-   - triggers `push` and `pull_request` (never `pull_request_target`);
-   - `permissions: contents: read` at top level;
-   - one job, `runs-on: windows-latest`;
-   - `actions/checkout` and `astral-sh/setup-uv` pinned to full commit SHAs with `# vX.Y.Z`
-     trailing comments, `persist-credentials: false` on checkout;
-   - steps: `uv sync --locked`, `uv run ruff check .`, `uv run ruff format --check .`,
-     `uv run pytest -m "not requires_index and not requires_model" -q`;
-   - `concurrency` group keyed on the ref, cancelling in-progress runs;
-   - a comment block at the top of the file stating that this workflow is the **no-model path** and
-     that no job in this repository may reference a secret, a model root, or the corpus.
-10. **Record the action SHAs and their versions** in `ADR-008` so a later reviewer can tell a pin
+10. **CI workflow** at `.github/workflows/ci.yml`:
+    - triggers `push` and `pull_request` (never `pull_request_target`);
+    - `permissions: contents: read` at top level;
+    - one job, `runs-on: windows-latest`;
+    - `actions/checkout` and `astral-sh/setup-uv` pinned to full commit SHAs with `# vX.Y.Z`
+      trailing comments, `persist-credentials: false` on checkout;
+    - steps: `uv sync --locked`, `uv run ruff check .`, `uv run ruff format --check .`,
+      `uv run pytest -m "not requires_index and not requires_model" -q`;
+    - `concurrency` group keyed on the ref, cancelling in-progress runs;
+    - a comment block at the top of the file stating that this workflow is the **no-model path** and
+      that no job in this repository may reference a secret, a model root, or the corpus.
+11. **Record the action SHAs and their versions** in `ADR-008` so a later reviewer can tell a pin
     from a guess, and add a note that the pins are reviewed at each phase re-plan.
-11. **Commits:** `feat(epppsynth): add uv project skeleton, ADR framework and CI (EP-1)` then
-    `docs(roadmap): record EP-1 commit hash`.
+12. **Commits:** `feat(epppsynth): add uv project skeleton, ADR framework and CI (EP-1)` then
+    `docs(roadmap): record EP-1 commit hash`. If — and only if — step 3 produced a normalisation
+    commit, it lands **before** the `feat` commit and the ☑ box carries both hashes, per the
+    two-hash convention in `roadmap/README.md`.
 
 ## Out of scope
 
@@ -122,6 +148,8 @@ uv run epppsynth --version
 And from the repository root:
 
 ```powershell
+git add --renormalize .; git diff --cached --stat   # -> no output; then: git reset
+git grep -P -c "\r" HEAD -- .                       # -> no output, exit 1
 git ls-files "epppsynth/uv.lock"
 Select-String -Path ".github/workflows/ci.yml" -Pattern 'uses:\s+\S+@[0-9a-f]{40}'
 Select-String -Path ".github/workflows/ci.yml" -Pattern 'github\.event\.'   # → no output
@@ -146,8 +174,12 @@ Acceptance:
 7. One green CI run on `windows-latest`; its run URL is recorded in the completion note.
 8. The completion note records that `pandoc` and `cmake` were confirmed **absent** and that nothing
    in this brief depends on either.
-9. *(judgement — the project owner)* The workflow file is readable end to end in one screen and its
-   header comment states the no-model rule plainly.
+9. `git add --renormalize .` stages nothing, and `git grep -P -c "\r" HEAD -- .` prints nothing
+   and exits 1 — no committed blob contains a carriage return. If a normalisation commit was
+   needed, `git diff --cached --ignore-cr-at-eol` was empty before it was made, and the completion
+   note records its hash; if it was not needed, the note says so explicitly.
+10. *(judgement — the project owner)* The workflow file is readable end to end in one screen and its
+    header comment states the no-model rule plainly.
 
 ## Parked → final-roadmap.md
 

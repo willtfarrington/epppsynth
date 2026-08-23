@@ -318,15 +318,26 @@ in `roadmap/README.md` and **1/1** in `final-roadmap.md` resolve, zero failures.
 2. **No second-opinion scanner.** `gitleaks` and `trufflehog` are absent; the regex sweep is the
    only result. Recorded per the brief's standing posture that no unverified tool is assumed present.
 3. **Sweep scope widened to files about to be tracked** (see above).
-4. **`.gitattributes` was added but the repository was not renormalised.** Three already-committed
-   blobs still contain CRLF (`README.md`, `source material/README.md`,
-   `tools/epub_to_md_pipeline.py`; `core.autocrlf` is unset). `git status` does not flag them —
-   git's stat cache suppresses the comparison — so the tree looks clean while the condition step 8
-   exists to prevent is still live: the next brief that touches `README.md` will produce a
-   whole-file diff. Renormalising was **not** done because step 11 enumerates the commit contents
-   exhaustively and those files belong to EP-2 and EP-22, and because rewriting a 427-line tool
-   file's blob exceeds a brief whose doctrine is to verify rather than change.
-   **Recommended for EP-1:** `git add --renormalize .` as its own commit.
+4. **`.gitattributes` was added; no blob needed rewriting.** The repository was **already** fully
+   LF-normalised and remains so. Every one of the 64 tracked blobs is pure LF, verified by reading
+   each one with `git cat-file blob` and by `git grep -P -c "\r" HEAD -- .` (no output, exit 1);
+   `git add --renormalize .` was run as a check and staged **nothing**. What `.gitattributes`
+   changes is *why* that is true. Normalisation had been relying on `core.autocrlf=true`, which on
+   this machine is set at the **system** level by the Git for Windows installer — a property of the
+   machine, not of the repository, and absent on a fresh clone or a CI runner. The
+   `.gitattributes` rule makes it repo-local, explicit and portable. **EP-1** re-asserts the
+   invariant once its own files exist; **EP-6** turns it into an enforced check.
+
+> **Correction (2026-08-23).** Deviation 4 above has been rewritten, and this records what it
+> said before. As first committed (`3706992`) it claimed that three blobs still contained CRLF,
+> that `core.autocrlf` was unset, and that EP-1 should therefore run `git add --renormalize .` as
+> its own commit. All three claims were wrong, and the recommended commit would have been a no-op.
+> The fault was one of measurement: CR counts had been read through `git show <rev>:<path>`, which
+> applies the checkout (smudge) conversion and therefore returns CRLF for content that is LF in the
+> blob whenever `core.autocrlf=true`. `git cat-file blob` reads the blob raw and shows every
+> tracked blob is LF. Relatedly, `core.autocrlf` had been probed at `--local` and `--global` only,
+> where it is indeed unset; it is `true` at the **system** level. The underlying invariant is real
+> and worth holding, so it is carried into EP-1 as an assertion rather than a rewrite.
 
 #### Not done, deliberately
 
