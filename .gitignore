@@ -1,0 +1,35 @@
+# ── Copyrighted source material ──────────────────────────────────────────
+# Book texts, epubs, and derived markdown are licensed works and must never
+# be committed to this (public) repository. Keep them local only.
+source material/**
+!source material/
+!source material/README.md
+
+# Common ebook / derived-text formats, wherever they appear
+*.epub
+*.mobi
+*.azw
+*.azw3
+*.pdf
+
+# ── Python ───────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# ── Environment / secrets ────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ── OS / editor cruft ────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
