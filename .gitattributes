@@ -1,0 +1,16 @@
+# ── Line endings ───────────────────────────────────────────────────────
+# Normalise every text file to LF in the repository. Without this, a CRLF
+# round-trip can make a later leak-scanner diff unreadable and a "no change"
+# claim false.
+* text=auto eol=lf
+
+# ── Binary: never diffed, never line-ending-converted ──────────────────
+*.epub  -text
+*.pdf   -text
+*.gguf  -text
+*.png   -text
+*.jpg   -text
+*.ico   -text
+
+# ── Python ─────────────────────────────────────────────────────────────
+*.py text eol=lf
