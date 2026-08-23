@@ -15,3 +15,7 @@ source material/
 ```
 
 The markdown under each work is derived text and is likewise local only.
+
+The conversion pipeline that produces that markdown lives in
+[`tools/epub_to_md_pipeline.py`](../tools/epub_to_md_pipeline.py) and *is*
+tracked — the code is ours, only the texts it operates on are not.
