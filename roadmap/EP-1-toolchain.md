@@ -191,3 +191,89 @@ Acceptance:
   frame is known to be incomplete by design.
 - Dependabot / renovate configuration for the pinned action SHAs. Any automation that opens a PR
   conflicts with D-34's no-PR posture in v1 and needs an owner decision first.
+- Pinning the `uv` *binary* version in CI (`setup-uv`'s `version:` input). The action currently
+  installs the latest uv (0.12.6 on the accepting run; 0.12.5 locally). `uv.lock` guards the
+  resolution either way, so this is a reproducibility nicety, not a hole — decide at EP-8.
+
+---
+
+> **Completion note (2026-08-26).** Executed as written, with two deviations recorded below — one
+> of which added a third commit. Every check below records what was **observed**.
+>
+> #### Step 1 — toolchain (observed)
+>
+> `Python 3.14.7` · `uv 0.12.5 (210d1f678 2026-08-14 x86_64-pc-windows-msvc)` ·
+> `git version 2.55.0.windows.3`. `Get-Command pandoc` and `Get-Command cmake` both **fail** —
+> both tools are **absent**, and nothing this brief created depends on either
+> (`tools/epub_to_md_pipeline.py` was neither run nor referenced). The absence of `cmake` is
+> recorded for the P4 inference spike, per the brief.
+>
+> #### Steps 2–3 — probes and line endings (observed)
+>
+> - `git check-ignore -v epppsynth/.venv/probe` → `.gitignore:18:.venv/`. **PASS.**
+> - `git add --renormalize .` staged **nothing** — the expected outcome; **no normalisation commit
+>   was made and none was needed.** Re-run after the feat and chore commits landed: still nothing.
+> - `git grep -P -c "\r" HEAD -- .` → no output, exit 1, both before the brief's first file and
+>   after all EP-1 files were committed. No committed blob contains a carriage return; the
+>   invariant now holds independent of any machine-level `core.autocrlf`.
+>
+> #### Steps 4–8 — uv project (observed)
+>
+> `pyproject.toml` (hatchling pinned `==1.32.0`, empty runtime deps, dev group `pytest` + `ruff`,
+> ruff line-length 100 / `E,F,I,UP,B`, both markers registered under `--strict-markers`), `src/`
+> layout with `__init__.py` and `cli.py`, `tests/test_smoke.py`, `uv.lock` committed. Locked
+> resolution: pytest 9.1.1, ruff 0.16.4 (+ 4 transitive). Acceptance runs:
+>
+> - `uv sync --locked` on a **cold** `.venv` (deleted first): succeeds; `git status --porcelain`
+>   prints **0 lines** afterwards — the lockfile did not move. Reproducibility claim holds.
+> - `uv run ruff check .` → "All checks passed!", exit 0; `uv run ruff format --check .` → exit 0.
+> - `uv run pytest -m "not requires_index and not requires_model" -q` → **3 passed**.
+> - **Strict-markers proof:** a deliberately misspelled `@pytest.mark.requires_modle` was added
+>   once; collection **errored** (`'requires_modle' not found in markers configuration option`,
+>   exit 2); the file was reverted and the suite re-ran green.
+> - `uv run epppsynth --version` → prints `epppsynth 0.0.0` and the
+>   `contract=none registry=none template=none` triple, exit 0.
+>
+> #### Steps 9 + 11 — ADRs (observed)
+>
+> Four `ADR-*.md` files plus `_TEMPLATE.md` under `epppsynth/docs/adr/`. `ADR-001` and `ADR-008`
+> are complete; `ADR-007` and `ADR-009` are stubs that each name **EP-7** as their author.
+> `ADR-008` records both action pins with their versions and the resolution method
+> (`git ls-remote` against the projects' tag refs; both tags are lightweight, so tag SHA = commit
+> SHA), and states that pins are reviewed at each phase re-plan.
+>
+> #### Step 10 — CI (observed)
+>
+> `.github/workflows/ci.yml`: `push` + `pull_request`, top-level `permissions: contents: read`
+> (no job overrides it), one `windows-latest` job, ref-keyed `concurrency` with
+> `cancel-in-progress`, header comment stating the no-model rule. Verification greps: exactly two
+> `uses:` lines, both 40-hex-SHA-pinned (`actions/checkout@3d3c42e…` # v7.0.1,
+> `astral-sh/setup-uv@c771a70…` # v9.0.0); zero occurrences of `github.event.` and of `secrets.`;
+> `persist-credentials: false` on checkout. **Green run on `windows-latest`:**
+> <https://github.com/willtfarrington/epppsynth/actions/runs/32931592320> (commit `a4403e6`; the
+> first green run, on `c29c95a`, is <https://github.com/willtfarrington/epppsynth/actions/runs/32931494435>).
+>
+> #### Deviations
+>
+> 1. **A third commit.** The first green run's public log showed `setup-uv`'s cache machinery
+>    printing a uv cache path (a runner-ephemeral `UV_CACHE_DIR` under the runner's temp
+>    directory — no local-machine content, but a literal violation of this brief's "no `uv` cache
+>    path" guard; the path itself is deliberately not quoted here, per the EP-0 sweep rules) and
+>    attempting GitHub-Actions-cache restores. `chore(ci): … (EP-1)` (`a4403e6`) sets
+>    `enable-cache: false`, which also removes the cache-poisoning surface; the accepting run's log
+>    contains no cache path and no cache restore. The ☑ box carries both hashes per the two-hash
+>    convention.
+> 2. **A benign public-log annotation.** `setup-uv` logs "Failed to download from mirror, falling
+>    back to GitHub Releases: Unexpected HTTP response: 404" while fetching the uv binary. It is
+>    the action's designed fallback, the binary comes from GitHub Releases, and the run is green;
+>    recorded so a later reader does not mistake it for a defect. Relatedly, the runner installed
+>    uv 0.12.6 (latest) vs 0.12.5 locally — see the parked note above on pinning the binary.
+>
+> **Pickup observation.** EP-0's deviation 1 (the three uncommitted canonical docs) had already
+> been resolved before pickup: commit `8cb31ec` tracked `DECISIONS.md`, `DESIGN.md` and
+> `GOVERNANCE.md`, and the tree was clean at start. Recorded here because EP-2's brief still
+> says it *creates* them; EP-2 should reconcile at pickup.
+>
+> **Pre-publication checklist items 1 and 4** were exercised on the new files: no secret-shaped
+> string and no local path, account name or hostname appears in anything this brief committed;
+> the workflow file was swept like any other tracked file.
