@@ -1,0 +1,34 @@
+# No-model path (D-42). This is the repository's only CI workflow. It runs the
+# deterministic test path exclusively: no job in this repository may reference
+# a secret, a model root, an index root, or the corpus directory. Tests that
+# need any of those carry the requires_index / requires_model markers and are
+# deselected below. Posture and action pins: epppsynth/docs/adr/ADR-008.
+
+name: ci
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: epppsynth
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+      - run: uv sync --locked
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+      - run: uv run pytest -m "not requires_index and not requires_model" -q
