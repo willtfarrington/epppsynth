@@ -1,0 +1,136 @@
+# Banned phrases — the single source.
+#
+# This file is the ONLY copy of this list. `SAFETY.md` renders it (the block between the
+# `BEGIN/END GENERATED: banned-phrases` markers) and the EP-39 authoring/render lint consumes it.
+# A published list and a linted list that are two files are two lists, and they will diverge.
+#
+# Regenerate the SAFETY.md block after any edit here:
+#     python tools/render_banned_phrases.py            # rewrite
+#     python tools/render_banned_phrases.py --check    # verify, exit 1 on drift
+#
+# Fields
+#   id         stable identifier; never reused, never renumbered
+#   phrase     the surface form the lint looks for (case-insensitive; EP-39 fixes the matcher)
+#   reason     why this phrase is banned, in the charter's own terms
+#   d_ref      the decision or governance clause it enforces
+#   condition  present only when the ban is conditional; absent means the ban is unconditional
+#
+# Placed by EP-3. The lint that consumes this file is EP-39; it does not exist yet.
+
+[meta]
+owner = "EP-3 (this file) · EP-39 (the lint that consumes it)"
+rendered_into = "SAFETY.md"
+status = "data only — no lint enforces this list today (planned EP-39)"
+
+# ── Directive language: the tool never tells anyone what to do ────────────────
+
+[[phrases]]
+id = "bp-001"
+phrase = "recommend"
+reason = "A recommendation is a clinical decision. The tool makes none, supports none, and ranks no option against another."
+d_ref = "D-11, D-79, GOVERNANCE §3"
+
+[[phrases]]
+id = "bp-002"
+phrase = "should"
+reason = "Assigns an obligation to the patient, the family or the clinician. Every suggested utterance is a question or an offer, never an assertion about what someone should do."
+d_ref = "D-26b"
+
+[[phrases]]
+id = "bp-003"
+phrase = "you must"
+reason = "The strongest directive form. Nothing the tool emits carries authority over a decision."
+d_ref = "D-26b, GOVERNANCE §4.1"
+
+[[phrases]]
+id = "bp-004"
+phrase = "the patient needs to"
+reason = "States a requirement on the patient. Needs are the patient's to declare, not the tool's to infer."
+d_ref = "D-26b, GOVERNANCE §4.2"
+
+[[phrases]]
+id = "bp-005"
+phrase = "the right choice"
+reason = "Ranks options by asserting that one is correct. The tool says nothing about clinical options at all."
+d_ref = "D-79, GOVERNANCE §4.3"
+
+# ── Persuasion architecture: the failure mode the output contract was replaced to remove ──
+
+[[phrases]]
+id = "bp-006"
+phrase = "convince"
+reason = "Names persuasion as the goal. Persuasion changes what a person decides; the tool may only change what a person is able to say."
+d_ref = "D-11, GOVERNANCE §4.3"
+
+[[phrases]]
+id = "bp-007"
+phrase = "persuade"
+reason = "As above. Preparing arguments for persuading a patient or family is an excluded use."
+d_ref = "D-11, GOVERNANCE §3"
+
+[[phrases]]
+id = "bp-008"
+phrase = "get them to"
+reason = "Frames the encounter as a target outcome to be produced from another person."
+d_ref = "D-11, GOVERNANCE §4.3"
+
+[[phrases]]
+id = "bp-009"
+phrase = "buy-in"
+reason = "Treats agreement as the deliverable of the conversation, which is the coercion architecture the retired output model encoded."
+d_ref = "D-11, R-1"
+
+[[phrases]]
+id = "bp-010"
+phrase = "overcome"
+reason = "Objection handling. A stated preference is not an obstacle, and no output may script a second attempt after a refusal."
+d_ref = "D-38 trigger 5, GOVERNANCE §4.3"
+condition = "banned when the object is a person, their objection, their resistance or their refusal"
+
+# ── Pathologizing language: disagreement is not a symptom ─────────────────────
+
+[[phrases]]
+id = "bp-011"
+phrase = "denial"
+reason = "Explains a disagreement in terms of the person's psychological state. Distrust, anger, grief, silence and refusal may be rational responses to uncertainty, prior harm, inequity or institutional conduct."
+d_ref = "D-38 trigger 5, GOVERNANCE §4.4"
+
+[[phrases]]
+id = "bp-012"
+phrase = "non-compliant"
+reason = "Recodes a person's choice as a deviation from an instruction they were never party to."
+d_ref = "GOVERNANCE §4.4"
+
+[[phrases]]
+id = "bp-013"
+phrase = "difficult patient"
+reason = "Locates a communication failure in the person rather than in the conditions, and licenses everything downstream of that framing."
+d_ref = "GOVERNANCE §4.4, R-4"
+
+[[phrases]]
+id = "bp-014"
+phrase = "goals-of-care conversation"
+reason = "Permitted as a description of what happened; banned as an instruction to hold one, which prescribes a clinical action the tool has no standing to prescribe."
+d_ref = "GOVERNANCE §3, D-26b"
+condition = "banned when used as a directive — 'have a goals-of-care conversation', 'schedule a goals-of-care conversation'"
+
+# ── False certainty: the uncertainty this tool exists to preserve ─────────────
+
+[[phrases]]
+id = "bp-015"
+phrase = "clearly"
+reason = "Asserts that a reading is obvious, which removes the counter-reading the same output is required to carry."
+d_ref = "D-53, D-58"
+
+[[phrases]]
+id = "bp-016"
+phrase = "obviously"
+reason = "As above, and it additionally implies that a reader who sees it differently has missed something."
+d_ref = "D-53, D-58"
+
+[[phrases]]
+id = "bp-017"
+phrase = "the evidence shows"
+reason = "Claims evidentiary backing. The closest analogue trials for this class are null-to-adverse and no study of this intervention class exists; an unresolved appeal to evidence is the project's largest documented hazard."
+d_ref = "D-63, D-74, R-12"
+condition = "banned unless the sentence resolves to a citation the renderer can bind to a source record"

@@ -29,9 +29,11 @@ person operating it.
 **This tool is not a risk detector and must not be used as one.** It never checks what is typed for
 danger.
 
-The full approved four-block text — Intended use / Excluded uses / What it does not know / Status —
-ships in `SAFETY.md`, *planned — EP-3*. Until then the binding statement of intended and excluded
-uses is [`epppsynth/GOVERNANCE.md`](epppsynth/GOVERNANCE.md) §2 and §3.
+The full four-block text — Intended use / Excluded uses / What it does not know / Status — is in
+[`SAFETY.md`](SAFETY.md), the clinical-ethics charter, together with the invariants, the abstention
+taxonomy, the deterministic hard-stop rule, the published banned-phrase list, and the stop criterion
+that would end this project. [`epppsynth/GOVERNANCE.md`](epppsynth/GOVERNANCE.md) §2 and §3 remain
+the binding statement where the two differ.
 
 ## Modes
 
@@ -97,6 +99,9 @@ and (c) will ship carrying a public "author review only" label.
 
 ## Reading paths
 
+- **Anyone deciding whether this may be used, and on what** — [`SAFETY.md`](SAFETY.md), the
+  clinical-ethics charter: intended and excluded uses, what the tool does not know, what it refuses
+  to do, and what would make the author stop building it.
 - **Clinical or non-technical reader** — a plain-language narrative, `epppsynth/docs/for-clinical-readers.md`, *planned — EP-53*.
 - **Engineer** — [`epppsynth/DESIGN.md`](epppsynth/DESIGN.md) for the technical design, [`epppsynth/GOVERNANCE.md`](epppsynth/GOVERNANCE.md) for the invariants that override it, and [`epppsynth/DECISIONS.md`](epppsynth/DECISIONS.md) for why each choice was made.
 - **Anyone executing a roadmap brief** — [`CLAUDE.md`](CLAUDE.md), then the load order it names.
