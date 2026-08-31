@@ -8,6 +8,9 @@ was made. Planned 2026-08-23; nothing here is built yet. Every component names t
 
 ## 1. Purpose and non-goals
 
+> **Planned — EP-17 … EP-21.** Nothing in this section is built. It describes intended
+> behaviour, not behaviour that exists.
+
 **Purpose.** Given (a) a small set of explicitly supplied, structured facts about an encounter,
 (b) optionally the person's own words, and (c) a stated purpose, produce **3–5 concise waypoints** a
 clinician or trainee can hold in working memory or discard: what is known and unknown, plural possible
@@ -21,12 +24,18 @@ machine as a product.
 
 ## 2. Three modes, one engine
 
+> **Planned — EP-17 … EP-21, EP-47, EP-48.** Nothing in this section is built. It describes intended
+> behaviour, not behaviour that exists.
+
 One engine with three **purpose profiles** — mode (a) clinician pre-encounter reflection on fictional
 cases, (b) trainee education, (c) clinician self-reflection. They share the conceptual model, the input
 contract, the output contract, the abstention chain and the hard-stop path; they differ in
 `mode_scope` filtering, copy, escalation wording, and their own evaluation sets and release gates.
 
 ## 3. Input contract — EP-17, EP-42
+
+> **Planned — EP-17, EP-42.** Nothing in this section is built. It describes intended
+> behaviour, not behaviour that exists.
 
 Eight structured enum fields, every one carrying **unknown / not relevant / prefer not to answer** as
 real options with no pre-selected default: role · encounter temporality · stated communication and
@@ -56,6 +65,9 @@ Every field carries a three-way **sensitivity declaration** with a written ratio
 The counterfactual suite (EP-29) enforces this mechanically rather than trusting it.
 
 ## 4. Output contract — EP-17, EP-21, EP-43
+
+> **Planned — EP-17, EP-21, EP-43.** Nothing in this section is built. It describes intended
+> behaviour, not behaviour that exists.
 
 Three parts, rendered in this order, uncertainty **first**:
 
@@ -88,6 +100,9 @@ closed (EP-39).
 
 ## 5. Abstention and hard stops — EP-20, EP-30, EP-44
 
+> **Planned — EP-20, EP-30, EP-44.** Nothing in this section is built. It describes intended
+> behaviour, not behaviour that exists.
+
 The chain runs **first**, in fixed precedence, before any selection:
 
 1. **Hard-stop flag** → stop card in the waypoints region, zero waypoints.
@@ -108,6 +123,9 @@ party (R-40). A panel that varies with input is a risk signal, which would falsi
 central safety claim.
 
 ## 6. Conceptual model — EP-9 … EP-16
+
+> **Planned — EP-9 … EP-16.** Nothing in this section is built. It describes intended
+> behaviour, not behaviour that exists.
 
 A YAML concept registry — not a formal ontology, which would buy inference the product does not need
 and import an authority claim it must avoid.
@@ -142,7 +160,7 @@ attached — the most credible available evidence that the protocol is real.
 
 ### 6.1 Repurposing failure modes — Y-1 … Y-8
 
-Taking a psychotherapy framework and using it as a non-therapy reflection aid fails in specific,
+Taking a therapeutic framework and using it as a non-therapy reflection aid fails in specific,
 nameable ways. Each has a mechanism against it, not a caution:
 
 | # | Failure mode | Guardrail |
@@ -157,6 +175,9 @@ nameable ways. Each has a mechanism against it, not a caution:
 | Y-8 | **Rights leakage through structure** — original prose that nonetheless reproduces a source's organisation | chapter-level citations only; validator lint against chapter-title labels and outline-reconstructing locator sequences |
 
 ## 7. Composition — EP-11, EP-19, EP-21
+
+> **Planned — EP-11, EP-19, EP-21.** Nothing in this section is built. It describes intended
+> behaviour, not behaviour that exists.
 
 ```
 abstention/hard-stop chain (fixed precedence, first and last)
@@ -183,6 +204,9 @@ withhold.
 
 ## 8. The gated model path — EP-32 … EP-36
 
+> **Planned — EP-32 … EP-36.** Nothing in this section is built. It describes intended
+> behaviour, not behaviour that exists.
+
 The deterministic baseline is the **shipped default and the permanent fallback**. A local model is
 added only behind a measured benchmark gate, and only if it beats the baseline on the evaluation sets.
 
@@ -206,6 +230,9 @@ fails → render nothing but the escalation panel.
 
 ## 9. Corpus and local index — EP-22
 
+> **Planned — EP-22.** Nothing in this section is built. It describes intended
+> behaviour, not behaviour that exists.
+
 Authoring-time only, and strictly separate from the runtime path. The ingest module converts a copy of
 a source the author lawfully holds into local markdown and an optional local index. The corpus lives
 in a gitignored directory **inside** the working tree (`source material/`, excluded by `.gitignore`
@@ -217,6 +244,9 @@ separate call, never nested in the output bundle, and refused by a single export
 reads exactly two artifacts: the validated registry and the templates.
 
 ## 10. Interface — EP-38 … EP-46
+
+> **Planned — EP-38 … EP-46.** Nothing in this section is built. It describes intended
+> behaviour, not behaviour that exists.
 
 Server-rendered HTML on loopback: one route, three always-present regions (input form · waypoints ·
 escalation), no navigation, no accounts, no persistence, an explicit "nothing is saved" indicator, and
@@ -241,6 +271,9 @@ No animation, no streaming reveal, no spinner that mimics deliberation, no TL;DR
 
 ## 11. Storage
 
+> **Planned — EP-7.** Nothing in this section is built. It describes intended
+> behaviour, not behaviour that exists.
+
 Two roots outside the repository: a model root and an index root, kept separate because they are
 different rights classes and must be independently purgeable. A **floor** of ≥ 250 GiB free on the
 system volume is asserted before and after every write; a **ceiling** of 25 GB caps the project's own
@@ -250,6 +283,9 @@ the project may load. The seven cache-purge safety rules are written as an ADR; 
 built**.
 
 ## 12. Evaluation architecture — EP-24 … EP-31
+
+> **Planned — EP-24 … EP-31.** Nothing in this section is built. It describes intended
+> behaviour, not behaviour that exists.
 
 Two tiers. **Deterministic** suites run in CI on the no-model path at 100 % pass: schema, unit,
 property, consistency and golden tests. **Stochastic** suites run only when the model path is enabled,
@@ -271,6 +307,9 @@ question_intent_multiset, abstention_flags)`. One definition powers both the equ
 suite and the stop criterion.
 
 ## 13. Trust boundaries
+
+> **Planned — EP-38, EP-46.** Nothing in this section is built. It describes intended
+> behaviour, not behaviour that exists.
 
 1. Corpus and index ↔ everything else — one-way, authoring only.
 2. Browser origin ↔ loopback server — eight controls, §10.
@@ -344,6 +383,8 @@ document points at it rather than restating it.
 
 ## 15. Traceability
 
+> **Planned — populated by each phase re-plan (EP-8, EP-16, EP-23, EP-31, EP-37, EP-46, EP-49).** The header row and the rule below are fixed; the Evidence column names suites and packets that do not exist yet.
+
 | Need | Requirement | Component / content | Brief | Evidence |
 |---|---|---|---|---|
 | Reflection without authority | plural hypotheses + counter-reading + insufficient basis, structurally required | composer | EP-11, EP-19 | conceptual-fidelity suite |
@@ -367,5 +408,29 @@ ADR-001, 007, 008 and 009 land in P0; the rest land with their phase.
 
 ## 17. Module map
 
-Filled in as briefs land; every module is tagged with the `EP-n` that built it, per the sibling
-repositories' convention.
+Every module is tagged with the `EP-n` that builds it. **Only the two rows marked *exists* exist
+today**; the rest are planned and the row is the plan, not a description. Rows are added or corrected
+by the brief that lands the module and by each phase re-plan (EP-8, EP-16, EP-23, EP-31, EP-37,
+EP-46, EP-49) — a module that ships under a different name changes this table in the same commit.
+
+Package root is `epppsynth/src/epppsynth/`. Paths outside it are relative to the repository root.
+
+| Module | Responsibility | Section | Brief | State |
+|---|---|---|---|---|
+| `__init__.py` | package identity and version | — | EP-1 | **exists** |
+| `cli.py` | command-line entry point; subcommand dispatch | §1 | EP-1, EP-21, EP-22 | **exists** (version triple only; placeholders) |
+| `contracts/` | input and output contract types, the three-way field sensitivity declaration, and the export chokepoint that makes a verbatim span unrepresentable in an exportable type | §3, §4 | EP-17 | planned |
+| `registry/loader.py` | load, validate and version the concept registry; reject any concept missing provenance or cultural scope | §6 | EP-18 | planned |
+| `registry/` *(data, not code — repository path `epppsynth/registry/`)* | the concept registry itself plus `sources.yaml` | §6 | EP-9 … EP-15 | planned |
+| `selection/` | `mode_scope` filtering, integer scoring, deterministic tie-breaking | §7 | EP-19 | planned |
+| `abstention/` | the abstention chain and its precedence order | §5 | EP-20 | planned |
+| `hardstop/` | deterministic hard stops over declared fields only, and the invariant escalation constant | §5 | EP-20, EP-44 | planned |
+| `composer/` | assemble waypoints; enforce counter-reading and insufficient-basis as required fields | §7 | EP-11, EP-21 | planned |
+| `render/deterministic.py` | the template renderer — the default path and the permanent fallback | §7, §8 | EP-21 | planned |
+| `render/model.py` | the gated renderer: selected IDs in, claim-bound sentences out, unbound sentences dropped | §8 | EP-36 | planned |
+| `runtime/` | `llama-cpp-python` load, hash verification, benchmark instrumentation | §8 | EP-33, EP-35 | planned |
+| `corpus/` | EPUB → markdown ingest and local-index build; replaces `tools/epub_to_md_pipeline.py` | §9 | EP-22 | planned |
+| `web/` | Starlette app, Jinja2 templates, vendored htmx, the eight loopback controls, the no-JS fallback | §10 | EP-40 … EP-45 | planned |
+| `storage/` | root resolution, the 250 GiB floor and 25 GB ceiling checks | §11 | EP-7 | planned |
+| `eval/` | harness, scenario sets, suites, threshold table | §12 | EP-24 … EP-31 | planned |
+| `tools/roadmap_check.py` *(repository root)* | `--deps`, `--table`, `--hazards`, `--context-budget` | — | EP-8 | planned |

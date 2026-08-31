@@ -754,3 +754,26 @@ badge becomes "V1 in progress" and the hook is rewritten to D-24's wording and s
 further site work is a **single P7 brief** and otherwise out of scope. *Why:* the stale card is the
 only externally visible inaccuracy, and site work is an unbounded sink otherwise. *Alternatives:* a
 full site rework now; leave the card until release; remove the card.
+
+---
+
+## Addenda
+
+Decisions are **never rewritten**. A decision that is refined, narrowed, reversed, or overtaken by
+what a brief actually found keeps its original text, and the change is appended directly beneath
+that decision as a dated addendum in this form:
+
+```
+> **Addendum (YYYY-MM-DD, EP-n).** What changed, and what it now means. If the change was forced by
+> something observed while executing EP-n, say what was observed.
+```
+
+The date is the date the addendum was written; `EP-n` is the brief that forced it, or `planning` for
+a change made outside a brief. An addendum that reverses a decision says so in its first clause. A
+new decision that supersedes an old one is added at the end of this file with the next free `D-n`
+and both are kept, with the relation stated inline in each.
+
+This section is the place for addenda that belong to no single decision — a cross-cutting correction,
+or a note that several decisions were read together in a way that changed the result. It is empty.
+
+*No cross-cutting addenda have been recorded.*

@@ -14,7 +14,7 @@ Established in the planning session of **2026-08-23**.
 reflection aid**. A human supplies encounter context explicitly, states a purpose, and receives a few
 concise, revisable waypoints they can hold in working memory or discard.
 
-It is **not** psychotherapy, not clinical decision support, not a risk detector, not a screening or
+It is **not** therapy, not clinical decision support, not a risk detector, not a screening or
 assessment instrument, and not a source of clinical recommendations. The name's historical expansion
 named a regulated therapeutic modality; that expansion is retired and must not be reintroduced in any
 public text.
@@ -54,7 +54,7 @@ danger.
 ## 4. Invariants
 
 1. **Epistemic humility and human accountability.** Generated interpretations are revisable
-   reflection aids — never psychotherapy, authoritative scripts, or diagnoses of motive, mental
+   reflection aids — never therapy, authoritative scripts, or diagnoses of motive, mental
    illness, capacity, suicidality, spirituality, prognosis, or treatment. Every emission carries
    alternatives, a counter-reading, and an insufficient-basis clause. The sole accountable human is
    the operating clinician or trainee.
@@ -160,17 +160,21 @@ its evidence file.
 No `v1` tag exists until **all eight** items are satisfied for the mode being tagged, with artifacts
 in `release-evidence/<tag>/` under a manifest whose recorded build hash equals the tagged commit:
 
-1. All evaluation suites pass their thresholds — conceptual fidelity, clinical plausibility,
-   uncertainty and hallucination, coercion and forced meaning, counterfactual equity, abstention and
-   escalation, hard-stop behaviour.
-2. **≥ 2 recruited reviewers sign off by role** (mode (a) only — see §10).
-3. Benchmark packet complete: cold and warm, p50 and p95, peak memory and disk, including a CPU-only row.
-4. Threat model verified: every loopback control has a passing adversarial test, and the no-egress test
-   log is empty.
-5. Public-safety review clean (§7).
-6. Employment/IP clearance checkpoint recorded.
-7. Documentation states review status and limitations plainly.
-8. **Accessibility packet complete** — WCAG 2.2 AA, automated plus a scripted manual pass.
+Each item names the brief that produces its artifact, so a gate cannot be satisfied by assertion.
+
+| # | Gate item | Artifact | Produced by |
+|---|---|---|---|
+| 1 | All evaluation suites pass their thresholds — conceptual fidelity, clinical plausibility, uncertainty and hallucination, coercion and forced meaning, counterfactual equity, abstention and escalation, hard-stop behaviour | per-suite reports against the ratified threshold table (D-75) | EP-24 … EP-31 |
+| 2 | **≥ 2 recruited reviewers sign off by role** (mode (a) only — see §10) | signed role-identified sign-off sheets and the aggregate report | EP-37, EP-52 |
+| 3 | Benchmark packet complete: cold and warm, p50 and p95, peak memory and disk, including a CPU-only row | benchmark packet against its fixed schema | EP-32, EP-35 |
+| 4 | Threat model verified: every loopback control has a passing adversarial test, and the no-egress test log is empty | threat model with a passing adversarial test per control; an empty egress log | EP-38, EP-41, EP-46 |
+| 5 | Public-safety review clean (§7) | the dated, commit-hash-stamped pre-publication review packet | EP-6 |
+| 6 | Employment/IP clearance checkpoint recorded (D-29) | the dated clearance record | EP-52 |
+| 7 | Documentation states review status and limitations plainly | `README.md`, `SAFETY.md` and the badge's evidence file, mutually consistent | EP-2, EP-3 |
+| 8 | **Accessibility packet complete** — WCAG 2.2 AA, automated plus a scripted manual pass (D-67) | the accessibility packet | EP-46 |
+
+The bundle itself — `release-evidence/<tag>/` and its manifest — is assembled and CI-enforced by
+EP-50, and the mode (a) gate is assembled by EP-52.
 
 The maturity badge is a static string that CI resolves to an evidence file and **refuses to upgrade**
 if the file is missing or its checklist is unticked. A badge tied to "evidence" is only real if the
@@ -197,9 +201,11 @@ estimate alone would be the exact overclaim the criterion exists to prevent.
 ## 9. Excluded release classes
 
 Patient-specific point-of-care use, patient- or family-facing use, PHI processing, EHR integration,
-and autonomous action are **excluded** — not deferred. Each of the following preconditions requires an
-external accountable party this project does not have, and **the author will not attempt these modes
-as a solo project**:
+and autonomous action are **excluded release classes**. They are excluded with named preconditions
+rather than placed on a schedule: no brief in this roadmap advances them, no version number reaches
+them, and reversing the exclusion would be a public act with a dated rationale, not a milestone.
+Each of the seven preconditions below requires an external accountable party this project does not
+have, and **the author will not attempt these modes as a solo project**:
 
 1. A written intended-use and claims analysis reviewed by qualified regulatory counsel against the
    current clinical-decision-support guidance.
