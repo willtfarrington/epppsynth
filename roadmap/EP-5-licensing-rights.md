@@ -1,3 +1,8 @@
+<!-- REUSE-IgnoreStart -->
+<!-- This brief quotes SPDX tags as examples; the markers keep `reuse lint`
+     from reading them as this file's own licence header. Coverage for this
+     file comes from `REUSE.toml` and is unaffected. Added at EP-5. -->
+
 # EP-5 — Licensing pack + per-source rights table
 
 **Size:** L · **Mode:** n/a · **Core/Stretch:** core ·
@@ -213,3 +218,109 @@ Acceptance:
   Premature while nothing is released; revisit at EP-52.
 - Generalizing the rights table into a reusable schema for the sibling projects. Noted because the
   shape is not project-specific; out of scope for v1.
+
+---
+
+> **Completion note (2026-08-31).** Executed. All twelve acceptance items are green except item 12,
+> which is the owner's judgement and is left to them. What follows is what was **observed**.
+>
+> **Acceptance, as run** (from `epppsynth/`, see deviation 6):
+>
+> | # | Result |
+> |---|---|
+> | 1 | Seven licensing files present. `reuse lint` exits **0** — `reuse 6.2.0`, `109/109` files with copyright and licence information, REUSE 3.3 compliant. The coverage substitute was not needed and was written anyway (item 11). |
+> | 2 | `CITATION.cff` validates — `cffconvert 2.0.0`, *valid according to schema version 1.2.0*. `version: 0.0.0`, `license: Apache-2.0`, abstract names CC BY 4.0 and ends with the required sentence. |
+> | 3 | `NOTICE` states the split with the exact path boundaries and carries the rights-posture sentence verbatim at line 103. Its vendoring statement was **changed** — see deviation 2. |
+> | 4 | `sources.yaml` validates; 7 rows, every `reuse_class` from the closed enumeration. WHO LMM is `reference-only` with `CC-BY-NC-SA-3.0-IGO` named; SAMHSA, AHRQ and FDA carry `verified_at: null` with dated notes recording the HTTP 403 observation. |
+> | 5 | `epppsynth/docs/rights.md` regenerates with no diff. Unverified rows render under **Rights not yet verified**, each carrying *No. Nobody has checked this source's reuse terms.* |
+> | 6 | `check_no_verbatim_from_nonredistributable` → **2 findings** on `tests/fixtures/verbatim_leak.yaml` (one `redistributable: false`, one `reference-only`), **0** on `tests/fixtures/clean_concepts.yaml`. `render_rights_md` refuses to emit while the leak is present. |
+> | 7 | `python -m epppsynth.rights.check --fixture tests/fixtures/dangling_source.yaml` → **exit 1**, naming `a-source-that-was-never-recorded`. |
+> | 8 | `count_quotations` over `epppsynth/docs/**` + `SAFETY.md` → **9 spans, 0 over budget**, longest 6 words. On the planted fixture → **1 over-budget finding at 30 words**, while a 2-word span in the same file passes and a marked span is recorded exempt. |
+> | 9 | No page-range locator in `sources.yaml` or `epppsynth/docs/**`. |
+> | 10 | The README licence table equals the `REUSE.toml` boundary by **set comparison**, not by eye; the citation paragraph resolves to `CITATION.cff`. |
+> | 11 | `uv run pytest -q` → **98 passed** (62 of them `test_rights.py`). `ruff check` and `ruff format --check` clean. |
+>
+> **Deviations.**
+>
+> 1. **Two boundary paths are not yet in `REUSE.toml`.** `epppsynth/schemas/**` and
+>    `epppsynth/templates/**` are in the brief's table, but neither directory exists and REUSE
+>    treats a `path` matching no file as an error — `reuse lint` fails on it. They are recorded as
+>    part of the same boundary in `NOTICE` and in the README (marked `planned — EP-9, EP-11`) and
+>    are annotated by the brief that first creates each directory. `coverage.py` fails on any
+>    pattern that matches nothing, so the pair cannot be reinstated early and left dead.
+> 2. **`NOTICE` does not say that nothing is vendored.** Acceptance 3 asked for that, and it is
+>    false as written: `CODE_OF_CONDUCT.md` reproduces the Contributor Covenant 2.1 verbatim under
+>    CC BY 4.0, a licence whose one condition is attribution. `NOTICE` therefore says both things —
+>    *no third-party source code is vendored into this repository*, and a full attribution block for
+>    the Covenant — and `test_rights.py` holds it to both. Saying only the first would leave the
+>    repository out of compliance with a licence it relies on.
+> 3. **`licence` accepts `unknown`,** beyond the brief's *SPDX id or `all-rights-reserved`*. Four
+>    rows have licences nobody has read. Recording those as `all-rights-reserved` would be
+>    conservative and would still be an assertion, and this brief's own invariant is that the table
+>    may say we do not know and may not imply that we do.
+> 4. **`source_kind: work | source-family` added to the schema.** Three of the seven seeded rows are
+>    bodies of literature rather than publications: the serious-illness communication evidence, the
+>    moral-injury literature, and the AHRQ materials, whose specific items nobody has selected yet.
+>    A family row carries a title and a `scope_note`; the loader **requires** its author, year,
+>    publisher, edition and identifier to be null, so collapsing a literature onto one convenient
+>    citation fails validation instead of reading as precision.
+> 5. **`redistribution` is a field as well as a `permitted_use` value.** The brief names both
+>    spellings. Rather than pick one, the loader requires `redistribution: none`,
+>    `redistribution-none` in `permitted_use`, and `redistributable: false` to agree, which turns
+>    the redundancy into a guard. Two further cross-field rules follow the same principle:
+>    `in_local_index` requires `access_basis: owner-purchased-copy` (D-16), and a `reference-only*`
+>    row may be neither in the index nor granted `read-as-input` (D-62).
+> 6. **Commands run from `epppsynth/`, not the repository root.** `uv run` searches upward for
+>    `pyproject.toml` and there is none at the root, so the brief's invocations fail there;
+>    `CLAUDE.md` already says to run everything from `epppsynth/`. Every path inside the tools
+>    resolves from the repository root, so the answers do not depend on where they are run.
+> 7. **`reuse` and `cffconvert` are invoked with `uv run --with`, not added to the dev group,** so
+>    `uv sync --locked` and the no-model CI path stay light (D-42); EP-6 decides what CI installs.
+>    `pyyaml` **was** added as the package's only runtime dependency — the registry is YAML (D-15) —
+>    and `uv.lock` is updated.
+> 8. **Two files gained `REUSE-IgnoreStart` / `REUSE-IgnoreEnd` markers,** because both quote SPDX
+>    tags as examples and `reuse lint` reads a quoted tag as a real header: this brief (step 3) and
+>    `epppsynth/src/epppsynth/rights/coverage.py`. The markers are HTML and `#` comments; no word of
+>    either file changed, and `REUSE.toml` still supplies both files' coverage. Any future brief
+>    that quotes an SPDX tag needs the same treatment.
+> 9. **SPDX headers were added to all seven pre-existing tracked `.py` files,** not only the new
+>    ones, so that the header-agreement check in `coverage.py` has no exemptions to carry.
+> 10. **`date-released` is `2026-08-23`,** the date the repository was made public, which is what
+>     CFF's field means. It is not a release date, because there is none (D-12); the file says so in
+>     a comment and the README repeats it.
+> 11. **Nothing is committed.** `CLAUDE.md` says to commit only when asked. EP-5's **new** files are
+>     staged, because `git ls-files` is what the coverage check reads; the tree also carries
+>     unrelated uncommitted EP-2/OD-6 work, which is left unstaged and must not be swept into the
+>     EP-5 commit. The two commits and the roadmap tick are still to run.
+>
+> **Observed, not expected.**
+>
+> - `reuse` does not install usefully on this machine without an extra: bare `uv run --with reuse`
+>   raises `NoEncodingModuleError`. `uv run --with 'reuse[charset-normalizer]'` works. Recorded
+>   because EP-6 needs the same spelling.
+> - Retrieval of the WHO publication record returned **HTTP 403 on 2026-08-31** — the same failure
+>   mode D-62 recorded for SAMHSA and AHRQ at planning time. That row's identifier is therefore left
+>   null rather than recorded from memory. A SAMHSA store request on the same day returned 301 and
+>   was not followed to a rights page; the row's note says that rather than claiming a fresh 403.
+> - The only bibliographic record independently confirmed in this session is the owner's purchased
+>   primary text, checked against Open Library on 2026-08-31. Every other row's identifiers are
+>   recorded as commonly cited and are unconfirmed, which each `verification_note` states.
+> - Licence coverage: **112 tracked files, 3 exempt licence texts, 109 matched exactly once, 0
+>   unmatched, 0 doubly-matched, 0 unused patterns, 0 header mismatches.**
+> - Line endings across the tree were normalised to LF, matching `.gitattributes`.
+>
+> **For the owner — one question this brief could not settle.**
+>
+> `sources.yaml` records the owner's purchased primary text by author, title, publisher, year and
+> ISBN. That is what D-10(i) and `GOVERNANCE.md` §6 require of a rights record, and a rights table
+> that cannot name its sources is not one. It also re-introduces a source-identifying string into a
+> tracked file, days after owner ruling **OD-6** removed one and closed with *no source-identifying
+> string remains in the tree*. The readings differ: OD-6's finding was the outline-reconstruction
+> pattern — title **plus** author **plus** the chapter-title table — and this file carries no
+> chapter titles, no chapter list and no page range, and the loader rejects a page range anywhere in
+> it. EP-5 proceeded on that reading. If the owner reads OD-6 more broadly, the fix is small and
+> local: move that one row's citation block into the gitignored spine on the
+> `tools/spine.local.json` pattern and render the row here under its opaque `source_id` alone.
+> Flagged for a ruling rather than decided in a session.
+
+<!-- REUSE-IgnoreEnd -->

@@ -1,0 +1,41 @@
+# A planted D-10 violation, for EP-5 acceptance 6.
+#
+# `check_no_verbatim_from_nonredistributable` must fail on this file, and
+# `render_rights_md` must refuse to generate the rights table while it is in the
+# concept set. The concept below cites a source this project may not redistribute
+# and carries a verbatim field anyway — the failure mode where a span from the
+# gitignored local index is pasted into a tracked file "just to keep the citation
+# honest", which is how a public repository comes to contain source text.
+#
+# The string in the verbatim field is invented for this fixture. It is not from
+# any source, and nothing in this repository is.
+
+concepts:
+  - concept_id: fixture-clean
+    label: A fixture concept with no verbatim field
+    summary: >-
+      Original prose written for this fixture, paraphrasing nothing.
+    provenance:
+      source_id: yalom-existential-psychotherapy-1980
+      locator: "ch. 3"
+      verbatim: null
+
+  - concept_id: fixture-leaks
+    label: A fixture concept carrying a verbatim field it may not carry
+    summary: >-
+      Original prose written for this fixture, paraphrasing nothing.
+    provenance:
+      source_id: yalom-existential-psychotherapy-1980
+      locator: "ch. 3"
+      verbatim: >-
+        An invented sentence standing in for a span that must never be committed.
+
+  - concept_id: fixture-leaks-from-reference-only
+    label: A fixture concept quoting a source that is referenced and never ingested
+    summary: >-
+      Original prose written for this fixture, paraphrasing nothing.
+    provenance:
+      source_id: who-lmm-guidance-2024
+      locator: whole-work
+      verbatim: >-
+        A second invented sentence, from a source under a share-alike licence.

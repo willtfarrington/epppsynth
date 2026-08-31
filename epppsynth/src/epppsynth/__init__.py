@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 W. Taylor Farrington
+# SPDX-License-Identifier: Apache-2.0
 """epppsynth — a local, offline-capable reflection aid.
 
 Deterministic core as a library (D-21). See GOVERNANCE.md for intended and

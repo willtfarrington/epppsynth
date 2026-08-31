@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 W. Taylor Farrington
+# SPDX-License-Identifier: Apache-2.0
 """Command-line entry point (D-21).
 
 The CLI exists from day one as the cheapest end-to-end smoke test the project

@@ -112,13 +112,43 @@ and (c) will ship carrying a public "author review only" label.
 
 ## Licence
 
-*Placed by EP-5.* The split is Apache-2.0 for code and CC BY 4.0 for the content model, ontology and
-documentation, REUSE-conformant, with `NOTICE` and a generated per-source rights table.
+This repository is dual-licensed, and the boundary is by path. Code is **Apache-2.0**; the content
+model, the concept registry, the documentation and the roadmap are **CC BY 4.0**, because the
+content model is the reusable artifact and deserves a content licence rather than a code licence
+(D-28) — and the prose templates go with the content because their value is the wording (D-50). The
+layout is REUSE-conformant: full texts are in [`LICENSES/`](LICENSES/), [`LICENSE`](LICENSE) carries
+the Apache-2.0 text so that licence detection finds it, and
+[`LICENSE-CONTENT`](LICENSE-CONTENT) points at the content licence.
+
+| Licence | Paths |
+|---|---|
+| Apache-2.0 | `.github/**` · `.gitattributes` · `.gitignore` · `REUSE.toml` · `NOTICE` · `CITATION.cff` · `epppsynth/pyproject.toml` · `epppsynth/uv.lock` · `epppsynth/src/**` · `epppsynth/tests/**` · `tools/**` |
+| CC BY 4.0 | `README.md` · `SAFETY.md` · `PRIVACY.md` · `SECURITY.md` · `CONTRIBUTING.md` · `CODE_OF_CONDUCT.md` · `CLAUDE.md` · `LICENSE-CONTENT` · `epppsynth/README.md` · `epppsynth/DESIGN.md` · `epppsynth/GOVERNANCE.md` · `epppsynth/DECISIONS.md` · `epppsynth/copy/**` · `epppsynth/docs/**` · `epppsynth/registry/**` · `roadmap/**` · `source material/**` |
+
+[`REUSE.toml`](REUSE.toml) is the machine-readable form of that table and is what a tool reads;
+[`NOTICE`](NOTICE) restates it in prose. Two paths belong to the same boundary and are annotated
+when their directories are first created: `epppsynth/schemas/**` is Apache-2.0 and
+`epppsynth/templates/**` is CC BY 4.0 (*planned — EP-9, EP-11*). `LICENSE` and `LICENSES/**` are
+verbatim licence texts and carry no annotation of their own. `CODE_OF_CONDUCT.md` is CC BY 4.0
+because it *is* the Contributor Covenant, reproduced under that licence and attributed in `NOTICE`;
+it is the only third-party text in the tree, and no third-party source code is vendored.
+
+Neither licence covers the sources the conceptual model cites. Those are third-party works read as
+input and never redistributed; what each one permits, what it never permits, and whether anyone has
+checked is recorded per source in [`epppsynth/docs/rights.md`](epppsynth/docs/rights.md).
 
 ## Citation
 
-*Placed by EP-5,* as `CITATION.cff`. Its `abstract` and any status text it carries must match this
-file's expansion and status line character for character.
+Citation metadata is in [`CITATION.cff`](CITATION.cff), in Citation File Format 1.2.0. It records
+`version: 0.0.0`, which tracks the `status: design` badge above rather than a released version, and
+`license: Apache-2.0`, because CFF carries exactly one licence field and the code licence is the one
+a citing tool acts on — its `abstract` carries the content licence, and this file's expansion and
+status line verbatim. There is no release, no tag and no DOI (D-12); `date-released` records the
+date this design artifact was made public, which is what that field means, and not the date of a
+software release.
+
+If you cite this project, please cite the status with it: **Design and planning artifact — v1 in
+progress; no release, no demo, no validation.**
 
 ## Contributing
 

@@ -1,0 +1,32 @@
+epppsynth — content licence pointer
+==================================
+
+This file is a pointer, not a licence text. It exists because the repository is
+dual-licensed and a reader who opens `LICENSE` alone would see only half of the
+split (D-28, D-40).
+
+The content model, the concept registry, the prose templates, the documentation
+and the roadmap are licensed under the
+
+    Creative Commons Attribution 4.0 International licence (CC BY 4.0)
+
+whose full text is in `LICENSES/CC-BY-4.0.txt` and whose canonical form is at
+https://creativecommons.org/licenses/by/4.0/legalcode .
+
+Source code is licensed Apache-2.0; its text is in `LICENSES/Apache-2.0.txt`
+and, for GitHub's licence detection, at `LICENSE`.
+
+The authoritative, machine-readable statement of which path carries which
+licence is `REUSE.toml`. `NOTICE` states the same split in prose. Where the two
+disagree, `REUSE.toml` is the one a tool reads and therefore the one that binds.
+
+Attribution for the CC BY 4.0 material:
+
+    epppsynth — existential perspectives for physicians & patients
+    Copyright 2026 W. Taylor Farrington
+    https://github.com/willtfarrington/epppsynth
+    Licensed CC BY 4.0
+
+Neither licence covers the sources the conceptual model cites. Those are
+third-party works that are read as input and never redistributed; what each one
+permits is recorded per source in `epppsynth/docs/rights.md`.

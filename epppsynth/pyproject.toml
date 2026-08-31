@@ -4,7 +4,13 @@ version = "0.0.0"
 description = "Local, offline-capable reflection aid — deterministic core library with a CLI."
 license = "Apache-2.0"
 requires-python = ">=3.14"
-dependencies = []
+# The concept registry and the source rights record are YAML (D-15), so a YAML
+# reader is a runtime dependency of the library and not a dev tool. It is the
+# only one: `epppsynth.rights` is otherwise stdlib, which keeps the no-model CI
+# path (D-42) cheap and keeps the licence checks runnable without a network.
+dependencies = [
+    "pyyaml>=6.0.2",
+]
 
 [project.scripts]
 epppsynth = "epppsynth.cli:main"

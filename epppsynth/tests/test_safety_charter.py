@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 W. Taylor Farrington
+# SPDX-License-Identifier: Apache-2.0
 """EP-3 acceptance, as tests: the charter's structural promises, checked mechanically.
 
 `SAFETY.md` is consumed programmatically by four later work packets, so its shape is a contract

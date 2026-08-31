@@ -1,0 +1,86 @@
+# REUSE.toml — the machine-readable licence boundary (REUSE 3.3, D-28, D-50).
+#
+# This file, not prose, is what a tool reads. `NOTICE` and `LICENSE-CONTENT`
+# restate the same split for a human; the boundary here is the one that binds.
+#
+# Two rules govern the split:
+#   * Apache-2.0 covers code and the repository's own build/CI infrastructure.
+#   * CC BY 4.0 covers authored content — documentation, the concept registry,
+#     the prose templates, the roadmap and the governance record. `templates/**`
+#     is content and not code because its value is the wording (D-50); the same
+#     reasoning puts `copy/**` on the content side.
+#
+# Path patterns are used instead of per-file headers for the markdown and YAML
+# trees, which would otherwise carry a licence header on every file (EP-5 step
+# 3). `.py` files additionally carry an SPDX header; `precedence = "aggregate"`
+# means such a header wins over the block below, and the two are kept in
+# agreement by `epppsynth.rights.coverage`.
+#
+# `LICENSE` and `LICENSES/**` carry no annotation. They are verbatim
+# third-party licence texts reproduced under the terms each licence states for
+# its own reproduction, and REUSE excludes `LICENSES/` from coverage by
+# definition. `epppsynth.rights.coverage` records them as a named exemption
+# rather than passing over them silently.
+
+version = 1
+SPDX-PackageName = "epppsynth"
+SPDX-PackageSupplier = "W. Taylor Farrington <william.t.farrington@gmail.com>"
+SPDX-PackageDownloadLocation = "https://github.com/willtfarrington/epppsynth"
+
+# ── Apache-2.0: code and repository infrastructure ──────────────────────────
+[[annotations]]
+path = [
+    ".github/**",
+    ".gitattributes",
+    ".gitignore",
+    "REUSE.toml",
+    "NOTICE",
+    "CITATION.cff",
+    "epppsynth/pyproject.toml",
+    "epppsynth/uv.lock",
+    "epppsynth/src/**",
+    "epppsynth/tests/**",
+    "tools/**",
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 W. Taylor Farrington"
+SPDX-License-Identifier = "Apache-2.0"
+
+# ── CC BY 4.0: authored content ─────────────────────────────────────────────
+[[annotations]]
+path = [
+    "README.md",
+    "SAFETY.md",
+    "PRIVACY.md",
+    "SECURITY.md",
+    "CONTRIBUTING.md",
+    "CLAUDE.md",
+    "LICENSE-CONTENT",
+    "epppsynth/README.md",
+    "epppsynth/DESIGN.md",
+    "epppsynth/GOVERNANCE.md",
+    "epppsynth/DECISIONS.md",
+    "epppsynth/copy/**",
+    "epppsynth/docs/**",
+    "epppsynth/registry/**",
+    "roadmap/**",
+    "source material/**",
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 W. Taylor Farrington"
+SPDX-License-Identifier = "CC-BY-4.0"
+
+# ── CC BY 4.0: third-party content vendored verbatim ────────────────────────
+# The Contributor Covenant 2.1 is reproduced unedited apart from the contact
+# address and a clearly separated project addendum; EP-4 checks its integrity
+# against a recorded SHA-256. It is the one third-party text in this tree, and
+# CC BY 4.0 requires that its own attribution travel with it, so it gets its own
+# annotation rather than being folded into the project's copyright above.
+[[annotations]]
+path = ["CODE_OF_CONDUCT.md"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = [
+    "2014 Coraline Ada Ehmke and the Contributor Covenant contributors",
+    "2026 W. Taylor Farrington",
+]
+SPDX-License-Identifier = "CC-BY-4.0"

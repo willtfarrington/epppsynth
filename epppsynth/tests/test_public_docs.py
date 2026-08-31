@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 W. Taylor Farrington
+# SPDX-License-Identifier: Apache-2.0
 """EP-4 acceptance, as tests: the four root policy documents, checked mechanically.
 
 `PRIVACY.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md` and `CONTRIBUTING.md` each make a promise a

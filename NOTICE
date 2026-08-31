@@ -1,0 +1,133 @@
+epppsynth — existential perspectives for physicians & patients
+Copyright 2026 W. Taylor Farrington
+https://github.com/willtfarrington/epppsynth
+
+This NOTICE file is the attribution notice required by Apache License 2.0
+section 4(d). It is informational: it does not modify either licence.
+
+
+1. LICENCE SPLIT
+================
+
+This repository is dual-licensed. The boundary is by path, and the
+machine-readable statement of it is `REUSE.toml`, which the checker
+`epppsynth.rights.coverage` reads. This section restates it in prose; where the
+two disagree, `REUSE.toml` is the one a tool reads and therefore the one that
+binds (D-28, D-40, D-50).
+
+Apache-2.0 — code and repository infrastructure
+(full text: `LICENSES/Apache-2.0.txt`, and `LICENSE` for licence detection)
+
+    .github/**
+    .gitattributes
+    .gitignore
+    REUSE.toml
+    NOTICE
+    CITATION.cff
+    epppsynth/pyproject.toml
+    epppsynth/uv.lock
+    epppsynth/src/**
+    epppsynth/tests/**
+    tools/**
+
+CC BY 4.0 — the content model, the registry, the documentation, the roadmap
+(full text: `LICENSES/CC-BY-4.0.txt`; pointer: `LICENSE-CONTENT`)
+
+    README.md
+    SAFETY.md
+    PRIVACY.md
+    SECURITY.md
+    CONTRIBUTING.md
+    CODE_OF_CONDUCT.md          (see section 2 — third-party attribution)
+    CLAUDE.md
+    LICENSE-CONTENT
+    epppsynth/README.md
+    epppsynth/DESIGN.md
+    epppsynth/GOVERNANCE.md
+    epppsynth/DECISIONS.md
+    epppsynth/copy/**
+    epppsynth/docs/**
+    epppsynth/registry/**
+    roadmap/**
+    source material/**          (the ignore rules' own README; the corpus
+                                 itself is never tracked — see section 3)
+
+`epppsynth/templates/**` and `epppsynth/schemas/**` are named in the licence
+boundary EP-5 fixed: templates are CC BY 4.0 because their value is the wording
+(D-50), and schemas are Apache-2.0. Neither directory exists yet, and a
+`REUSE.toml` path that matches no file is a REUSE error, so their annotations
+are added by the brief that first creates them (`epppsynth/registry/` schemas —
+planned EP-9; `epppsynth/templates/` — planned EP-11).
+
+`LICENSE` and `LICENSES/**` carry no annotation of their own. They are verbatim
+third-party licence texts, reproduced under the terms each licence states for
+its own reproduction. `epppsynth.rights.coverage` records them as a named
+exemption rather than passing over them silently.
+
+
+2. THIRD-PARTY MATERIAL
+=======================
+
+No third-party source code is vendored into this repository. There is no
+bundled library, no minified asset, and no copied implementation. `htmx` is
+planned for vendoring when the web UI is built (0BSD, with its path, version
+and SHA-256 recorded here at that point — planned EP-40); nothing is vendored
+today.
+
+One third-party *text* is reproduced verbatim, and CC BY 4.0 requires that its
+attribution travel with it:
+
+    Contributor Covenant, version 2.1
+    Copyright 2014 Coraline Ada Ehmke and the Contributor Covenant contributors
+    https://www.contributor-covenant.org/version/2/1/code_of_conduct.html
+    Licensed under CC BY 4.0
+
+    Reproduced at `CODE_OF_CONDUCT.md` unedited apart from the contact address
+    and a clearly separated project addendum marked as not part of the
+    Covenant. Its integrity is checked against a recorded SHA-256 by
+    `epppsynth/tests/test_public_docs.py`.
+
+A CycloneDX software bill of materials and a generated
+`epppsynth/docs/third-party-licenses.md` covering the dependency tree are
+produced per release rather than per commit (planned EP-50). This section
+covers material committed to the repository, not installed dependencies.
+
+
+3. RIGHTS POSTURE FOR THE CONCEPTUAL SOURCES
+============================================
+
+The conceptual substrate of this project is read from works the author lawfully
+holds. None of it is redistributed. In the sense that matters here — the
+copyrighted works the concept model is built from —
+
+    this repository contains no third-party copyrighted source text; the concept registry is original prose that cites its sources
+
+(D-10(i)). "Source text" in that sentence means the text of a cited work. It
+does not describe the Contributor Covenant of section 2, which is reproduced
+under its own licence and attributed above.
+
+The corpus lives in a gitignored directory; the derived index and any model
+weights live outside the working tree entirely. None of it is tracked, enters
+CI, or appears in a published artifact.
+
+What each cited source permits — its licence, its reuse class, whether anyone
+has verified its terms, and on what date — is recorded per source in
+
+    epppsynth/docs/rights.md
+
+which is generated from `epppsynth/registry/sources.yaml`. That table is the
+authority on the sources; this file is the authority on the repository's own
+licensing. Sources whose reuse terms nobody has checked appear there under a
+separate heading that says so.
+
+Public citations are chapter-level locators only, and quotation is capped at
+25 words per quote and 150 words per source (D-74).
+
+
+4. WHAT THIS SOFTWARE IS NOT
+============================
+
+epppsynth is not therapy, not clinical decision support, not a risk detector,
+and not a source of clinical recommendations. It is not validated and is not
+for clinical use. `SAFETY.md` and `epppsynth/GOVERNANCE.md` state the intended
+and excluded uses; the latter binds where the two differ.

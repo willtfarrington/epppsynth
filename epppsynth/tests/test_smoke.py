@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 W. Taylor Farrington
+# SPDX-License-Identifier: Apache-2.0
 """Smoke tests (EP-1): the package imports, has a version, and the CLI exits 0."""
 
 import epppsynth

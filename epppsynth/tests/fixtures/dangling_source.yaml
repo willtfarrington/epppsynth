@@ -1,0 +1,31 @@
+# A planted dangling `source_id`, for EP-5 acceptance 7.
+#
+# `check_source_refs` must fail on this file. A concept whose source is not in
+# the rights record is a concept with no rights record, which is precisely the
+# state the rights table exists to make impossible — and it is the shape a
+# renamed or deleted source row leaves behind, which is why the check is a check
+# and not a convention.
+#
+# Run it directly, from `epppsynth/`:
+#
+#     uv run python -m epppsynth.rights.check \
+#         --fixture tests/fixtures/dangling_source.yaml
+#
+# The prose here is invented for this fixture. It is not from any source.
+
+concepts:
+  - concept_id: fixture-resolves
+    label: A fixture concept whose source does resolve
+    summary: >-
+      Original prose written for this fixture, paraphrasing nothing.
+    provenance:
+      source_id: yalom-existential-psychotherapy-1980
+      locator: "ch. 3"
+
+  - concept_id: fixture-dangles
+    label: A fixture concept whose source does not resolve
+    summary: >-
+      Original prose written for this fixture, paraphrasing nothing.
+    provenance:
+      source_id: a-source-that-was-never-recorded
+      locator: whole-work

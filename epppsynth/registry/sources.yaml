@@ -1,0 +1,330 @@
+# epppsynth — per-source rights record (D-10, D-28, D-62, D-74).
+#
+# This file is the input to `epppsynth/docs/rights.md`. It is hand-edited; the
+# table is generated. Regenerate with, from `epppsynth/`:
+#
+#     uv run python -m epppsynth.rights.render
+#
+# ── What a row is, and is not ────────────────────────────────────────────────
+#
+# A row records what this project may do with a source, what it may never do,
+# and whether anyone has actually checked. It carries a source's *bibliographic
+# identity* and nothing about its interior. It never carries a chapter title, a
+# chapter-title sequence, a page range, or a quoted phrase: a book's title plus
+# its chapter list reconstructs the source's outline, which is the leak D-74's
+# 2026-08-31 addendum (owner ruling OD-6) closed. Locators live on concepts, not
+# on sources, and are chapter-level only.
+#
+# ── The fields ───────────────────────────────────────────────────────────────
+#
+#   source_id           stable slug; concepts reference this and nothing else
+#   source_kind         work | source-family
+#                       A `source-family` is a body of literature rather than a
+#                       single publication. It is recorded as one because
+#                       collapsing a literature onto one convenient citation
+#                       would be a false precision. Its citation carries a title
+#                       and a scope_note; author, publisher, edition and
+#                       identifier are null, because a family has none.
+#   citation            author · title · year · publisher · edition ·
+#                       doi_or_isbn (+ scope_note for a source-family)
+#   rights_holder       who holds the rights, as distinct from who wrote it
+#   access_basis        owner-purchased-copy | open-access | public-domain |
+#                       government-work
+#   licence             an SPDX identifier, `all-rights-reserved`, or `unknown`.
+#                       `unknown` exists because the table is allowed to say we
+#                       do not know; it is not allowed to imply that we do.
+#                       Recording an unread licence as `all-rights-reserved`
+#                       would be conservative but it would still be an assertion.
+#   reuse_class         cc-by-4.0-compatible | reference-only |
+#                       reference-only-pending-rights-check |
+#                       owner-copy-read-as-input          (closed enumeration)
+#   permitted_use       read-as-input | short-citation-in-docs |
+#                       redistribution-none               (multi-valued)
+#   redistribution      none | with-attribution
+#   quote_budget_words  D-74 default 25
+#   source_budget_words D-74 default 150
+#   locator_granularity fixed `chapter` — an upper bound on precision, never a
+#                       requirement; a source without chapters is cited
+#                       `whole-work`, which is coarser and therefore allowed
+#   in_local_index      whether the gitignored local index holds spans from it
+#   redistributable     whether this project may redistribute any of its text
+#   verified_at         the date someone confirmed this row's reuse terms
+#                       against the rights holder's own statement, or null
+#   verification_note   what was checked, what was observed, and what is still
+#                       unknown. Required on every row, not only unverified ones
+#
+# ── Cross-field rules the loader enforces ────────────────────────────────────
+#
+#   redistribution == none  <->  redistribution-none in permitted_use
+#                           <->  redistributable == false
+#   in_local_index          ->   access_basis == owner-purchased-copy   (D-16)
+#   reuse_class reference-only*  ->  in_local_index == false            (D-62)
+#   cc-by-4.0-compatible    ->   redistributable == true
+#   verified_at == null     ->   the row renders under "rights not yet verified"
+#
+# Nothing in this file has been reviewed by counsel. It is issue-spotting.
+
+schema_version: 1
+
+defaults:
+  quote_budget_words: 25
+  source_budget_words: 150
+  locator_granularity: chapter
+
+sources:
+
+  # ── the conceptual substrate, read from a copy the author owns ─────────────
+
+  - source_id: yalom-existential-psychotherapy-1980
+    source_kind: work
+    citation:
+      author: "Irvin D. Yalom"
+      title: "Existential Psychotherapy"
+      year: 1980
+      publisher: "Basic Books"
+      edition: "first edition"
+      doi_or_isbn: "ISBN 978-0-465-02147-5"
+    rights_holder: "Irvin D. Yalom / Basic Books"
+    access_basis: owner-purchased-copy
+    licence: all-rights-reserved
+    reuse_class: owner-copy-read-as-input
+    permitted_use: [read-as-input, short-citation-in-docs, redistribution-none]
+    redistribution: none
+    quote_budget_words: 25
+    source_budget_words: 150
+    locator_granularity: chapter
+    in_local_index: true
+    redistributable: false
+    verified_at: "2026-08-31"
+    verification_note: >-
+      Rights posture verified from first principles on 2026-08-31, which is what
+      is verifiable here: the work is in copyright, the author holds a purchased
+      copy, and holding a copy confers no right to redistribute, embed, train
+      on, or publish derivatives of it. This row therefore claims nothing beyond
+      reading it as input and citing it. The bibliographic record — author,
+      title, year, publisher, ISBN — was checked against Open Library on
+      2026-08-31. The derived index built from this copy is gitignored and lives
+      outside the working tree; no span from it is ever emitted, exported or
+      committed (D-16, D-23).
+
+  # ── normative guidance: referenced, never ingested ─────────────────────────
+
+  - source_id: who-lmm-guidance-2024
+    source_kind: work
+    citation:
+      author: "World Health Organization"
+      title: >-
+        Ethics and governance of artificial intelligence for health: guidance on
+        large multi-modal models
+      year: 2024
+      publisher: "World Health Organization, Geneva"
+      edition: "first edition"
+      doi_or_isbn: null
+    rights_holder: "World Health Organization"
+    access_basis: open-access
+    licence: CC-BY-NC-SA-3.0-IGO
+    reuse_class: reference-only
+    permitted_use: [short-citation-in-docs, redistribution-none]
+    redistribution: none
+    quote_budget_words: 25
+    source_budget_words: 150
+    locator_granularity: chapter
+    in_local_index: false
+    redistributable: false
+    verified_at: "2026-08-23"
+    verification_note: >-
+      Licence recorded on the authority of D-62, settled with the project owner
+      at the planning session of 2026-08-23; it was not independently
+      re-confirmed against the publisher's record in this session. The licence
+      is non-commercial and share-alike, so ingesting this guidance into a
+      CC BY 4.0 tree would be the licence contamination R-15 names. It is
+      referenced and never ingested, and this row grants no read-as-input
+      permission for that reason. The identifier is left null rather than
+      recorded from memory: retrieval from the publisher's repository returned
+      HTTP 403 on 2026-08-31, so nothing here was confirmed against it.
+
+  - source_id: fda-cds-final-guidance-2026
+    source_kind: work
+    citation:
+      author: "United States Food and Drug Administration"
+      title: >-
+        Clinical decision support software — final guidance, superseding the
+        2022 guidance
+      year: 2026
+      publisher: "United States Food and Drug Administration"
+      edition: "final guidance issued 2026-01-06"
+      doi_or_isbn: null
+    rights_holder: "United States Food and Drug Administration"
+    access_basis: government-work
+    licence: unknown
+    reuse_class: reference-only
+    permitted_use: [short-citation-in-docs, redistribution-none]
+    redistribution: none
+    quote_budget_words: 25
+    source_budget_words: 150
+    locator_granularity: chapter
+    in_local_index: false
+    redistributable: false
+    verified_at: null
+    verification_note: >-
+      UNVERIFIED, and unverified in the way that matters most: nobody on this
+      project has read this document. D-62 records it as issued 2026-01-06 and
+      superseding the 2022 guidance, and requires that it be read before any
+      public intended-use language ships. That is an owner-gated reading task,
+      not a code task, and it is carried as a P1 blocker rather than as a
+      nice-to-have. Until it is done, no public text may make or imply a
+      regulatory-status claim. Its reuse terms are also unread, so the licence
+      is recorded as unknown rather than presumed to be a public-domain federal
+      work.
+
+  # ── trauma-informed care and patient engagement: reuse terms unread ────────
+
+  - source_id: samhsa-trauma-informed-approach-2014
+    source_kind: work
+    citation:
+      author: "Substance Abuse and Mental Health Services Administration (US)"
+      title: >-
+        SAMHSA's concept of trauma and guidance for a trauma-informed approach
+      year: 2014
+      publisher: >-
+        Substance Abuse and Mental Health Services Administration, Rockville, MD
+      edition: "HHS Publication No. (SMA) 14-4884"
+      doi_or_isbn: null
+    rights_holder: >-
+      Substance Abuse and Mental Health Services Administration (US Department
+      of Health and Human Services)
+    access_basis: government-work
+    licence: unknown
+    reuse_class: reference-only-pending-rights-check
+    permitted_use: [short-citation-in-docs, redistribution-none]
+    redistribution: none
+    quote_budget_words: 25
+    source_budget_words: 150
+    locator_granularity: chapter
+    in_local_index: false
+    redistributable: false
+    verified_at: null
+    verification_note: >-
+      UNVERIFIED. Retrieval of the publisher's own rights statement returned
+      HTTP 403 at the planning session of 2026-08-23 (D-62), and no statement
+      has been read since; a further attempt on 2026-08-31 was redirected and
+      not followed to a rights page. A US federal agency publication is commonly
+      assumed to be a public-domain government work, and that assumption is
+      exactly what this row refuses to make: the material may incorporate
+      third-party content under separate terms, and an unverified federal text
+      ingested into a CC BY 4.0 tree is the licence contamination R-15 names.
+      Held at reference-only-pending-rights-check until an owner-gated rights
+      packet clears it. The publication number above is recorded as commonly
+      cited and is itself unconfirmed.
+
+  - source_id: ahrq-patient-engagement-materials
+    source_kind: source-family
+    citation:
+      author: null
+      title: >-
+        Agency for Healthcare Research and Quality materials on patient and
+        family engagement and shared decision-making
+      year: null
+      publisher: null
+      edition: null
+      doi_or_isbn: null
+      scope_note: >-
+        Recorded as a family because the specific items this project will draw
+        on are not yet fixed. Naming one document here would imply a selection
+        nobody has made. The family is narrowed to named items by the
+        owner-gated rights packet, at which point this row is split.
+    rights_holder: >-
+      Agency for Healthcare Research and Quality (US Department of Health and
+      Human Services)
+    access_basis: government-work
+    licence: unknown
+    reuse_class: reference-only-pending-rights-check
+    permitted_use: [short-citation-in-docs, redistribution-none]
+    redistribution: none
+    quote_budget_words: 25
+    source_budget_words: 150
+    locator_granularity: chapter
+    in_local_index: false
+    redistributable: false
+    verified_at: null
+    verification_note: >-
+      UNVERIFIED, on the same basis as the SAMHSA row and by the same D-62
+      ruling: retrieval returned HTTP 403 at the planning session of 2026-08-23,
+      and no rights statement has been read. Two things are unknown here rather
+      than one — which items the project will use, and what those items permit.
+      Held at reference-only-pending-rights-check until both are settled.
+
+  # ── literature families read as input during authoring ────────────────────
+
+  - source_id: serious-illness-communication-literature
+    source_kind: source-family
+    citation:
+      author: null
+      title: "The serious-illness communication evidence base"
+      year: null
+      publisher: null
+      edition: null
+      doi_or_isbn: null
+      scope_note: >-
+        Peer-reviewed trials and syntheses of serious-illness communication,
+        including the null-to-adverse results GOVERNANCE.md §11 records: a
+        randomised trial of simulation-based training that found no improvement
+        in patient- or family-reported communication quality and a significant
+        increase in patient depressive symptoms, and a structured-guide trial
+        null on both coprimary patient outcomes. Individual articles are cited
+        from the concept registry, each under its own terms; the family is the
+        unit of the rights record because no single article is the source.
+    rights_holder: "The respective publishers and authors of each article"
+    access_basis: open-access
+    licence: unknown
+    reuse_class: owner-copy-read-as-input
+    permitted_use: [read-as-input, short-citation-in-docs, redistribution-none]
+    redistribution: none
+    quote_budget_words: 25
+    source_budget_words: 150
+    locator_granularity: chapter
+    in_local_index: false
+    redistributable: false
+    verified_at: "2026-08-31"
+    verification_note: >-
+      What is verified is the posture, not a licence. This project reads these
+      articles, writes original prose, and cites them; it reproduces no article
+      text, so no reuse permission is relied on and none is claimed. Per-article
+      licences vary and are deliberately not enumerated here — enumerating them
+      would imply a permission the project neither has nor needs. The licence
+      field is therefore unknown while verified_at is set: the row's claim is
+      that nothing is reused, and that claim was checked on 2026-08-31. Nothing
+      from this family enters the local index.
+
+  - source_id: moral-injury-literature
+    source_kind: source-family
+    citation:
+      author: null
+      title: "The moral-injury literature"
+      year: null
+      publisher: null
+      edition: null
+      doi_or_isbn: null
+      scope_note: >-
+        The mode (c) substrate. Definitionally contested: competing definitions
+        were developed for different populations and do not transfer cleanly,
+        which EP-14 records as a property of the literature rather than as a
+        problem to resolve by choosing one. The project's charter clause is that
+        moral injury arises from conditions, not individual deficiency.
+    rights_holder: "The respective publishers and authors of each work"
+    access_basis: open-access
+    licence: unknown
+    reuse_class: owner-copy-read-as-input
+    permitted_use: [read-as-input, short-citation-in-docs, redistribution-none]
+    redistribution: none
+    quote_budget_words: 25
+    source_budget_words: 150
+    locator_granularity: chapter
+    in_local_index: false
+    redistributable: false
+    verified_at: "2026-08-31"
+    verification_note: >-
+      Verified on the same basis as the serious-illness communication family on
+      2026-08-31: original prose plus citation, nothing reproduced, no reuse
+      permission relied on or claimed. Per-work licences vary and are not
+      enumerated. Nothing from this family enters the local index.

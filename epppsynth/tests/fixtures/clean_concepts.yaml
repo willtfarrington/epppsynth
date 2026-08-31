@@ -1,0 +1,35 @@
+# A well-formed concept file, against the contract EP-9 must honour.
+#
+# Every `source_id` resolves to a row in `epppsynth/registry/sources.yaml`, every
+# locator is chapter-level, and no concept carries a verbatim field. The rights
+# checks must pass on this file and fail on its siblings; a check that only ever
+# fails is not evidence that it discriminates.
+#
+# The prose here is invented for this fixture. It is not from any source.
+
+concepts:
+  - concept_id: fixture-finitude
+    label: A fixture concept about limits
+    summary: >-
+      Original prose written for this fixture, paraphrasing nothing.
+    provenance:
+      source_id: yalom-existential-psychotherapy-1980
+      locator: "ch. 3"
+      verbatim: null
+
+  - concept_id: fixture-what-matters
+    label: A fixture concept about what a person names as mattering
+    summary: >-
+      Original prose written for this fixture, paraphrasing nothing.
+    provenance:
+      source_id: serious-illness-communication-literature
+      locator: whole-work
+      verbatim: null
+
+  - concept_id: fixture-conditions
+    label: A fixture concept about conditions rather than deficiency
+    summary: >-
+      Original prose written for this fixture, paraphrasing nothing.
+    provenance:
+      source_id: moral-injury-literature
+      locator: whole-work
