@@ -59,3 +59,64 @@ anything that opens a PR conflicts with the no-PR posture (D-34).
   CI to prove the path that ships.
 - **A model-in-CI eval job** — rejected outright by D-16/D-51: models,
   indexes and the corpus never enter CI.
+
+---
+
+## Amendment (2026-08-31, EP-6) — the leak-prevention job and its three allowlists
+
+**Status:** accepted · **Related:** D-2, D-4, D-10, D-42, D-59, D-74, owner rulings OD-3, OD-6, OD-10
+
+EP-6 adds a second job, `scan`, to the same workflow and under the same posture: `windows-latest`,
+top-level `permissions: contents: read`, no secret referenced, both actions pinned to the SHAs
+recorded above, `persist-credentials: false`. It runs `uv run epppsynth scan --history`, the same CLI
+entry point `.githooks/pre-commit` invokes, so the hook and CI cannot drift; a unit test compares the
+two command lines.
+
+`fetch-depth: 0` appears in **exactly one job** — this one — and carries a comment saying why. The
+secret sweep reads `git log -p --all`, because an unreachable object is not a deleted one and this
+repository's history was erased and re-created once. A deep fetch anywhere else in this repository is
+a smell.
+
+Check 9 (private-ledger passages) has no `.local/` to read on a runner. It prints
+`skipped - no ledger present` and is counted as **skipped, never as passed**. A skip counted as a
+pass is how that check would quietly stop working.
+
+### The three allowlists, counted separately
+
+None of the three may be used to reach another's scope.
+
+| # | Allowlist | Size | Grows by |
+|---|---|---|---|
+| 1 | The canary directory — `epppsynth/tests/canaries`, by **exact path**, never by pattern | exactly 1 entry | an amendment to this ADR |
+| 2 | The retired-modality exemption table (check 8), three files each carrying its reason | exactly 3 entries | a further **owner ruling** — not an ADR amendment, not a session's judgement |
+| 3 | The rule-definition **line marker**, in a comment on the line it exempts | unbounded, but line-scoped and fully inventoried on every run | a line that matches a rule it defines |
+
+Allowlist 1 is one hard-coded directory with a test guarding its length, and that length test is the
+property that makes it safe; a configurable `allowlist.toml` is parked in `final-roadmap.md` for
+exactly that reason. Allowlist 2 is an owner ruling recorded in code, and a second unit test fails if
+a fourth row appears. Allowlist 3 is never a block, a file, a directory or a pattern, is never
+inherited by the next line, and a marker that suppresses nothing is itself reported as a defect — an
+exemption for a line that does not need one is a hole waiting for a future edit.
+
+### Accounted-for matches, which are not allowlists
+
+Three narrow, mechanical exceptions sit inside individual rules rather than in any allowlist, and
+every one of them is printed in the scan summary: an all-digit abbreviated git object id that
+`git rev-parse` resolves in this repository; a `size =` value in the machine-generated resolver
+lockfile; and the one email address this repository already publishes in its own commit metadata
+(owner ruling OD-7). Each is derived from data or from git rather than from a path list, and each
+fails closed — a digit run git cannot resolve is still a finding.
+
+A fourth, `bibliographic-identity`, is a rule refinement raised by EP-6 and **registered for
+ratification as OD-14** in `roadmap/owner-decisions.md`: an occurrence of the retired modality stem
+inside a `source_id` or a citation `title` declared in `epppsynth/registry/sources.yaml` is
+bibliographic identity, which D-74 requires this project to be able to cite, and not this project
+describing itself. It is derived from the rights record rather than from a path list, and it is why
+check 8 runs green without a fourth exemption row.
+
+### Consequences
+
+- Two jobs now run per push. Neither references a secret, a model root, an index root or the corpus.
+- The `scan` job's log prints paths, line numbers and rule names, and **never a matched string**.
+- Dependency vulnerability scanning is still parked (EP-41), and `gitleaks` / `trufflehog` remain
+  uninstalled; the checklist records a second opinion when one happens to be available.

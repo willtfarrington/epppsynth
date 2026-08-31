@@ -99,7 +99,7 @@ Commands run from the workspace directory `epppsynth/` unless a step says "from 
    trauma-informed principle, in the author's own words and **not** in the source's order. Each
    record:
    - `prose` — states the constraint **operatively**: what an output may not do, and what the correct
-     output is when the constraint bites. A principle written as a value ("we care about safety") is
+     output is when the constraint bites. A principle written as a value ("we care about safety") is <!-- quote-budget-allow: a worked example of this project's own output constraint, authored here; not a quotation of any source -->
      rewritten as a constraint ("nothing in an output may assume a person wants a topic raised; where
      the person has declined, the correct output is the absence of a prompt plus a note that the tool
      has stopped");

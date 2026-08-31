@@ -34,3 +34,28 @@ jobs:
       - run: uv run ruff check .
       - run: uv run ruff format --check .
       - run: uv run pytest -m "not requires_index and not requires_model" -q
+
+  # EP-6. The leak-prevention scanners, run by the same CLI entry point as the
+  # `.githooks/pre-commit` hook so the two cannot drift. Check 9 (private-ledger
+  # passages) has no ledger to read on a runner: it prints `skipped - no ledger
+  # present` and is counted as skipped, never as passed.
+  scan:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: epppsynth
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          # The only job in this repository that fetches the full history, and
+          # the only one that needs it: the secret sweep reads `git log -p --all`
+          # because an unreachable object is not a deleted one, and this
+          # repository's history was erased and re-created once already
+          # (GOVERNANCE §7). A deep fetch anywhere else would be a smell.
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          enable-cache: false # keeps uv cache paths out of the public log (D-3)
+      - run: uv sync --locked
+      - run: uv run epppsynth scan --history

@@ -1,0 +1,7 @@
+# CANARY FIXTURE (EP-6, check `roots`) - deliberate, inert, and configures nothing.
+#
+# The two declared roots are deliberately public in documentation (D-30, D-51) and forbidden in
+# code, a test, a fixture or a configuration default. This file is a fixture, so both belong to the
+# rule rather than to the documentation. Nothing loads this file at run time.
+index_root: C:\epppindex
+model_root: C:\epppmodels

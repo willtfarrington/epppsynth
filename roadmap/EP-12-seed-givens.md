@@ -119,7 +119,7 @@ Commands run from the workspace directory `epppsynth/` unless a step says "from 
      framing is defensible, never that it applies to a person);
    - `contested_interpretations` — at least one per root given, written before any lens runs. The
      obvious one, and the one to write: that the category may be an artefact of a particular
-     mid-twentieth-century Western psychotherapeutic idiom rather than a feature of human
+     mid-twentieth-century Western therapeutic idiom rather than a feature of human
      experience.
 
 3. **Author the manifestation children** — roughly eleven `given` records reached by

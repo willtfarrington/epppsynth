@@ -263,9 +263,8 @@ def test_no_stale_ep4_planned_markers_survive():
 
 # EP-4 step 9, as a test rather than a one-time pass. The two declared roots are the only absolute
 # paths any public file may contain (D-30, D-51); everything else is a machine identifier.
-# leak-scan-allow: rule-definition
 IDENTITY_PATTERNS = (
-    r"C:\\Users\\",
+    r"C:\\Users\\",  # leak-scan-allow: rule-definition
     r"\\\\[A-Za-z0-9]",  # a UNC path is a machine name by definition
     r"[A-Z]:\\(?!epppmodels|epppindex)",
     r"\$env:USERNAME|%USERNAME%|%USERPROFILE%",
@@ -288,4 +287,4 @@ def test_the_only_absolute_paths_in_the_new_files_are_the_two_declared_roots():
     found = set()
     for path in NEW_FILES:
         found.update(re.findall(r"[A-Z]:\\[A-Za-z0-9_\\-]*", _read(path)))
-    assert found <= {r"C:\epppmodels", r"C:\epppindex"}, found
+    assert found <= {r"C:\epppmodels", r"C:\epppindex"}, found  # leak-scan-allow: rule-definition

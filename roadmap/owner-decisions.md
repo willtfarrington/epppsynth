@@ -33,12 +33,15 @@ Opened **2026-08-31** from the completion notes of EP-1 … EP-4. EP-0 is not su
 | OD-11 | Confirm the hazard register stays in `DESIGN.md` §14 alone | EP-2 dev. 3 | confirmation | EP-8 re-plan note | ☑ 2026-08-31 — confirmed; EP-8 re-plan note |
 | OD-12 | Confirm the banned-phrase ban's documentation carve-out | EP-3 dev. 7 | confirmation | EP-39's lint specification | ☑ 2026-08-31 — confirmed; EP-39 scope sketch item 3 |
 | OD-13 | Owner-judgement acceptance criteria, offered and unruled (× 5) | EP-1 … EP-4 | confirmation | EP-8 re-plan note | ☑ 2026-08-31 — four pass, EP-2 #10 **fails**; EP-8 re-plan note |
+| OD-14 | Ratify the `bibliographic-identity` refinement to the OD-10 modality sweep | EP-6 dev. 1 | confirmation | EP-6's scanner definition; a further ruling if overturned | ☐ **open — raised 2026-08-31, implemented and running** |
 
 **Status at 2026-08-31.** Ten of thirteen ruled and landed. Three are not: **OD-1** is ruled but the
 platform setting has not been changed, **OD-2** can be closed only by the owner, and **OD-8** cannot
 be observed until the six unpushed commits reach the remote. `◐` means *ruled, not yet landed*; the
 row is not ☑ until the action exists, because a ruling recorded as done and never performed is the
 drift this register exists to catch.
+
+> **Added 2026-08-31 (EP-6).** **OD-14** was opened while executing EP-6 and is not counted in the paragraph above, which records the position before it. It is a confirmation, not a blocker: the refinement is implemented and the scanner runs green with it, so a ruling either ratifies what is already there or directs a change.
 
 **Class.** *drift* — a published decision and the observed world disagree. *ruling* — a choice only
 the owner can make. *refinement* — a decision is right but narrower or broader than written.
@@ -373,9 +376,9 @@ definition as check **8**, with reasons attached. Two of the four proposed rows 
 absent: `source material/README.md` was precautionary and contains no occurrence — an exemption for
 a file that does not need one is a hole waiting for a future edit — and
 `tools/epub_to_md_pipeline.py`'s exemption **expired** when OD-6 was ruled live. **One new
-observation.** EP-2 swept for the exact token `psychotherapy`; the sweep is specified in EP-6 as a
-stem sweep for `psychotherap`, which surfaces one file the exact-token grep could not match:
-`roadmap/EP-12-seed-givens.md` line 122, *"mid-twentieth-century Western **psychotherapeutic**
+observation.** EP-2 swept for the exact token `psychotherapy`; the sweep is specified in EP-6 as a  <!-- leak-scan-allow: rule-definition -->
+stem sweep for `psychotherap`, which surfaces one file the exact-token grep could not match:  <!-- leak-scan-allow: rule-definition -->
+`roadmap/EP-12-seed-givens.md` line 122, *"mid-twentieth-century Western **psychotherapeutic**  <!-- leak-scan-allow: rule-definition -->
 idiom"*. It is left for EP-6 to resolve **by rewording to the broader term**, on EP-2's own
 precedent — not by a fourth exemption, which would need a further ruling.
 
@@ -399,6 +402,37 @@ load order come to ≈ 11.5k tokens against a ~15k ceiling, leaving ≈ 3.5k for
 into EP-8**, not a pass — EP-8 is told rather than left to discover it, and is directed to resolve
 the overflow by shrinking load-order item 3 or 4, never by raising the ceiling and never by
 trimming a brief below the self-containment the load order exists to guarantee.
+
+### OD-14 — bibliographic identity in the retired-modality sweep
+
+**Class:** confirmation · **Raised by:** EP-6 · **Opened:** 2026-08-31
+
+**Observed while executing EP-6.** OD-10 fixed the modality-sweep exemption table at three entries
+and named exactly one occurrence left to resolve: `roadmap/EP-12-seed-givens.md` line 122, resolved
+here by rewording to the broader term, as ruled. The stem sweep run against the tree as it stands
+surfaces **seventeen more**, in twelve files, none of which OD-10 could have seen: they arrived with
+**EP-5**, which landed the source rights record on the same day the ruling was written. Every one of
+them is the source identifier `yalom-existential-` ‹stem› `-1980` or the citation title it is built
+from — in `CITATION.cff`, `epppsynth/registry/sources.yaml`, the generated
+`epppsynth/docs/rights.md`, one docstring, four test fixtures and one test module.
+
+**Why this is not a fourth exemption row.** D-4 retires an expansion of *this project's own name*.
+D-74 requires that every source carry a citable record. A book's title is bibliographic identity and
+cannot be reworded; a rights record with an unnameable source is not a rights record. The two rules
+only appear to collide.
+
+**What EP-6 implemented, for ratification.** A rule refinement, not a path exemption: an occurrence
+of the stem is skipped **only** when it falls inside a `source_id` or a citation `title` that
+`epppsynth/registry/sources.yaml` declares. It is derived from an owner-ratified data file rather
+than from a session's judgement, it is inventoried in every scan summary under the reason
+`bibliographic-identity`, and it fails closed — an occurrence anywhere else, in any file, is still a
+finding. The three-entry table is untouched and still has three entries, guarded by a unit test.
+
+**The ruling needed.** Ratify the refinement, or direct a different resolution — the alternatives
+considered and rejected were: a fourth exemption row (needs a ruling anyway, and exempts whole files
+rather than the citation); renaming the `source_id` to drop the stem (leaves the citation title,
+which cannot be renamed); and leaving check 8 red (the brief's acceptance requires a green clean
+run). Recorded in `ADR-008`'s EP-6 amendment as an accounted-for match rather than as an allowlist.
 
 ---
 

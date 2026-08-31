@@ -1,0 +1,12 @@
+CANARY FIXTURE (EP-6, check `phi`) — deliberate, inert, and about nobody.
+
+The digit run below is the shape of a medical record number and identifies no person, no chart and
+no institution. It was chosen because it is not a git object id in this repository and not a byte
+size in any lockfile, so it exercises the rule rather than one of the accounted-for exceptions.
+
+    record: 100200300
+
+The address below is an email shape that is not this project's published contact, so it exercises
+the rule rather than the owner ruling OD-7 exception.
+
+    contact: nobody@example.invalid

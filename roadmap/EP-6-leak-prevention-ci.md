@@ -282,3 +282,131 @@ Additional acceptance:
   exist; automate when the P5 UI briefs start producing them.
 - A signed pre-publication attestation (the packet's signature block as a signed commit or a
   detached signature). Depends on the parked signed-commit policy from EP-0.
+
+---
+
+> **Completion note (2026-08-31).** Executed. `epppsynth/src/epppsynth/publicsafety/` ships the nine
+> scanners as importable, tested functions; `epppsynth scan [--history] [--fix-hints] [--check ID]`
+> is the single entry point the CI `scan` job and `.githooks/pre-commit` both invoke;
+> `epppsynth/docs/pre-publication-checklist.md` is the seven-item packet; `epppsynth/tests/canaries/`
+> holds the nine committed fixtures; `ADR-008` carries the EP-6 amendment. `git config
+> core.hooksPath` reports `.githooks`. `uv run epppsynth scan --history` exits **0** on the clean
+> tree in **1.9 s wall** (tree plus 1,327,407 patch bytes of `git log -p --all`), which is fast
+> enough that nobody will avoid running it — no re-plan finding for EP-8 on that count. 139 tests
+> pass (41 of them new); `ruff check` and `ruff format --check` are clean.
+>
+> **The red runs: nine local, none pushed.** Every canary was planted in the working tree, staged
+> only so that `git ls-files` could see it — the scanners read tracked files, so writing a file
+> without staging it proves nothing — scanned with the *same* command CI runs, then unstaged and
+> deleted. **Nothing was committed.** Placement was chosen so each canary fell under an existing
+> `REUSE.toml` annotation; a canary at the repository root would also have tripped `rights` with
+> `licence-uncovered`, and a red run that fails two checks is not evidence about one.
+>
+> | # | Check | Canary planted | Expected | Observed |
+> |---|---|---|---|---|
+> | 1 | secrets | `epppsynth/tests/redrun-secrets.txt` | `scan: secrets` non-zero | ☑ exit 1; `secrets` alone; `github-token` L8, `credential-assignment` L10 |
+> | 2 | phi | `epppsynth/tests/redrun-phi.txt` | `scan: phi` non-zero | ☑ exit 1; `phi` alone; `mrn-shaped-digit-run` L7, `email-address` L12 |
+> | 3 | protected text | `epppsynth/docs/redrun-protected.md` | `scan: protected-text` non-zero | ☑ exit 1; `protected-text` alone; `quote-budget` L11, `chapter-title-sequence` L19 |
+> | 4 | local paths / identity | `epppsynth/tests/redrun-identity.txt` | `scan: identity` non-zero | ☑ exit 1; `identity` alone; `user-profile-path` L6, `unc-path` L8, `foreign-drive-letter` L6 |
+> | 5 | index/model root misuse | `epppsynth/tests/redrun-roots.yaml` | `scan: roots` non-zero | ☑ exit 1; `roots` alone; `index-root-outside-documentation` L6, `model-root-outside-documentation` L7 |
+> | 6 | licence / rights | `epppsynth/registry/concepts/redrun-canary.yaml` | `scan: rights` non-zero | ☑ exit 1; `rights` alone; `source-ref`, dangling `source_id` |
+> | 7 | badge → evidence | the README badge set to `status: skeleton` | `scan: badge` non-zero | ☑ **local** exit 1; `badge` alone; `evidence-file-absent` for `epppsynth/docs/evidence/skeleton.md`. **The pushed CI run is outstanding — see below.** |
+> | 8 | retired modality term | `epppsynth/tests/redrun-modality.md` | `scan: modality` non-zero | ☑ exit 1; `modality` alone; both the token and the adjectival form, L10 and L11 |
+> | 9 | private-ledger passages | the synthetic pair, on a temporary root | `scan: ledger` non-zero | ☑ `failed`; **one** finding, at the fixture's prose line 8; the 22 passages shared inside the entry correctly not reported |
+>
+> Acceptance 1 holds for all nine: **each red run failed only on its own check id.** Acceptance 2's
+> history assertion was run afterwards — `git log -p --all` contains **0** occurrences of the
+> token shape, the credential assignment, the planted digit run, the user-profile path, the UNC
+> host, the string `redrun-`, or the modality canary's header. Acceptance 3, 4, 5, 6 and 7 are
+> covered by `epppsynth/tests/test_publicsafety.py`, which fails if a second canary-allowlist entry
+> or a fourth modality-exemption row appears.
+>
+> **Two acceptance rows are outstanding, and they are the two that need a push.** Row 7's pushed CI
+> red run and the clean green CI run on `windows-latest` require the commits to reach the remote,
+> which was left to the owner. Everything else in the brief is done. To close them: push `main` and
+> record the green run URL; then, on a scratch branch, change the one `status: design` line in
+> `README.md` to `status: skeleton` (the canary in `epppsynth/tests/canaries/badge_README.md`),
+> push, record the failing run URL and the check id, delete the branch, and confirm green. That
+> canary carries no secret, no PHI, no local path and no protected text, which is why it is the one
+> that may be pushed. **The nine local runs prove the rules; the one pushed run proves the workflow
+> is wired to them** — read as one CI red run, that is thin; read as the split it is, it is not.
+>
+> **Deviations and what they cost.**
+>
+> 1. **The three-entry modality table could not run green as ratified, and OD-14 is opened.** OD-10
+>    named exactly one occurrence left to resolve — `roadmap/EP-12-seed-givens.md` line 122, reworded
+>    here to *"mid-twentieth-century Western therapeutic idiom"* exactly as ruled. The stem sweep run
+>    against the tree as it stands surfaces **seventeen more, in twelve files**, none of which the
+>    ruling could have seen: they arrived with **EP-5**, which landed the source rights record on the
+>    same day OD-10 was written. Every one is the Yalom `source_id` or the citation title it is built
+>    from. Resolved **not** by a fourth exemption row — that needs a further ruling, and the table
+>    still has exactly three entries, guarded by a unit test — but by a **rule refinement**: an
+>    occurrence inside a `source_id` or citation `title` that `epppsynth/registry/sources.yaml`
+>    declares is bibliographic identity, which D-74 requires this project to be able to cite, and not
+>    this project describing itself. It is derived from an owner-ratified data file rather than from
+>    a session's judgement, it is inventoried on every run under `bibliographic-identity`, and it
+>    fails closed. **Registered as OD-14 in `roadmap/owner-decisions.md` for ratification**, and
+>    recorded in the `ADR-008` amendment. It is not a blocker: the scanner runs green with it, so a
+>    ruling either ratifies what is there or directs a change.
+> 2. **`roadmap/owner-decisions.md` lines 379–381** carry the stem while recording the ruling that
+>    defines the sweep — the same reason the two exempt briefs do. Resolved with the general
+>    line-marker mechanism of §2.1, not with a fourth path exemption. The ruling's own words are
+>    untouched.
+> 3. **EP-4's block-level marker became line markers.** `epppsynth/tests/test_public_docs.py` carried
+>    `leak-scan-allow: rule-definition` on its own line above the `IDENTITY_PATTERNS` tuple. §2.1
+>    makes the marker line-scoped and never inherited, so the scanner did not honour it and reported
+>    it as an unnecessary marker. Moved onto the two lines that actually match a rule. Two of the
+>    four pattern lines needed no marker: they do not match the rules they define.
+> 4. **A tenth check id, `allowlist`, is reported.** The nine remain the nine; `allowlist` is the
+>    rule-definition allowlist checking itself, which is how §2.1's "a marker on a non-rule line is
+>    reported as a defect" is implemented. A marker that suppresses nothing is a finding.
+> 5. **A marker is recognised only in a comment, never in backticks.** `CLAUDE.md`, EP-0, EP-4, EP-6
+>    and `quotes.py` all *name* the marker in prose. Inline code spans are stripped before the marker
+>    is looked for, so naming it is not using it. Without that, every mention would have exempted its
+>    own line.
+> 6. **The quotation budget was widened, and one brief needed a reason.** The counter now runs over
+>    every tracked markdown file outside `epppsynth/tests/` — the widening
+>    `rights.paths.quotation_scan_paths` named so it would be a visible edit. The test tree is
+>    outside the input set **by scope, not by exemption**, on OD-12's own precedent: it holds EP-5's
+>    deliberately over-budget fixture, and a waiver inside the set would be indistinguishable from a
+>    real one. The widening surfaced one 34-word self-quotation in `EP-14`, which is a worked example
+>    of this project's own output constraint and not a quotation of any source; it carries a
+>    `quote-budget-allow` comment stating that reason.
+> 7. **Three accounted-for matches were needed, and none of them is a path exemption.** A digit run
+>    that `git rev-parse` resolves as an object in this repository (two all-numeric short hashes in
+>    roadmap rows); a `size =` value in the machine-generated resolver lockfile (43); and the one
+>    email address this repository already publishes in its own commit metadata (6, owner ruling
+>    OD-7). Each is mechanical, each fails closed, each is printed in the summary. Recorded in the
+>    `ADR-008` amendment as accounted-for matches rather than as a fourth allowlist.
+> 8. **Hook/CI equality is asserted as a relation, not as raw string equality.** The brief asks for
+>    equal command lines *and* for `--history` in CI only; those cannot both hold. The unit test
+>    asserts `hook + " --history" == ci step`, which is strictly stronger than a loose comparison.
+> 9. **Red run 9 could not be planted in the real tree.** Doing so would mean writing into `.local/`
+>    and editing `DECISIONS.md`'s prose. It ran against a temporary root holding the synthetic pair,
+>    through the same `scan_ledger` code path. The CI shape was confirmed separately: with no
+>    `.local/` present the check reports `skipped — no ledger present` and its status is `skipped`,
+>    asserted **not** equal to `passed`.
+> 10. **`.githooks/**` needed three edits, and the scanner found the omission itself.** Adding the
+>    hook to `REUSE.toml` without adding it to `NOTICE` and `README.md` failed EP-5's boundary tests,
+>    and omitting it from `REUSE.toml` altogether produced a `licence-pattern-unused` finding. All
+>    three now agree.
+> 11. **`epppsynth/tests/test_smoke.py` was updated** to call `cli.main([])`. The CLI now parses its
+>    arguments, and under pytest `sys.argv[1:]` is pytest's own.
+> 12. **A path is fixed for EP-25.** The D-36 scenario-attestation check reads
+>    `epppsynth/eval/scenarios/`, runs over an empty set today, and becomes live by content. EP-25
+>    uses that path or changes the constant.
+>
+> **Observed, and worth carrying to EP-8.** The clean tree's skip inventory is 82 lines across six
+> reasons. Forty-three of them are one lockfile, which is noise the eye will learn to skip; the
+> eleven that matter — the rule-definition markers — are listed separately and are the ones a reader
+> should audit. `epppsynth/DECISIONS.md` shares **1,145** eight-word passages with private planning
+> state, 11.6 % of the file by word count, and **every one of them** falls inside a published entry,
+> an addendum, or the index block. EP-2 measured 124 passages and 19.7 % under a coarser method;
+> both measurements say the same thing about where the sharing is, which is what OD-3 ruled on.
+> Recognising an addendum blockquote as published content was necessary and is not a loosening: D-1
+> says a decision is never edited, only appended to, so an addendum *is* the entry.
+>
+> **Acceptance 8 is owner judgement and is offered, not claimed.** Every finding prints a check id,
+> `path:line`, a rule name and a sentence saying what the rule means; `--fix-hints` adds a one-line
+> remedy. No finding prints the matched text, which is deliberate and is itself a limit on
+> legibility: a reader is told where to look and never shown what was found.

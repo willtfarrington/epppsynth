@@ -19,6 +19,7 @@ Apache-2.0 — code and repository infrastructure
 (full text: `LICENSES/Apache-2.0.txt`, and `LICENSE` for licence detection)
 
     .github/**
+    .githooks/**
     .gitattributes
     .gitignore
     REUSE.toml

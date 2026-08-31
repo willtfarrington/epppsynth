@@ -1,0 +1,11 @@
+# CANARY FIXTURE (EP-6, check `rights`) - deliberate, inert, and cites nothing real.
+#
+# `source_id` names a row that does not exist in epppsynth/registry/sources.yaml, so
+# `check_source_refs` must report a concept with no rights record - the exact state the rights table
+# exists to make impossible. The concept itself is invented and is not registry content.
+concepts:
+  - concept_id: canary-concept-with-no-rights-row
+    provenance:
+      source_id: this-source-id-was-invented-for-a-canary
+      locator: "ch. 1"
+      verbatim: null

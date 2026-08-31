@@ -1,0 +1,8 @@
+CANARY FIXTURE (EP-6, check `identity`) — deliberate, inert, and names no machine.
+
+The user-profile path below carries a literal placeholder where an account name would be, so the
+shape is present and the identity is not. The UNC path names a host that does not exist.
+
+    working copy: C:\Users\<placeholder>\Documents\epppsynth
+
+    share: \\placeholder-host\scratch\epppsynth

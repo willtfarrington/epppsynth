@@ -122,7 +122,7 @@ the Apache-2.0 text so that licence detection finds it, and
 
 | Licence | Paths |
 |---|---|
-| Apache-2.0 | `.github/**` · `.gitattributes` · `.gitignore` · `REUSE.toml` · `NOTICE` · `CITATION.cff` · `epppsynth/pyproject.toml` · `epppsynth/uv.lock` · `epppsynth/src/**` · `epppsynth/tests/**` · `tools/**` |
+| Apache-2.0 | `.github/**` · `.githooks/**` · `.gitattributes` · `.gitignore` · `REUSE.toml` · `NOTICE` · `CITATION.cff` · `epppsynth/pyproject.toml` · `epppsynth/uv.lock` · `epppsynth/src/**` · `epppsynth/tests/**` · `tools/**` |
 | CC BY 4.0 | `README.md` · `SAFETY.md` · `PRIVACY.md` · `SECURITY.md` · `CONTRIBUTING.md` · `CODE_OF_CONDUCT.md` · `CLAUDE.md` · `LICENSE-CONTENT` · `epppsynth/README.md` · `epppsynth/DESIGN.md` · `epppsynth/GOVERNANCE.md` · `epppsynth/DECISIONS.md` · `epppsynth/copy/**` · `epppsynth/docs/**` · `epppsynth/registry/**` · `roadmap/**` · `source material/**` |
 
 [`REUSE.toml`](REUSE.toml) is the machine-readable form of that table and is what a tool reads;

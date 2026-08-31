@@ -1,0 +1,26 @@
+#!/bin/sh
+# SPDX-FileCopyrightText: 2026 W. Taylor Farrington
+# SPDX-License-Identifier: Apache-2.0
+#
+# EP-6. The leak-prevention scanners, before a commit exists rather than after.
+#
+# Install it once, from the repository root:
+#
+#     git config core.hooksPath .githooks
+#
+# The hook is **advisory**. It runs on the operator's machine, it can be skipped
+# with `--no-verify`, and a machine that never installed it never runs it. That
+# is exactly why `.github/workflows/ci.yml` runs the same check: the hook is a
+# fast local answer, CI is the one that has to be true.
+#
+# The command below is byte-identical to the workflow's, minus `--history`. The
+# full-history sweep reads `git log -p --all` and is CI's job; running it before
+# every commit would make the hook slow enough to be bypassed, and a hook that is
+# bypassed protects nothing. A unit test asserts the two command lines still
+# match, so they cannot drift apart quietly.
+#
+# `cd` first because the uv project is `epppsynth/` and git runs hooks from the
+# repository root. The scanners resolve every path from the repository root
+# themselves, so the working directory only decides which uv project runs.
+cd "$(git rev-parse --show-toplevel)/epppsynth" || exit 1
+uv run epppsynth scan
