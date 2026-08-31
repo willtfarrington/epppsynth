@@ -1,0 +1,49 @@
+# The versioned copy of the repository's only issue form (D-76). It lives here rather than only in
+# repository settings so that the wording is reviewable and diffable like every other public claim.
+# Kept consistent with CONTRIBUTING.md, CODE_OF_CONDUCT.md and README.md: the no-PR and
+# discussion-only sentences are the same sentences, not paraphrases of them.
+
+name: Discussion
+description: Discussion only — not support, and never clinical advice.
+title: "[discussion] "
+labels: ["discussion"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **No pull requests are accepted in v1. Issues are open for discussion only — not support, and never clinical advice.**
+
+        Before you write:
+
+        - **No clinical advice will be given here** — not about a real patient, not hypothetically,
+          and not in general. `epppsynth` is not therapy, not clinical decision support, not a risk
+          detector, and not a screening or assessment instrument. See `SAFETY.md`.
+        - **Do not post real patient, family, trainee, or employee information.** This repository is
+          public. An issue containing identifiable material will be deleted, not edited.
+        - **This is not a support channel.** Nothing is released, there is no supported
+          configuration, and third-party deployment is not an intended use. See `CONTRIBUTING.md`.
+        - **Security, safety, and leak reports do not go here.** Use the private path in
+          `SECURITY.md` — Security → Advisories → Report a vulnerability.
+  - type: checkboxes
+    id: acknowledgements
+    attributes:
+      label: Before opening
+      options:
+        - label: This contains no real patient, family, trainee, or employee information.
+          required: true
+        - label: This is not a request for clinical advice, and not a security or safety report.
+          required: true
+  - type: textarea
+    id: topic
+    attributes:
+      label: What would you like to discuss?
+      description: The design, the governance, a decision, or a public claim you think is wrong.
+    validations:
+      required: true
+  - type: input
+    id: commit
+    attributes:
+      label: Commit hash (optional)
+      description: The commit you were reading, if it matters.
+    validations:
+      required: false

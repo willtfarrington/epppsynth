@@ -104,6 +104,9 @@ and (c) will ship carrying a public "author review only" label.
   to do, and what would make the author stop building it.
 - **Clinical or non-technical reader** — a plain-language narrative, `epppsynth/docs/for-clinical-readers.md`, *planned — EP-53*.
 - **Engineer** — [`epppsynth/DESIGN.md`](epppsynth/DESIGN.md) for the technical design, [`epppsynth/GOVERNANCE.md`](epppsynth/GOVERNANCE.md) for the invariants that override it, and [`epppsynth/DECISIONS.md`](epppsynth/DECISIONS.md) for why each choice was made.
+- **Anyone asking what this keeps, or reporting a problem** — [`PRIVACY.md`](PRIVACY.md) for the
+  data boundary, the per-mode data-class table and the residual-channel disclosure;
+  [`SECURITY.md`](SECURITY.md) for the private reporting path.
 - **Anyone executing a roadmap brief** — [`CLAUDE.md`](CLAUDE.md), then the load order it names.
 - **Roadmap** — [`roadmap/README.md`](roadmap/README.md).
 
@@ -119,7 +122,13 @@ file's expansion and status line character for character.
 
 ## Contributing
 
-**No pull requests in v1.** Issues are open for discussion only — not support, and never clinical
-advice. Security and safety concerns go through the repository's private vulnerability reporting.
-Third-party deployment is not an intended use. Expanded by `CONTRIBUTING.md`, `SECURITY.md`,
-`CODE_OF_CONDUCT.md` and `PRIVACY.md`, *planned — EP-4*.
+**No pull requests are accepted in v1. Issues are open for discussion only — not support, and never
+clinical advice.** Security, safety, and leak concerns go privately through the repository's private
+vulnerability reporting. Third-party deployment is not an intended use.
+
+- [`CONTRIBUTING.md`](CONTRIBUTING.md) — the no-PR posture, why it exists, and what would change it.
+- [`SECURITY.md`](SECURITY.md) — the private reporting path, the response posture, and what is out
+  of scope.
+- [`PRIVACY.md`](PRIVACY.md) — what is kept (nothing), how that is checked, and the residual
+  channels the project cannot close.
+- [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) — Contributor Covenant 2.1, plus the project addendum.

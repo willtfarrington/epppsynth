@@ -153,12 +153,12 @@ def test_every_prohibition_row_names_an_implementer_a_verifier_and_a_status():
 # ── links ────────────────────────────────────────────────────────────────────
 
 
-def test_every_relative_link_resolves_except_the_ep4_file():
+def test_every_relative_link_resolves():
     unresolved = []
     for target in re.findall(r"\]\(([^)]+)\)", _text()):
         if target.startswith(("http", "#", "mailto:")):
             continue
         if not (ROOT / target.split("#", 1)[0]).exists():
             unresolved.append(target)
-    # SECURITY.md is written by EP-4; the charter links to it ahead of time by design.
-    assert unresolved == ["SECURITY.md"]
+    # `SECURITY.md` was the one deliberate exception until EP-4 wrote it (EP-3 deviation 5).
+    assert unresolved == []

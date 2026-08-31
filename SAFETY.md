@@ -677,10 +677,15 @@ Safety and security concerns are reported **privately**, through this repository
 vulnerability reporting. Please do not open a public issue for anything involving a safety defect
 or a leak.
 
-The full reporting path, including scope and what to expect, is in
-[`SECURITY.md`](SECURITY.md) — *planned — EP-4*; until that file lands, use the repository's private
-vulnerability reporting directly. Issues are open for discussion only: they are not support, and
-never clinical advice. No pull requests are accepted in v1.
+The full reporting path, including scope, the response posture and what to expect, is in
+[`SECURITY.md`](SECURITY.md). **No pull requests are accepted in v1. Issues are open for discussion
+only — not support, and never clinical advice.** The reasoning is in
+[`CONTRIBUTING.md`](CONTRIBUTING.md); the conduct rules are in
+[`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md).
+
+What the tool keeps, what it cannot keep from being kept, and the trainee non-surveillance guarantee
+are in [`PRIVACY.md`](PRIVACY.md) — including the residual channels no design choice in this project
+can close.
 
 If you believe this repository contains real patient, family, trainee, or employee material, or any
 text reproduced from a copyrighted source, report it through the private path above and it will be
