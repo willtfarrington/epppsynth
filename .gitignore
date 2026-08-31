@@ -12,6 +12,13 @@ source material/**
 *.azw3
 *.pdf
 
+# The ingest pipeline's source spine: a book's title plus its chapter-title
+# table in reading order reconstructs that source's outline (D-10, D-74; see the
+# 2026-08-31 addendum under D-74). Local only; the .example ships with
+# placeholder rows.
+tools/spine.local.json
+!tools/spine.local.json.example
+
 # ── Python ───────────────────────────────────────────────────────────────
 __pycache__/
 *.py[cod]

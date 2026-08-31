@@ -202,3 +202,86 @@ Acceptance:
 > recording that the mode-(a) gate is schedule-exposed as a consequence. **Do not leave it
 > implicit.** D-64 already records that the owner accepted the schedule exposure; what is missing is
 > the artifact that says so in the roadmap.
+
+---
+
+> **Owner rulings of 2026-08-31 that land in this re-plan.** Registered in
+> [`owner-decisions.md`](owner-decisions.md) from the completion notes of EP-1 … EP-4 and ruled by
+> the project owner on **2026-08-31**. Each is an **input** to EP-8, not a decision EP-8 may
+> re-open. Record each verdict and its date in the re-plan output.
+>
+> **OD-9 — no update automation for the pinned action SHAs.** Ruled option (a). Dependabot or
+> renovate would mean a bot opening pull requests, which conflicts with **D-34**'s no-PR posture in
+> v1; at this scale — **two** pinned third-party actions — the by-hand review `ADR-008` already
+> promises is proportionate. No addendum under D-34 was written, because no carve-out was adopted;
+> this note is the re-plan record under **D-42**. **The obligation is now EP-8's to discharge:**
+> check both pins against their upstream releases, record the date and what was found, and hand the
+> same obligation forward to the next phase re-plan. A review promised at every re-plan and
+> performed at none is not a control, and the absence of a bot is what makes performing it
+> load-bearing.
+>
+> **OD-11 — one hazard register, in `DESIGN.md` §14.** Confirmed as EP-2 executed it. EP-2's
+> in-scope item 2 asked `GOVERNANCE.md` to tabulate R-1 … R-41; it was deliberately **not** moved,
+> because `DESIGN.md` §14 already *is* that register and declares itself so, and GOVERNANCE §13
+> already points at it and names the two highest-rated hazards. Restating 41 rows in a second file
+> would create two registers that drift — the failure the single-register rule exists to prevent.
+> What the item wanted was verified in place instead: all 41 rows present, contiguous, every row
+> naming both a mitigating brief and a verifying gate. **The single-register rule is settled**: no
+> later brief re-opens it, and `--hazards` reads `DESIGN.md` §14 alone. No decision entry was
+> needed and none was written.
+>
+> **OD-1 — repository settings (D-76).** EP-4 observed `has_projects: true` against D-76's
+> Projects **off**; the other three flags matched. Ruled option (a): **turn Projects off, matching
+> D-76 as written** — nothing in the roadmap uses a project board — so no addendum under D-76 was
+> written and none should be. The setting change is a platform action outside any brief. **EP-8
+> re-observes all four flags** (`has_issues`, `has_discussions`, `has_wiki`, `has_projects`) plus
+> `private-vulnerability-reporting`, records them with the date, and treats any remaining
+> divergence as a finding — the badge scheme (D-59) exists to stop exactly this class of drift
+> between a published decision and the platform it describes.
+>
+> **OD-8 — the issue form and the advisory intake.** Ruled: self-correcting, verify after the next
+> push. At the time of the ruling the local branch was **six commits ahead of `origin`**, so
+> `.github/ISSUE_TEMPLATE/discussion.yml` had not reached the platform and the issue-templates
+> endpoint still returned 404 — which is why EP-4 had nothing to compare against. The platform
+> reads issue forms *from* that directory, so pushing **is** configuring it. **EP-8 confirms, after
+> the push:** that the form renders, and that its two required acknowledgement checkboxes behave as
+> intended. Separately, `private-vulnerability-reporting` was verified `{"enabled": true}` through
+> the API on 2026-08-31; its *form* has never been observed rendering, because an unauthenticated
+> fetch returns the sign-in page. Record that split as it stands — the path is live, the form was
+> not seen — rather than implying the form was checked.
+>
+> **OD-13 — the five owner-judgement acceptance criteria, ruled.** Offered by EP-1 … EP-4 and
+> unruled until now. Verdicts, 2026-08-31:
+>
+> | Brief | # | Verdict | Basis |
+> |---|---|---|---|
+> | EP-1 | 10 | **pass** | `.github/workflows/ci.yml` is **36 lines** — one screen — and its first five lines state the no-model rule plainly, before `name:`, naming D-42 and pointing at ADR-008. |
+> | EP-2 | 6 | **pass** | The four candidates the session offered are accepted as ruled: the two line-wrap artifacts where a `planned (EP-n)` marker fell to the next line, the not-a-risk-detector negative claim, and the badge parse contract. |
+> | EP-2 | 10 | **fails as the files now stand — accepted as a known finding, not a pass** | `CLAUDE.md` ≈ 850 tokens; load-order items 1–4 ≈ **11.5k**, leaving ≈ 3.5k for a brief against the ~15k ceiling. **`--context-budget` will fail for at least EP-2 and EP-9.** EP-8 does not get to discover this: it is told. Build the check to fail honestly, record the per-brief table acceptance 5 already requires, and resolve the overflow by **shrinking item 3 or 4** — the `DECISIONS.md` index block and the phase table plus its standing-decisions paragraph — never by raising the ceiling and never by trimming a brief below the self-containment the whole load order exists to guarantee. |
+> | EP-3 | 12 | **pass** | §3 (excluded uses), §6 (prohibitions and their enforcement), §11 (the stop criterion) and §16 (review status) are the four sections that answer it, and they answer it without leaving the file. |
+> | EP-4 | 2 | **pass** | `PRIVACY.md` §11's 14 rows: 13 fill mechanism + brief + proof, and row 14's mechanism cell reads *"no mechanism — disclosed, not closed"*, which is the honest shape rather than a gap. A test already asserts that shape is the **only** permitted exception, which is what makes the verdict checkable rather than a reading. |
+>
+> **OD-2 — still open, and deliberately so.** `SAFETY.md` §4, *What it does not know*, was
+> **authored** at EP-3 from D-8, D-14, D-18, D-25, D-63 and D-79, not copied from the approved
+> draft: D-69 records four approved public blocks, three of which are byte-identical to EP-2's
+> recorded baselines, while the fourth exists in no public artifact and its only remaining copy is
+> private planning state a session may not open. It is the one block of approved public
+> safety-facing wording whose shipped text has never been compared against what was approved. Only
+> the owner can close it, by diffing §4 against the approved draft and then either confirming it or
+> supplying the approved wording. **Until then EP-8 must not tick it**, and the ruling lands as a
+> dated addendum under **D-69** recording that the block was authored at EP-3 and either matches or
+> has been replaced.
+>
+> **Already landed, so EP-8 need not.** OD-3 (refined shared-passage invariant) → addendum under
+> D-2, implemented by EP-6. OD-4 (per-mode panel invariance) → addendum under D-57; `GOVERNANCE.md`
+> §4.5 was checked and needs **no** addendum, because it states the panel is *always visible* and
+> makes no byte-identity claim. OD-5 (escalation copy settled as a decision) → addendum under D-18,
+> which pins `SAFETY.md` §9 by commit, extraction rule and SHA-256 rather than restating the words;
+> **the register expected this at EP-8 and it was ruled and landed early**, so EP-8 records it and
+> moves on. OD-6 (the ingest spine, ruled **live**) → addendum under D-74, spine externalised to
+> `tools/spine.local.json`, EP-6 and EP-22 updated. OD-7 (contact address) → ruled: keep the
+> git-author address already public in this repository's commit metadata; no files changed. OD-10
+> (modality-sweep exemptions) → confirmed as a **three**-entry table in EP-6, with one occurrence
+> EP-2's exact-token grep could not match left for EP-6 to reword. OD-12 (banned-phrase carve-out)
+> → confirmed in EP-39, where the entry count needing matcher support is **three**, not the two the
+> register estimated.

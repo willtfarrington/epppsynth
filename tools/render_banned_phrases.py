@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 W. Taylor Farrington
+# SPDX-License-Identifier: Apache-2.0
 """Render `epppsynth/copy/banned-phrases.toml` into the generated block of `SAFETY.md` (EP-3).
 
 The banned-phrase list lives in exactly one place. `SAFETY.md` publishes it and the EP-39 lint

@@ -53,6 +53,27 @@ streaming reveal, and no spinner that mimics deliberation.
    persistence with which to remember a dismissal, and the friction is the safety feature.
 3. The banned-phrase lint: reads `SAFETY.md`'s list, runs over `copy/`, over the templates, and over
    generated output **at render time**, failing closed in all three places.
+
+   **Its scope is fixed by owner ruling OD-12 (confirmed 2026-08-31) and is not this brief's to
+   re-open.** The ban governs **authored content and rendered output** — concept text, templates,
+   the copy deck, composed waypoints. It does **not** govern documentation that names a phrasing in
+   order to forbid it, or that reports what a user typed. Without that carve-out `SAFETY.md` §10 is
+   unpublishable under its own rule: a list of banned phrases that could not contain the phrases
+   could not be published. Two consequences the lint must implement rather than assume:
+
+   - **The carve-out is scoped by target, not by exemption.** The lint runs over `copy/`, the
+     templates and rendered output; documentation is **outside its input set**, not inside it with a
+     waiver. Nothing about `SAFETY.md` §10 is allowlisted, because it is never scanned. A
+     doc-shaped exemption inside the scanned set would be the hole this design avoids.
+   - **Two of the 17 entries carry a `condition` field and need matcher support, not a plain
+     grep.** `bp-010` (**overcome**) is banned only when the object is a person, their objection,
+     their resistance or their refusal; `bp-014` (**goals-of-care conversation**) is permitted as a
+     description of what happened and banned as an instruction to hold one; `bp-017` (**the evidence
+     shows**) is banned unless the sentence resolves to a citation the renderer can bind to a source
+     record — which is a **binding** check, not a text match, and is the reason it cannot be a grep
+     at all. Ship a matcher per `condition` kind with its own unit tests, and fail closed on a
+     `condition` value the matcher does not recognise: an unrecognised condition that silently
+     passes turns a ban into a decoration.
 4. Approved substitutes recorded beside the bans ("Something you might not have asked about yet" · "A
    reason this reading could be wrong" · "There is not enough here to say" · "This is outside what
    this tool covers"), so the ban is actionable rather than merely prohibitive.
@@ -63,6 +84,13 @@ streaming reveal, and no spinner that mimics deliberation.
 
 - The lint fails on a planted "recommends" in `copy/`, in a template, and in a rendered string —
   three deliberate red runs recorded in the completion note.
+- The carve-out is proven both ways: `SAFETY.md` itself passes (it is not in the input set) **and**
+  a test asserts that adding a documentation path to the input set makes the lint fail, so the
+  carve-out cannot be widened by accident.
+- Each conditional entry has a red run **and** a green run: "overcome her objection" fails while
+  "overcome by the news" passes; "schedule a goals-of-care conversation" fails while "after the
+  goals-of-care conversation" passes; an unbound "the evidence shows" fails while a bound one
+  passes. An unrecognised `condition` value fails closed, asserted by test.
 - A scripted check proves the lint reads `SAFETY.md` and that no second copy of the list exists.
 - Every ID in `copy/` is referenced by exactly one template slot; orphans and unused strings fail.
 - *(judgement, owner)* The contract, read alone, is sufficient to build the panels without

@@ -33,7 +33,9 @@ pre-commit hook; `epppsynth/docs/pre-publication-checklist.md` as a runnable che
 red run on a planted canary plus a green run on a clean tree** — for every check. A scanner that has
 never failed has never been shown to work.
 
-Implements: D-3 (public-safe by default), D-10 (corpus never redistributed), D-42 (CI posture),
+Implements: D-2 (settled decisions published, deliberations not — the refined shared-passage
+invariant of the 2026-08-31 addendum), D-3 (public-safe by default), D-4 (retired modality
+wording), D-10 (corpus never redistributed), D-42 (CI posture),
 D-51 (index root outside the tree, never in CI), D-59 (badge resolves to an evidence file or CI
 fails), D-74 (quotation budget enforced in CI). Mitigates R-6 (public-history leakage), R-7
 (rights leakage), R-19 (index reaching a published artifact via fixture, screenshot or error
@@ -45,7 +47,7 @@ themselves).
 | Invariant at risk | Guard in this brief |
 |---|---|
 | Scanners mistaken for proof (GOVERNANCE §Public-safety) | `epppsynth/docs/pre-publication-checklist.md` opens with the defense-in-depth statement verbatim and states that items 5 (screenshots) and 7 (public claims) are **human** steps that no script replaces. The packet records a date, a commit hash and a human name; a green CI run is not a substitute and the document says so. |
-| The canaries themselves leaking (a scanner test that plants a real-looking secret) | The seven **red runs** are executed locally and their canaries never enter a commit (item 8). The committed unit-test fixtures live under `epppsynth/tests/canaries/` and contain **synthetic, structurally-valid-but-inert** strings: a token-shaped string with a documented non-existent prefix, an MRN-shaped digit run, a fake `C:` + `\Users\<placeholder>\` path with a literal placeholder segment. Every canary file carries a header line stating it is a deliberate test fixture. The scanners are configured to **exempt exactly that directory** by explicit path, never by pattern — a pattern-based exemption is how a real leak later hides. |
+| The canaries themselves leaking (a scanner test that plants a real-looking secret) | The nine **red runs** are executed locally and their canaries never enter a commit (item 8). The committed unit-test fixtures live under `epppsynth/tests/canaries/` and contain **synthetic, structurally-valid-but-inert** strings: a token-shaped string with a documented non-existent prefix, an MRN-shaped digit run, a fake `C:` + `\Users\<placeholder>\` path with a literal placeholder segment. Every canary file carries a header line stating it is a deliberate test fixture. The scanners are configured to **exempt exactly that directory** by explicit path, never by pattern — a pattern-based exemption is how a real leak later hides. |
 | An exemption becoming a hole | The canary exemption is a single allowlisted directory constant with a unit test asserting the allowlist has exactly one entry. Any addition fails that test and forces a deliberate decision. |
 | The index or model roots appearing in CI (D-16, D-51) | The workflow references neither root. A scanner asserts that no tracked file contains `C:` + `\epppindex` **as a data path in code or fixtures** — the two roots may appear in *documentation* (they are deliberately public) but never in a fixture, a test, or a default configuration value. The check is scoped by file type accordingly, and the rule is written down in the checklist so the distinction survives. |
 | A badge upgraded without evidence (D-59, R-9) | The badge checker parses the README string against EP-2's regex, resolves it to the mapped evidence file, and fails if that file is absent **or** if it contains an unticked checkbox. Proven by a deliberate red run: temporarily set the badge to `status: skeleton`, watch CI fail, revert. |
@@ -66,7 +68,13 @@ packet.
       check runs over an empty set and becomes live at EP-25.)
    3. **Protected text** — no path under `source material/` tracked in any commit (the EP-0 history
       assertion, now automated); a length-threshold check for quoted spans in docs and fixtures;
-      and the D-74 quotation budget via EP-5's `count_quotations`.
+      and the D-74 quotation budget via EP-5's `count_quotations`. Plus, from the **2026-08-31
+      addendum under D-74** (owner ruling OD-6): a **tracked chapter-title sequence** is a finding —
+      three or more title-shaped strings adjacent to a chapter ordinal or a reading-order index, in
+      any tracked file. That is how a source's outline reconstructs itself, and it is the pattern
+      EP-2 found in `tools/epub_to_md_pipeline.py` and that ruling removed on 2026-08-31 by moving
+      the spine to untracked local config. The check exists so the pattern cannot return by another
+      route — `tools/` sat outside the registry-shaped guard that covered Y-8 until then.
    4. **Local paths, username, hostname** — `C:` + `\Users\`, `C:` + `/Users/`, the operator's account name
       and machine hostname read from the environment at run time, UNC `\\` prefixes, and drive
       letters other than the two approved public roots — across code, docs, briefs, fixtures and
@@ -77,6 +85,49 @@ packet.
       `check_no_verbatim_from_nonredistributable`.
    7. **Badge → evidence** — parse the README badge, resolve the mapped evidence file, fail if
       absent or if any checkbox in it is unticked.
+   8. **Retired modality term** (D-4; owner ruling **OD-10**, confirmed 2026-08-31) — a **stem**
+      sweep for `psychotherap` across every tracked file, implemented with an **exemption table
+      carrying reasons**, never as a bare grep and never as a bare path list. The owner-ratified
+      table has **three** entries:
+
+      | File | Reason |
+      |---|---|
+      | `epppsynth/DECISIONS.md` | D-4 records the retired expansion; the record must keep the word |
+      | `roadmap/EP-2-canonical-docs.md` | self-referential — the brief quotes the token in order to specify the sweep |
+      | `roadmap/EP-6-leak-prevention-ci.md` | this brief, for the same reason |
+
+      Two of the four rows EP-2 proposed are deliberately **absent**. `source material/README.md`
+      was proposed precautionarily; the sweep confirmed it contains **no** occurrence, and an
+      exemption for a file that does not need one is a hole waiting for a future edit.
+      `tools/epub_to_md_pipeline.py` was the fourth, exempt *for now, with a reason*; that
+      exemption **expired** when OD-6 was ruled **live** on 2026-08-31 and the spine moved out of
+      the tracked file.
+
+      **One occurrence must be resolved before this scanner can run green.** EP-2 swept for the
+      exact token `psychotherapy`; widening to the stem surfaces one file that grep could not
+      match — `roadmap/EP-12-seed-givens.md` line 122, *"mid-twentieth-century Western
+      **psychotherapeutic** idiom"*. Resolve it the way EP-2 resolved its own four hits: **reword
+      to the broader term** ("therapeutic"), which strengthens the disclaimer rather than weakening
+      it. Do **not** add a fourth exemption — the table above is the owner-ratified list and grows
+      only by a further ruling.
+   9. **Private-ledger passages** (D-2; owner ruling **OD-3**, 2026-08-31) — the **refined**
+      invariant, which is the one EP-2's measurement showed to be implementable: every eight-word
+      sequence shared between `epppsynth/DECISIONS.md` and any file under `.local/` must fall
+      **inside a published decision entry or the index block**. A shared passage in the surrounding
+      prose is a finding. The literal form — *no* shared eight-word sequence — is unsatisfiable by
+      construction and is **not** what this scanner implements: the ledger records each decision in
+      the words it was settled in and D-2 requires publishing those settled decisions, which is why
+      EP-2 measured 124 shared passages, 19.7 % by word count, longest 42 words, and every one of
+      them inside an entry.
+
+      **How it runs, and why the mechanics are part of the specification.** The check is a script.
+      It reads `.local/` and reports **only** positions and counts inside the already-public file —
+      never the matched text, never a line of private content, in its output, its exit message or
+      its CI summary. Nothing private reaches a session transcript, a CI log or a public file,
+      which is what makes a check over `.local/` compatible with the never-read rule in
+      `CLAUDE.md`. It is **local and pre-commit only**: `.local/` does not exist on a CI runner, so
+      the CI job must report `skipped — no ledger present` and must **not** report a pass. A skip
+      counted as a pass is exactly how this check would quietly stop working.
 2. **Rule-definition allowlist — a named deliverable of this brief, not a footnote.** The
    scanners read briefs, docs, code, fixtures and workflow files, so every file that *defines* a
    rule contains that rule's own pattern; with no allowlist, `epppsynth scan` fails on
@@ -103,7 +154,8 @@ packet.
    `runs-on: windows-latest`, `permissions: contents: read`, actions pinned to full commit SHAs,
    `persist-credentials: false`, `fetch-depth: 0` **only** for the job that needs full history — and
    a comment saying why, because a deep fetch is otherwise a smell. Steps: `uv sync --locked`, then
-   `uv run epppsynth scan --history`.
+   `uv run epppsynth scan --history`. Check 9 (private-ledger passages) has no ledger to read on a
+   runner: it must print `skipped — no ledger present` and be counted as skipped, never as passed.
 5. **Pre-commit hook.** `.githooks/pre-commit` invoking the identical command (without `--history`,
    for speed, with a comment stating that the history scan is CI's job), plus a documented
    `git config core.hooksPath .githooks` step and a note that hooks are advisory: they run on the
@@ -113,27 +165,36 @@ packet.
    commit hash, human name). Items 5 (screenshots re-opened and read, EXIF stripped, no source
    pane, no local paths in a title bar, no notification toasts) and 7 (README, badge, `prime` card
    and `CITATION.cff` all say the same thing and none says more than the evidence supports) are
-   marked **human** and have no script.
-7. **Canary fixtures** under `epppsynth/tests/canaries/` — one per scanner, seven in total, each
-   with a header line declaring itself a deliberate fixture, each inert.
+   marked **human** and have no script. Checks 8 and 9 add **no eighth item**: GOVERNANCE §7 fixes
+   the packet at seven, so the checklist records the mapping instead — check 8 (retired modality
+   term) is evidence under item 7 (public claims compared against evidence) and check 9
+   (private-ledger passages) under item 3 (protected text). Say so in the document, so a reader is
+   not left counting nine scanners against seven items and assuming one is missing.
+7. **Canary fixtures** under `epppsynth/tests/canaries/` — one per scanner, **nine** in total, each
+   with a header line declaring itself a deliberate fixture, each inert. Check 9's canary is a
+   **synthetic pair** — a fake decisions file and a fake ledger file, both authored here — so that
+   proving the ledger check works never requires reading or copying the real `.local/`.
 8. **Run the deliberate red runs — locally.** **No red-run canary is pushed.** A public
    repository's history is permanent and an unreachable object is not a deleted one; proving a
    scanner works is not a reason to write a token-shaped or patient-shaped string into that
    history. (This is distinct from item 7's committed fixtures, which are inert by construction,
    header-declared, and confined to one allowlisted directory — the red runs plant *un*-exempted
-   copies outside it, and those must never leave the working tree.) For each of the seven checks: plant the canary in the **working tree
+   copies outside it, and those must never leave the working tree.) For each of the nine checks: plant the canary in the **working tree
    only**, run the *same* command CI runs (`uv run epppsynth scan --history`), record the exact
    failing check id and the command's output, remove the canary, and confirm a clean local run.
-   All seven go in the completion note as a table of local runs.
+   All **nine** go in the completion note as a table of local runs.
    Then, **once**, prove the CI wiring itself fires: push a single **innocuous** canary — the
    badge set to `status: skeleton` with its evidence file absent, which carries no secret, no PHI,
    no local path and no protected text — on a scratch branch; record the failing CI run URL and
-   check id; revert; confirm green. The seven local runs prove the rules; the one pushed run proves
+   check id; revert; confirm green. The nine local runs prove the rules; the one pushed run proves
    the workflow is wired to them. State that split explicitly in the completion note, so a later
    reader does not read "one CI red run" as thin evidence.
-9. **Record the exemption rule** in `ADR-008` (CI scope and pinning): the canary directory is
+9. **Record the exemption rules** in `ADR-008` (CI scope and pinning): the canary directory is
    allowlisted by exact path, the allowlist has exactly one entry, and adding an entry requires an
-   ADR amendment.
+   ADR amendment. Record the **modality-sweep exemption table** (check 8) beside it as a *third*,
+   separately-counted allowlist: three entries, each carrying its reason, owner-ratified
+   2026-08-31, growing only by a further **owner ruling** — not by an ADR amendment and not by a
+   session's judgement. None of the three allowlists may be used to reach another's scope.
 10. **Commits:** `feat(epppsynth): add leak-prevention scanners, CI job and pre-publication packet (EP-6)`
    then `docs(roadmap): record EP-6 commit hash`.
 
@@ -164,10 +225,10 @@ uv run pytest epppsynth/tests/test_publicsafety.py -q
 git config core.hooksPath                # → .githooks
 ```
 
-The acceptance criterion for this brief is **seven deliberate local red runs, one pushed
+The acceptance criterion for this brief is **nine deliberate local red runs, one pushed
 innocuous CI red run, and one clean green run**, recorded as a table in the completion note with
-one row per check. Only row 7 is pushed; rows 1–6 are local-tree runs and their canaries never
-reach a commit:
+one row per check. Only row 7 is pushed; rows 1–6, 8 and 9 are local-tree runs and their canaries
+never reach a commit:
 
 | # | Check | Canary planted | Expected failure | Local run recorded |
 |---|---|---|---|---|
@@ -178,6 +239,8 @@ reach a commit:
 | 5 | index/model root misuse | the index root spelled out in a test fixture | `scan: roots` non-zero | ☐ |
 | 6 | licence / rights | dangling `source_id` | `scan: rights` non-zero | ☐ |
 | 7 | badge → evidence (**the one pushed run**) | badge set to `status: skeleton` with no evidence file | `scan: badge` non-zero | ☐ CI run URL |
+| 8 | retired modality term (OD-10) | the stem planted in a file outside the three-entry exemption table | `scan: modality` non-zero | ☐ |
+| 9 | private-ledger passages (OD-3) | the synthetic pair, with a shared eight-word run placed in the fixture's **prose** rather than inside an entry | `scan: ledger` non-zero | ☐ |
 
 Additional acceptance:
 
@@ -190,7 +253,9 @@ Additional acceptance:
    (if the history scan is slow enough to discourage running it, that is a finding for EP-8's
    re-plan).
 4. The canary allowlist has exactly one entry, asserted by a unit test that fails if a second is
-   added. The rule-definition allowlist is separately reported: `epppsynth scan` on the clean tree
+   added. The modality-sweep exemption table has exactly **three** entries, each with a non-empty
+   reason string, asserted by a second unit test that fails if a fourth is added — that table is an
+   owner ruling, not a developer convenience. The rule-definition allowlist is separately reported: `epppsynth scan` on the clean tree
    exits 0 **and** prints the full inventory of lines it skipped, every one of which is a rule
    definition. A unit test asserts a marker does not exempt the following line, the enclosing
    block, or any other file.

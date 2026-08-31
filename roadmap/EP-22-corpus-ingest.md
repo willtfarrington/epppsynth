@@ -39,6 +39,16 @@ machine** and may not be assumed.
    fixing this would carry the exposure forward and make it look deliberate. Externalising the spine
    is therefore in scope and is the first substantive step.
 
+> **Owner ruling note (2026-08-31, OD-6).** Constraint 3 was ruled a **live** exposure rather than a
+> latent one and was **closed ahead of this brief**, under the dated addendum to D-74. The book
+> title, the author and the chapter-title table now live in `tools/spine.local.json`, gitignored,
+> with `tools/spine.local.json.example` shipped carrying placeholder rows; the script loads the
+> spine at run time and exits with a pointer to the example when it is absent. So EP-22 **inherits
+> an already-external spine**: its job is no longer to externalise it but to **keep** it external
+> across the move into the package — same file, or a documented successor under the configured
+> index root — and to carry the loader and its missing-config exit path into the module. The
+> paragraph above is left as written; it is the record of why the spine is where it is.
+
 **Already in the tree:** `tools/epub_to_md_pipeline.py` (EPUB XHTML in, per-chapter Markdown plus a
 routing index and a manifest out; endnote and footnote inlining; a BeautifulSoup pre-processing
 pass; a pandoc subprocess for the HTML-to-Markdown conversion; a hard-coded document table). EP-7's

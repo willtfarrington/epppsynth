@@ -110,6 +110,18 @@ token permissions, third-party actions pinned to commit SHAs, deterministic no-m
 for the project's model and index roots, warned at 20 GB (D-78). Scanners are defense in depth, never
 proof (GOVERNANCE §Public-safety).
 
+**Pending owner decisions.** Rulings that an executed brief raised and could not make for itself are
+registered in [`owner-decisions.md`](owner-decisions.md) — thirteen were opened on 2026-08-31 from
+EP-1 … EP-4, and **ten were ruled and landed the same day**. Each names where its ruling lands (a
+dated `DECISIONS.md` addendum, a platform action, or a re-plan note); the register records them, it
+does not settle them, and the ☑ goes on only once the ruling exists where that line says.
+
+**Three remain, and EP-5 is not blocked on any of them.** **OD-1** is ruled — Projects off, matching
+D-76 — but the platform setting has not been changed; **OD-2** asks whether `SAFETY.md` §4 matches
+the approved draft, which only the owner can compare because the draft is private planning state;
+**OD-8** cannot be observed until the local commits reach the remote, since the platform reads issue
+forms from `.github/ISSUE_TEMPLATE/`. EP-8 re-observes the first and third and records the second.
+
 ## Phase P1 — Conceptual & content model (full briefs)
 
 | # | Brief | Size | Depends on | Core | Done |

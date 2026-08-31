@@ -15,8 +15,9 @@ Small, safety-critical, and kept as its own brief precisely so it is never folde
 change where its invariant could be relaxed for a layout reason. This is the highest-consequence copy
 in the product.
 
-**The panel renders byte-identically on every response** — one distinct hash across the whole eval
-corpus (D-57, R-34). That invariance is the mechanism: if the panel ever varied with input, clinicians
+**The panel renders byte-identically on every response *within a mode*** — one distinct hash **per
+mode** across the whole eval corpus (D-57 as narrowed by its 2026-08-31 addendum, owner ruling OD-4;
+R-40). Mode (c)'s panel is a distinct constant, not a variation (R-34). That invariance is the mechanism: if the panel ever varied with input, clinicians
 would learn to read it as a signal, and the flat public claim *this tool is not a risk detector*
 (D-18) would become false in practice. A hard stop therefore adds a card in the **waypoints** region
 (EP-43) and touches nothing here. The panel renders from a constant with no dependency on registry,
@@ -46,9 +47,22 @@ nothing typed is checked for danger.
   still hash-asserted. A single global panel would speak about a third party to a distressed reader
   who is themselves the subject.
 
+> **Owner ruling note (2026-08-31, OD-5).** The panel's exact wording is no longer charter text that
+> a brief may edit: it is **settled by decision** in the dated addendum under **D-18**. That
+> addendum does not restate the words — it pins them, to `SAFETY.md` §9's block quote at commit
+> `7a5ecbb`, with the extraction rule (strip one leading `> ` per line, join with LF, no trailing
+> newline; 13 lines, 592 bytes UTF-8) and the SHA-256
+> `070d3915af29b80d1b7d1912b475efd541a165f82cd2210753585aac9f5ef37f`. **This brief transcribes; it
+> does not author.** Two consequences for the steps below: the constant's text must hash to that
+> value, and a test must assert the constant equals the text extracted live from `SAFETY.md` §9 —
+> so the words exist once, and a change to §9 without a further dated addendum under D-18 is a
+> failure rather than an edit.
+
 ## Scope sketch (refine at re-plan)
 
-1. The invariant panel: fixed heading, fixed body copy from the EP-39 deck, rendered from a constant.
+1. The invariant panel: fixed heading, fixed body copy from the EP-39 deck, rendered from a constant
+   whose text is the transcription pinned by D-18's 2026-08-31 addendum, asserted by hash **and** by
+   live equality against `SAFETY.md` §9.
 2. Shipped US defaults, each with its issuing authority and verification date recorded in a committed
    provenance note beside the constant.
 3. `escalation.local.toml` loading for institution-specific numbers, with `escalation.local.toml.example`

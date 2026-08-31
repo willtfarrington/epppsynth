@@ -195,6 +195,28 @@ probabilistic risk detector fails silently and invites reliance the tool cannot 
 *Alternatives:* a classifier with a confidence threshold; no hard-stop path at all; geolocated
 resources. *Rendering fixed by D-57; the local config file by D-60.*
 
+> **Addendum (2026-08-31, owner ruling OD-5).** D-18 fixed *which* resources appear and D-57 fixed
+> the heading; the panel's **exact wording** — the 988 and 911 lines and the "outside the United
+> States" sentence — was authored at EP-3 and lived only as `SAFETY.md` §9 prose, changeable by any
+> brief that edits that file. Crisis-resource copy is the highest-consequence string in the product,
+> so it is **settled here as a decision**: changing a character of it requires a further dated
+> addendum under this decision, and EP-44's constant is a **transcription**, not an authored string.
+>
+> The text itself is not duplicated here, because a published copy and a rendered copy kept in two
+> files are two copies and they drift. It is pinned instead:
+>
+> - **Canonical location.** `SAFETY.md` §9, the block quote under the heading *If you are worried
+>   about someone's safety*.
+> - **Fixed at.** commit `7a5ecbb` (EP-3, 2026-08-31).
+> - **Extraction rule.** The contiguous run of quoted lines beginning `> **If you are worried about
+>   someone's safety**`; strip one leading `> ` (or a bare `>` on a blank quoted line) from each;
+>   join with `LF`; no trailing newline. **13 lines, 592 bytes UTF-8.**
+> - **SHA-256 of the extracted text.** `070d3915af29b80d1b7d1912b475efd541a165f82cd2210753585aac9f5ef37f`
+>
+> EP-44 renders the panel from a constant whose text hashes to that value, and asserts the equality
+> against `SAFETY.md` §9 rather than holding a second copy of the words. A change to §9 that is not
+> accompanied by a new addendum here is a **failure**, not an edit.
+
 **D-19 Trainee mode is strictly local and non-surveilling.** No accounts, no scoring, no
 retention, no export, no employer visibility; voluntary use only; a written non-surveillance
 guarantee in the docs. Trainee-controlled opt-in local retention is v1.x; educator-visible
@@ -516,6 +538,28 @@ granularity keeps the published artifact from functioning as a navigable derivat
 *Alternatives:* page-range locators under the same word budget; no locators at all;
 paraphrase-only with no citation.
 
+> **Addendum (2026-08-31, owner ruling OD-6).** EP-2's step-10 sweep found that
+> `tools/epub_to_md_pipeline.py` published a named source book's title, its author, and its **full
+> chapter-title table** in a tracked, public file — the outline-reconstruction pattern this decision
+> bans and the rights-leakage failure mode `DESIGN.md` §6.1 **Y-8** names, guarded until now for the
+> concept registry but not for `tools/`. Ruled **live, not latent**: the corpus rule (D-10) is one of
+> the two rules that override any brief, so the exposure is closed now rather than waiting for EP-22
+> to move the pipeline into the package.
+>
+> Closed on 2026-08-31 by moving the spine — book title, author, and the per-chapter title table —
+> out of the tracked file into a **gitignored local configuration file**
+> (`tools/spine.local.json`), shipped with a placeholder `tools/spine.local.json.example`, on the
+> `escalation.local.toml` pattern D-60 already establishes. The pipeline reads the spine at run time
+> and exits with a pointer to the example if it is absent; no source-identifying string remains in
+> the tree.
+>
+> Consequences. **EP-6** treats a tracked chapter-title sequence as a finding — a sequence of three
+> or more title-shaped strings adjacent to a chapter ordinal, in any tracked file — so the pattern
+> cannot return by a different route. **EP-22** inherits an already-external spine and must keep it
+> external when the pipeline becomes a package subcommand. The modality-sweep exemption that
+> `tools/epub_to_md_pipeline.py` carried under OD-10 **expires with this ruling**; the file is no
+> longer exempt.
+
 ---
 
 ## Security & supply chain
@@ -672,6 +716,17 @@ would learn to treat its appearance as a risk assessment, which is exactly what 
 *Alternatives:* a hard stop that replaces the page with escalation copy and nothing else; a panel
 that expands on a hard stop; a panel shown only when relevant.
 
+> **Addendum (2026-08-31, owner ruling OD-4).** Invariance is **per mode**, not global. `DESIGN.md`
+> §14 **R-40** records why: this decision's fixed heading speaks about a third party, but in mode (c)
+> the operator *is* the subject, so mode (c) ships its own constant panel addressed to the reader.
+> The invariant as settled: the panel is byte-identical across every response **within** a mode —
+> **one distinct hash per mode** across the eval corpus — and mode (c)'s panel is a **distinct
+> constant**, not a variation of mode (a)'s. A panel that varied *within* a mode would still be the
+> risk signal this decision forbids. `SAFETY.md` §9 already publishes the narrowed form and names
+> R-40. **`GOVERNANCE.md` §4.5 needs no addendum** — verified 2026-08-31, it states that the
+> escalation panel is *always visible* and makes no byte-identity claim, so nothing there is
+> narrowed by this ruling. EP-44 and EP-48 implement the per-mode form.
+
 **D-58 Uniform typography inside the waypoints region (derived).** Uncertainty,
 counter-hypothesis, insufficient-basis and abstention text render at the same size, weight and
 contrast as the hypotheses themselves; a CSS lint refuses muted tokens in that region. *Why:* a
@@ -712,6 +767,22 @@ questionnaire; open-ended discussion; asynchronous written answers.
 planning notes are excluded from version control; this file is the public record of what was
 decided. *Why:* the decisions are the artifact, the deliberation is drafting. *Alternatives:*
 publish the full deliberation; publish nothing until the gate.
+
+> **Addendum (2026-08-31, owner ruling OD-3).** EP-2's step 11 required that **no** eight-word
+> sequence be shared between this file and any private planning file. Observed instead: **124 shared
+> passages, 19.7 % of this file by word count, longest 42 words** — and **zero** of them outside a
+> published decision entry or the index block, spread evenly across all thirteen decision sections.
+> That is the signature of decision statements appearing in both files, not of deliberation being
+> pasted in. The literal check is unsatisfiable by construction: the ledger records each decision in
+> the words it was settled in, and this decision requires publishing those settled decisions.
+>
+> The invariant is therefore **refined, not relaxed**. A shared passage is a finding **only when it
+> falls outside a published decision entry or the index block.** Shared text inside an entry is this
+> decision log doing its job; shared text in the surrounding prose is ledger-copying, which is what
+> the check exists to catch. **EP-6 implements the refined form**, and it runs as a script that
+> reports positions and counts inside the already-public file only — no private content enters a
+> session or a public file, which is what keeps the check compatible with the never-read rule in
+> `CLAUDE.md`.
 
 **D-9 Publication posture: the planning bundle is public first, application code is held to a
 gate.** *Superseded in its mechanics by D-12*, which resolves the tension that the repository was

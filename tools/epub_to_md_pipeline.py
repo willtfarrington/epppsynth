@@ -1,7 +1,15 @@
+# SPDX-FileCopyrightText: 2026 W. Taylor Farrington
+# SPDX-License-Identifier: Apache-2.0
 #!/usr/bin/env python3
 """
-EPUB -> per-chapter Markdown pipeline for:
-  "Existential Psychotherapy" - Irvin D. Yalom (reflowable EPUB)
+EPUB -> per-chapter Markdown pipeline for a single reflowable EPUB.
+
+Which book, and its chapter spine, are NOT recorded here: a source's title and
+its chapter-title table, published together in a tracked file, reconstruct that
+source's outline, which D-74 bans and D-10 makes a corpus rule. They live in
+`spine.local.json` beside this script, which is gitignored; copy
+`spine.local.json.example` and fill it in from the copy you hold.
+(DECISIONS.md, addendum 2026-08-31 under D-74, owner ruling OD-6.)
 
 Implements:
   1. Read reflowable EPUB (already EPUB; no Calibre step needed)
@@ -21,29 +29,35 @@ from pathlib import Path
 
 from bs4 import BeautifulSoup, NavigableString
 
-BOOK = "Existential Psychotherapy"
-AUTHOR = "Irvin D. Yalom"
+SPINE_PATH = Path(__file__).with_name("spine.local.json")
 
-# Spine docs to convert, in reading order:
-# (source file, output file, type, part label, chapter number, title override)
-DOCS = [
-    ("introduction.xhtml", "01_ch01_introduction.md",                          "chapter", None,                        1,  "Introduction"),
-    ("part001.xhtml",      "02_part-1_death.md",                               "part",    "Part I: Death",             None, "Part I. Death"),
-    ("chapter001.xhtml",   "03_ch02_life-death-and-anxiety.md",                "chapter", "Part I: Death",             2,  "Life, Death, and Anxiety"),
-    ("chapter002.xhtml",   "04_ch03_the-concept-of-death-in-children.md",      "chapter", "Part I: Death",             3,  "The Concept of Death in Children"),
-    ("chapter003.xhtml",   "05_ch04_death-and-psychopathology.md",             "chapter", "Part I: Death",             4,  "Death and Psychopathology"),
-    ("chapter004.xhtml",   "06_ch05_death-and-psychotherapy.md",               "chapter", "Part I: Death",             5,  "Death and Psychotherapy"),
-    ("part002.xhtml",      "07_part-2_freedom.md",                             "part",    "Part II: Freedom",          None, "Part II. Freedom"),
-    ("chapter005.xhtml",   "08_ch06_responsibility.md",                        "chapter", "Part II: Freedom",          6,  "Responsibility"),
-    ("chapter006.xhtml",   "09_ch07_willing.md",                               "chapter", "Part II: Freedom",          7,  "Willing"),
-    ("part003.xhtml",      "10_part-3_isolation.md",                           "part",    "Part III: Isolation",       None, "Part III. Isolation"),
-    ("chapter007.xhtml",   "11_ch08_existential-isolation.md",                 "chapter", "Part III: Isolation",       8,  "Existential Isolation"),
-    ("chapter008.xhtml",   "12_ch09_existential-isolation-and-psychotherapy.md","chapter","Part III: Isolation",       9,  "Existential Isolation and Psychotherapy"),
-    ("part004.xhtml",      "13_part-4_meaninglessness.md",                     "part",    "Part IV: Meaninglessness",  None, "Part IV. Meaninglessness"),
-    ("chapter009.xhtml",   "14_ch10_meaninglessness.md",                       "chapter", "Part IV: Meaninglessness",  10, "Meaninglessness"),
-    ("chapter010.xhtml",   "15_ch11_meaninglessness-and-psychotherapy.md",     "chapter", "Part IV: Meaninglessness",  11, "Meaninglessness and Psychotherapy"),
-    ("epilogue.xhtml",     "16_epilogue.md",                                   "epilogue", None,                       None, "Epilogue"),
-]
+# Populated by load_spine() before any conversion runs. Never literals: see the
+# module docstring and the D-74 addendum of 2026-08-31.
+BOOK = ""
+AUTHOR = ""
+SOURCE_EPUB = ""
+DOCS = []  # (source file, output file, type, part label, chapter number, title)
+
+
+def load_spine(path: Path = SPINE_PATH) -> None:
+    """Read the source spine from untracked local config into module state."""
+    global BOOK, AUTHOR, SOURCE_EPUB, DOCS
+    if not path.exists():
+        sys.exit(
+            f"Spine config not found: {path}\n"
+            f"Copy {path.name}.example to {path.name} and fill it in from the copy "
+            f"of the book you hold. That file is gitignored by design -- a source's "
+            f"title and chapter-title table must not be committed (D-10, D-74)."
+        )
+    data = json.loads(path.read_text(encoding="utf-8"))
+    BOOK = data["book"]
+    AUTHOR = data["author"]
+    SOURCE_EPUB = data["source_epub"]
+    DOCS = [
+        (d["src"], d["dest"], d["type"], d["part"], d["chapter"], d["title"])
+        for d in data["docs"]
+    ]
+
 
 GLYPH_IMG = {  # decorative inline images -> unicode
     "Art_rarrow.jpg": "→",         # right arrow (used in DRIVE -> ANXIETY schemas)
@@ -350,13 +364,14 @@ def convert_doc(oebps: Path, src: str, endnotes, footnotes, unlinked):
 
 
 def main(oebps_dir: str, out_dir: str):
+    load_spine()
     oebps, out = Path(oebps_dir), Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
     endnotes, en_chapter, en_order, footnotes = load_notes(oebps)
     print(f"Loaded {len(endnotes)} endnotes, {len(footnotes)} footnotes")
 
     manifest = {"book": BOOK, "author": AUTHOR,
-                "source_epub": "Existential Psychotherapy - Irvin D. Yalom.epub",
+                "source_epub": SOURCE_EPUB,
                 "index": "00_INDEX.md", "files": []}
 
     for src, dest, typ, part, chnum, title in DOCS:

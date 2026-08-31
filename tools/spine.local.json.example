@@ -1,0 +1,50 @@
+{
+  "_README": [
+    "Copy this file to `spine.local.json` (same directory) and fill it in from the",
+    "copy of the book you hold. `spine.local.json` is gitignored and must stay that",
+    "way: a source's title together with its chapter-title table in reading order",
+    "reconstructs that source's outline, which D-74 bans and D-10 makes a corpus",
+    "rule. See DECISIONS.md, addendum 2026-08-31 under D-74 (owner ruling OD-6).",
+    "Every value below is a placeholder. Fields: src = the XHTML file inside the",
+    "extracted OEBPS directory; dest = the markdown file to write; type = one of",
+    "chapter | part | epilogue; part = the enclosing part label or null; chapter =",
+    "the book's own chapter number or null; title = the heading to write."
+  ],
+  "book": "<book title>",
+  "author": "<author>",
+  "source_epub": "<the .epub filename you hold>",
+  "docs": [
+    {
+      "src": "introduction.xhtml",
+      "dest": "01_ch01_introduction.md",
+      "type": "chapter",
+      "part": null,
+      "chapter": 1,
+      "title": "<title of chapter 1>"
+    },
+    {
+      "src": "part001.xhtml",
+      "dest": "02_part-1_<slug>.md",
+      "type": "part",
+      "part": "<part label>",
+      "chapter": null,
+      "title": "<part heading>"
+    },
+    {
+      "src": "chapter001.xhtml",
+      "dest": "03_ch02_<slug>.md",
+      "type": "chapter",
+      "part": "<part label>",
+      "chapter": 2,
+      "title": "<title of chapter 2>"
+    },
+    {
+      "src": "epilogue.xhtml",
+      "dest": "16_epilogue.md",
+      "type": "epilogue",
+      "part": null,
+      "chapter": null,
+      "title": "<epilogue heading>"
+    }
+  ]
+}
