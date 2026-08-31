@@ -226,3 +226,159 @@ Acceptance:
   copy deck at EP-39.
 - Per-mode README fragments. The single README with per-mode badge rows is adequate at three modes;
   revisit if modes (b) and (c) grow their own front matter at P6.
+
+---
+
+> **Completion note (2026-08-31).** Executed as `8dd937a`, with six deviations recorded below.
+> Every result stated here is what was **observed**, not what was expected. The sweeps of steps 10
+> and 11 were run as a single script; all 30 checks pass.
+>
+> #### Deviation 1 — the brief's "What exists" was stale
+>
+> The brief states that `CLAUDE.md`, `epppsynth/DESIGN.md`, `epppsynth/GOVERNANCE.md` and
+> `epppsynth/DECISIONS.md` do not exist. **Three of the four already existed**, committed by EP-0
+> (`8cb31ec`) and substantially complete: `DECISIONS.md` (58 KB) already carried the index block
+> *and* the full entries, `GOVERNANCE.md` (19 KB) already carried §1–§15 including the D-8 data
+> boundary and the verbatim defense-in-depth statement, and `DESIGN.md` (32 KB) already carried the
+> complete R-1 … R-41 hazard register and a seeded traceability matrix. Only `CLAUDE.md` was
+> genuinely absent. EP-2 therefore **closed the gaps** rather than creating the file set. The gaps
+> closed were: `CLAUDE.md` (created); the root `README.md` (rewritten from two lines); the badge
+> scheme and its parse contract; `epppsynth/docs/evidence/design.md` (created); brief attribution on
+> the eight release gates; the D-61 wording in GOVERNANCE §9; the `## Addenda` section in
+> `DECISIONS.md`; the DESIGN module map; and per-section planned markers.
+> `epppsynth/README.md` was a **0-byte tracked file** and was filled with a short pointer stub — not
+> in the brief, but a blank tracked file is a defect and the fix is three sentences.
+>
+> #### Deviation 2 — there are 79 decisions, not 78
+>
+> Acceptance 3 expects 78. **D-79** (the output contract reduced to three parts) was added after this
+> brief was written. The check was executed as the invariant it encodes — *index rows == full
+> entries == the actual count* — and observed **79 index rows, 79 full entries, contiguous
+> D-1 … D-79, no duplicates**. The cross-check of every `D-n` cited in any tracked file found **no
+> dangling reference and no orphan entry**.
+>
+> #### Deviation 3 — the hazard register stays in `DESIGN.md` §14
+>
+> In-scope item 2 asks `GOVERNANCE.md` to tabulate R-1 … R-41. It was **not** moved. `DESIGN.md` §14
+> already is that table and states "**This table is the register**; every other document points at it
+> rather than restating it"; GOVERNANCE §13 already points at it and names the two highest-rated
+> hazards. Restating 41 rows in a second file creates two registers that drift, which is the failure
+> the single-register rule exists to prevent. What the brief actually wanted was verified in place
+> instead: **all 41 rows present, contiguous, and every row names both a mitigating brief and a
+> verifying gate** (checks 4d–4f).
+>
+> #### Deviation 4 — the modality sweep needed two more exemptions, and four rewordings
+>
+> Step 10 exempts `DECISIONS.md` and `source material/README.md`. The sweep found six files. Four
+> were **reworded**, each to a *broader* term, so the disclaimer is strengthened rather than
+> weakened: GOVERNANCE §1 and §4.1 and `src/epppsynth/__init__.py` now read "not **therapy**" (which
+> excludes strictly more than the retired term did), and DESIGN §6.1 now reads "a **therapeutic**
+> framework". Two files could not be cleared inside this brief's scope:
+>
+> - `roadmap/EP-2-canonical-docs.md` — this brief, which necessarily quotes the banned token in order
+>   to specify the sweep. Self-referential; exempt permanently.
+> - `tools/epub_to_md_pipeline.py` — see the parked item below. Exempt for now, with a reason.
+>
+> `source material/README.md` was checked and contains **no** occurrence; its exemption is
+> precautionary. EP-6 should implement the sweep with this four-entry exemption list, each entry
+> carrying its reason, rather than as a bare grep.
+>
+> #### Deviation 5 — the `.local/` overlap check is unsatisfiable as written
+>
+> Step 11 requires that **no** eight-word sequence be shared between `epppsynth/DECISIONS.md` and any
+> `.local/` file. Observed: **124 shared passages, 19.7 % of `DECISIONS.md` by word count, longest 42
+> words.** This is not a leak and the check cannot be made to pass, because the two requirements
+> conflict: the private ledger records each decision *in the words it was settled in*, and D-2
+> **requires publishing those settled decisions**, so the decision statement itself is necessarily
+> shared text. The two longest shared passages are D-37's stop criterion and D-26's preserved output
+> functions — both settled decision statements, both required to be public.
+>
+> The invariant that actually guards against ledger-copying was tested instead: **every shared
+> passage must fall inside a published decision entry or the index block, never in the surrounding
+> prose.** Observed: **zero passages outside a published decision entry.** The shared text is
+> distributed evenly across all thirteen decision sections (3–20 passages each), which is the
+> signature of decision statements appearing in both files rather than of deliberation being pasted
+> in.
+>
+> No `.local/` file was read by the session. The check runs as a script that reports only positions
+> and counts within the already-public `DECISIONS.md`; no private content entered the session or any
+> public file. **EP-6 should implement the refined form**, not the literal one, and the owner should
+> confirm the ruling that a shared settled-decision statement is not a leak.
+>
+> #### Deviation 6 — planned markers were added, and the tense sweep re-scoped
+>
+> In-scope item 4 requires DESIGN sections whose content is later-phase work to carry an explicit
+> `> **Planned — EP-n.**` line. None did — the file relied on a single preamble sentence and on
+> `EP-n` tags in the section headings. Markers were added to **§1–§13 and §15** (14 in total). §14
+> (the hazard register) and §17 (the module map, which marks state per row) describe artifacts that
+> exist today and carry none.
+>
+> With those in place the tense sweep over `README.md` and `DESIGN.md` produced **4 candidates, all
+> ruled acceptable**: two are line-wrap artifacts where the `planned — EP-n` marker fell on the next
+> line; one is the not-a-risk-detector line, a negative claim true today; one describes the badge
+> parse contract, which exists today. *(Acceptance 6 is owner judgement — the sweep produced the
+> candidate list and the ruling above is offered for confirmation.)*
+>
+> #### Step 9 — verbatim byte lengths, for EP-3 and EP-5 to assert equality against
+>
+> | String | Chars | UTF-8 bytes | Placed in |
+> |---|---|---|---|
+> | `existential perspectives for physicians & patients` | 50 | **50** | `README.md` line 3 |
+> | `Design and planning artifact — v1 in progress; no release, no demo, no validation.` | 82 | **84** | `README.md`, below the badge |
+> | `This tool is not a risk detector and must not be used as one. It never checks what is typed for danger.` | 103 | **103** | `README.md` intended-use section; GOVERNANCE §3 |
+>
+> The em dash in the status line is U+2014 (3 bytes), which is why 82 characters is 84 bytes — assert
+> on bytes, not on length. The not-a-risk-detector line was verified **byte-identical** between
+> `README.md` and `GOVERNANCE.md` §3 after stripping bold markers (check 1e). **EP-5's
+> `CITATION.cff` must reproduce rows 1 and 2 exactly**; EP-3's `SAFETY.md` must reproduce rows 2 and
+> 3 exactly, and must not paraphrase.
+>
+> #### Badge and evidence (steps 6–8)
+>
+> Badge set to `status: design` inside a fenced block; **exactly one** line in `README.md` matches
+> the parse contract. All three per-mode rows read "not started".
+> `epppsynth/docs/evidence/design.md` created with **7 boxes, all ticked**, each naming its artifact.
+> Every claim in it was verified against the tree: 55 briefs present; `git tag` returns **0 tags**;
+> no `release-evidence/`; no `epppsynth/eval/`; `pyproject.toml` version `0.0.0`; `src/epppsynth/`
+> contains only `__init__.py` and a placeholder `cli.py`. The parse contract EP-6 must implement is
+> recorded verbatim in the README, and matched exactly one line when run against it.
+>
+> #### Link discipline (acceptance 8)
+>
+> Every relative link in every tracked `.md` resolves. **Nothing marked `planned — EP-n` is rendered
+> as a link** — `SAFETY.md` (EP-3), `epppsynth/docs/for-clinical-readers.md` (EP-53), and the licence
+> and citation placeholders (EP-5) are plain text with an explicit marker, per acceptance 8 rather
+> than per in-scope item 5, which asks for a link to a file that does not exist yet.
+>
+> #### Acceptance 9 — the tree is still green
+>
+> From `epppsynth/`: `uv run ruff check .` returned "All checks passed!"; `uv run ruff format
+> --check .` returned "13 files already formatted"; the deselected-marker pytest run returned
+> **3 passed**. A carriage-return search over `HEAD` produced no output and exit 1: no committed blob
+> contains a carriage return, so EP-1's line-ending invariant still holds. (Python's default newline
+> translation left CRLF in the working copy of four edited files; the committed blobs were normalised
+> to LF by `.gitattributes`, and the working copy was normalised to match before the second commit.)
+>
+> #### Acceptance 10 — load-order budget
+>
+> `CLAUDE.md` is **3,379 characters ≈ 850 tokens**, inside the ~1.5k the brief allows. Items 1–4 of
+> the load order (`CLAUDE.md` + `GOVERNANCE.md` + the `DECISIONS.md` index block + one P0 phase
+> table) total ≈ 11.5k tokens, leaving ≈ 3.5k for a brief inside EP-8's ~15k budget. The two largest
+> briefs in P0 exceed that on their own, so **EP-8's `--context-budget` check will fail for at least
+> EP-2 and EP-9 as the files now stand** — recorded here so EP-8 designs for it rather than
+> discovers it. *(The rest of acceptance 10 is owner judgement.)*
+
+## Parked → final-roadmap.md
+
+- **`tools/epub_to_md_pipeline.py` publishes the source book's title and its full chapter-title table
+  in a tracked, public file** (lines 4, 24, 35–44, 359). That is the outline-reconstruction pattern
+  D-74 forbids for public citations and that DESIGN §6.1 Y-8 names as a rights-leakage failure
+  mode — currently guarded only for the registry, not for `tools/`. Found by this brief's step-10
+  sweep and **not fixable inside EP-2**: the table is the pipeline's operative source spine, D-41
+  already parks generalising it, and the pipeline moves into the package at **EP-22**. Flagged for
+  **EP-5** (the per-source rights table), **EP-6** (the leak scanners, which should treat a tracked
+  chapter-title sequence as a finding) and **EP-22** (which should move the spine into an untracked
+  local config as it moves the code). Worth a decision addendum if the owner rules it a live rights
+  exposure rather than a latent one.
+- The four items the brief already parks (a rendered documentation site; translations of the public
+  front matter; an automated tense/claim linter; per-mode README fragments) carry over unchanged.

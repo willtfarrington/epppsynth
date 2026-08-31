@@ -88,7 +88,7 @@ hash · for any brief touching a public artifact, the relevant pre-publication c
 |---|-------|------|-----------|------|------|
 | EP-0 | [Baseline & public-safety hygiene](EP-0-baseline.md) | S | — | core | ☑ 3706992 |
 | EP-1 | [Toolchain, package skeleton, ADR framework, CI](EP-1-toolchain.md) | M | EP-0 | core | ☑ c29c95a + a4403e6 |
-| EP-2 | [Canonical docs + public front matter + badge scheme](EP-2-canonical-docs.md) | L | EP-1 | core | ☐ |
+| EP-2 | [Canonical docs + public front matter + badge scheme](EP-2-canonical-docs.md) | L | EP-1 | core | ☑ 8dd937a |
 | EP-3 | [SAFETY.md — clinical-ethics charter](EP-3-safety-charter.md) | L | EP-2 | core | ☐ |
 | EP-4 | [PRIVACY, SECURITY, CODE_OF_CONDUCT, CONTRIBUTING](EP-4-privacy-security-conduct.md) | M | EP-2, EP-3 | core | ☐ |
 | EP-5 | [Licensing pack + per-source rights table](EP-5-licensing-rights.md) | L | EP-2 | core | ☐ |
