@@ -91,7 +91,7 @@ hash · for any brief touching a public artifact, the relevant pre-publication c
 | EP-2 | [Canonical docs + public front matter + badge scheme](EP-2-canonical-docs.md) | L | EP-1 | core | ☑ 8dd937a |
 | EP-3 | [SAFETY.md — clinical-ethics charter](EP-3-safety-charter.md) | L | EP-2 | core | ☑ 7a5ecbb |
 | EP-4 | [PRIVACY, SECURITY, CODE_OF_CONDUCT, CONTRIBUTING](EP-4-privacy-security-conduct.md) | M | EP-2, EP-3 | core | ☑ 083137d |
-| EP-5 | [Licensing pack + per-source rights table](EP-5-licensing-rights.md) | L | EP-2 | core | ☐ |
+| EP-5 | [Licensing pack + per-source rights table](EP-5-licensing-rights.md) | L | EP-2 | core | ☑ b3424b2 |
 | EP-6 | [Leak-prevention CI + pre-publication packet](EP-6-leak-prevention-ci.md) | L | EP-1, EP-2, EP-5 | core | ☐ |
 | EP-7 | [Storage roots, cache inventory, reserve floor & project ceiling](EP-7-storage-inventory.md) | L | EP-1 | core | ☐ |
 | EP-8 | [Roadmap tooling, EP template, re-plan P0](EP-8-replan-p0.md) | L | EP-0 … EP-7 | core | ☐ |
