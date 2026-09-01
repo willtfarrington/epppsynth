@@ -304,3 +304,10 @@ Acceptance:
 > **For the P0 re-plan (EP-8):** the deliberate GiB/GB transcription (floor binary, ceiling decimal)
 > is recorded in `ADR-009` and asserted by a unit test; flagging it, as §1 requires. Deciding whether
 > to normalise the units would be an owner decision, not a code change.
+>
+> **CI (added after the push).** Acceptance 13's evidence is run **33540809921** on `main` at
+> `3e19d5b`: `scan` green in 23 s, `test` green in 1 m 56 s — **189 passed, 2 skipped**. The two
+> skips are the pre-existing shallow-clone guard on the whole-repository scan tests (ADR-008, EP-6
+> amendment); the junction-based reparse-point test did **not** skip, so that behaviour is proved on
+> the runner as well as locally. The `scan` job's summary prints the `root-constant` skip as
+> `2 line(s)`, which is acceptance 12 holding in CI. Neither job references either root.
