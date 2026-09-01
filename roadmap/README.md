@@ -163,6 +163,11 @@ same reason — each needs a human to look at something no session can reach.
 | EP-15 | [Critique-lens protocol + full lens run](EP-15-lens-review.md) | L | EP-12, EP-13, EP-14 | core | ☐ |
 | EP-16 | [Registry validator, rendered markdown, re-plan P1](EP-16-validator-replan-p1.md) | M | EP-9 … EP-15 | core | ☐ |
 
+**EP-9 opens with a pickup gate.** Three items closed P0 unresolved and none can be settled by a
+session: **OD-2**, **OD-8**, and EP-8's twelfth acceptance criterion. They are carried in
+[`pickup-gate.md`](pickup-gate.md), which EP-9's header names, and the third **blocks** EP-9 because
+its answer can change the brief. Put all three to the owner before starting P1.
+
 **Ordering rationale.** The schema (EP-9) precedes the provenance spec (EP-10) because rights fields
 are schema fields; both precede any authored concept. The composer spec (EP-11) is written before
 content so the content is authored against a known emission contract — in particular the requirement

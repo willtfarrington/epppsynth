@@ -383,6 +383,19 @@ def test_a_size_that_disagrees_with_the_brief_fails(roadmap: pathlib.Path) -> No
     assert "size-mismatch" in failures(roadmap, "table")
 
 
+def test_two_files_sharing_an_ep_number_fail(roadmap: pathlib.Path) -> None:
+    """The loader keys by number, so the second file would shadow the first."""
+    write(roadmap, "roadmap/EP-1-beta-notes.md", EP1)
+    assert "duplicate-number" in failures(roadmap, "table")
+
+
+def test_a_file_that_is_not_a_brief_is_not_loaded_as_one(roadmap: pathlib.Path) -> None:
+    """A companion note beside the briefs must not be mistaken for a brief."""
+    write(roadmap, "roadmap/pickup-gate.md", "# a companion note, not a brief")
+    assert set(rc.load_briefs(roadmap)) == {0, 1, 2}
+    assert failures(roadmap, "table") == []
+
+
 def test_a_row_with_no_brief_file_fails(roadmap: pathlib.Path) -> None:
     (roadmap / "roadmap" / "EP-2-gamma.md").unlink()
     assert "row-without-file" in failures(roadmap, "table")

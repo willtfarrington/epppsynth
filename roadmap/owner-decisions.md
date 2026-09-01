@@ -767,7 +767,16 @@ floor and the real ceiling by about 7 % in opposite directions. The mismatch is 
 is each number speaking the units of its own domain. Landed as a dated addendum under **D-78**,
 alongside the EP-8 addendum that registered the question.
 
-### Still open, and why neither can be closed by a session
+### Still open — and now gated at EP-9 pickup
+
+**Both, plus EP-8's twelfth acceptance criterion, are carried as a pickup gate**
+([`pickup-gate.md`](pickup-gate.md)), named by `roadmap/EP-9-registry-schema.md`'s header so that the
+session picking up EP-9 meets them before doing any EP-9 work. This register is **not** in the
+minimum context load order; a cold session would never have read it. Each gate carries three lettered
+choices and states what the session does with each answer, so the owner's reply can be one letter.
+Gate 3 blocks EP-9, because its answer can change the brief.
+
+### Why neither can be closed by a session
 
 **OD-2 — `SAFETY.md` §4 against the approved draft.** Unchanged. §4 was authored at EP-3 from D-8,
 D-14, D-18, D-25, D-63 and D-79 rather than copied, because the approved draft's only surviving copy

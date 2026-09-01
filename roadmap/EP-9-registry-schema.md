@@ -5,6 +5,14 @@
 **Blocks:** EP-10 (provenance and authoring guide), EP-11 (composer specification), EP-16 (registry
 validator, re-plan P1), EP-18 (registry loader), EP-28 (substance-tuple extractor)
 
+> **PICKUP GATE — owner input required before this brief starts (EP-8, 2026-09-01).** Three items
+> closed P0 unresolved and none can be settled by a session: **OD-2** (does `SAFETY.md` §4 match the
+> approved wording?), **OD-8** (does the issue form render, and do its two checkboxes block
+> submission?), and **EP-8 acceptance 12** (is this brief executable cold? — **blocking**, because
+> the answer can change it). Each carries three lettered choices and what to do with each answer in
+> [`pickup-gate.md`](pickup-gate.md). **Open that file and put all three to the owner before doing
+> any EP-9 work.** Delete this block when all three are resolved.
+
 ## Context
 
 This brief writes the data model every later phase reads. It implements **D-15** (YAML/JSON concept

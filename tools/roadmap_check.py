@@ -543,6 +543,24 @@ def size_mix(rows: list[Row]) -> tuple[dict[str, int], float]:
 def check_table(root: pathlib.Path, briefs: dict[int, Brief], rows: list[Row]) -> CheckResult:
     """The tables and the files are one plan, and the header is derived from it."""
     result = CheckResult("table")
+
+    # `load_briefs` keys by number, so a second file matching `EP-<n>-*.md`
+    # would not collide loudly - it would silently shadow the first, and every
+    # other check would then run against whichever one sorted last. EP-8 came
+    # one filename away from doing this to itself with a pickup-gate note.
+    by_number: dict[int, list[str]] = {}
+    for path in sorted((root / "roadmap").glob("EP-*.md")):
+        match = BRIEF_FILE_RE.match(path.name)
+        if match:
+            by_number.setdefault(int(match.group(1)), []).append(path.name)
+    for number, names in sorted(by_number.items()):
+        if len(names) > 1:
+            result.add(
+                f"EP-{number}",
+                "duplicate-number",
+                f"{len(names)} files share this number: {', '.join(names)}",
+            )
+
     listed = {row.number for row in rows}
     for number in sorted(briefs.keys() - listed):
         result.add(f"EP-{number}", "file-without-row", "a brief no phase table lists")
