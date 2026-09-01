@@ -35,10 +35,12 @@ only CI in the repository:
 | Action | Commit SHA | Version |
 |---|---|---|
 | `actions/checkout` | `3d3c42e5aac5ba805825da76410c181273ba90b1` | v7.0.1 |
-| `astral-sh/setup-uv` | `c771a70e6277c0a99b617c7a806ffedaca235ff9` | v9.0.0 |
+| `astral-sh/setup-uv` | `20cfd1bf945f4377ade1205e4dbc17946fc9a30d` | v10.0.1 |
 
-SHAs were resolved from the projects' own tag refs (`git ls-remote`) on
-2026-08-26; both tags are lightweight, so the tag SHA is the commit SHA.
+SHAs were resolved from the projects' own tag refs on **2026-08-26**, and
+re-resolved at the P0 re-plan on **2026-09-01**; every tag involved is
+lightweight, so the tag SHA is the commit SHA. The `setup-uv` row was bumped
+on 2026-09-01 — see the amendment below, which records the pin it replaced.
 **The pins are reviewed at each phase re-plan** (EP-8, EP-16, EP-23, EP-31,
 EP-37, EP-46, EP-49). Automated pin-bumping (Dependabot/Renovate) is parked:
 anything that opens a PR conflicts with the no-PR posture (D-34).
@@ -177,3 +179,51 @@ all — a throwaway fixture repository — the allowlist is out of scope and not
 
 `MODALITY_EXEMPTION_COUNT` is untouched and the OD-10 table still has three entries. None of the four
 allowlists may be used to reach another's scope, and a unit test asserts the four do not overlap.
+
+---
+
+## Amendment (2026-09-01, EP-8) — the first by-hand pin review, and one bump
+
+**Status:** accepted · **Related:** D-42, owner rulings OD-9, OD-17
+
+OD-9 ruled out Dependabot and Renovate — a bot that opens pull requests
+conflicts with D-34's no-PR posture — which makes the by-hand review this ADR
+promises the *only* control on pin freshness. A review promised at every
+re-plan and performed at none is not a control, so this amendment records the
+first one performed.
+
+**Reviewed 2026-09-01.** Both pins were confirmed to be the commit their
+trailing comment names, so neither comment is a guess:
+
+| Action | Pinned SHA | Resolves to | Latest upstream | Finding |
+|---|---|---|---|---|
+| `actions/checkout` | `3d3c42e…` | v7.0.1 | v7.0.1 (2026-07-20) | current — no action |
+| `astral-sh/setup-uv` | `c771a70e…` | v9.0.0 | **v10.0.1** (2026-08-14) | one major behind — bumped |
+
+**The bump, and why a major version was safe to take.** v10.0.0 carries one
+breaking change: with `enable-cache: auto`, the cache is now disabled for
+`pull_request_target`, `workflow_run` and `release` events, to prevent cache
+poisoning. **This workflow sets `enable-cache: false` explicitly, on both
+jobs**, for an unrelated reason — keeping uv cache paths out of the public log
+(D-3) — so the breaking change cannot reach it. v10.0.1 adds a tolerance for
+transient manifest timeouts. New pin
+`20cfd1bf945f4377ade1205e4dbc17946fc9a30d`, replacing
+`c771a70e6277c0a99b617c7a806ffedaca235ff9`.
+
+**Not adopted, and still parked.** v10.0.0 also adds `version: latest-known`,
+which installs the newest uv whose checksum the action itself knows. That is
+exactly the item EP-1 parked as *pinning the uv binary version in CI*, and it
+stays parked: `uv.lock` already guards the resolution, and adopting a new
+input in the same commit as a major bump would make a red run ambiguous. It is
+now a better-specified parked item than it was, which is the whole return on
+performing the review.
+
+**Sequencing, recorded because it was the substance of ruling OD-17.** This
+bump deliberately did **not** ride along with EP-8's push. That push produced
+run 33549349557, which is EP-8's acceptance-11 evidence; a red run would then
+have been ambiguous between the brief and a pinned-action change nobody can
+test locally. EP-8 landed and recorded its run first. This commit carries the
+bump alone.
+
+**Handed forward.** The next by-hand review is **EP-16**'s, at the P1 re-plan,
+and the obligation continues at EP-23, EP-31, EP-37, EP-46 and EP-49.

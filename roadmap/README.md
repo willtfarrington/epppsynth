@@ -135,17 +135,20 @@ EP-8 opened three. Each names where its ruling lands (a dated `DECISIONS.md` add
 action, or a re-plan note); the register records them, it does not settle them, and the ☑ goes on
 only once the ruling exists where that line says.
 
-**The owner ruled at the re-plan on 2026-09-01, and three remain.** Closed that day: **OD-1** —
+**The owner ruled at the re-plan on 2026-09-01, and two remain.** Closed that day: **OD-1** —
 Projects was disabled through the platform and all four D-76 flags re-observed matching; **OD-16** —
 the context ceiling is accepted as it stands and the remedy for the next breach is **named in
 advance**, split the offending brief (D-22), never a shared load-order file and never the ceiling;
 **OD-18** — the GiB/GB transcription is kept, because each unit matches what its number is compared
-against. Still open, and **no P1 brief is blocked on any of them**: **OD-2** asks whether
-`SAFETY.md` §4 matches the approved draft, which only the owner can compare because the draft is
-private planning state; **OD-8** needs one signed-in human look at the issue form, which is published
-where the platform reads it and has never been seen to render; and **OD-17** is *ruled but not yet
-performed* — `setup-uv` is bumped to v10.0.1 in a commit of its own, after EP-8's CI run is
-recorded, so a red run cannot be ambiguous between the two.
+against; and **OD-17** — `setup-uv` bumped to v10.0.1 in a commit of its own, *after* EP-8's CI run
+was recorded, so a red run could not be ambiguous between the two, with the first by-hand pin review
+written up as an `ADR-008` amendment and the obligation handed to EP-16.
+
+**Two remain open, and no P1 brief is blocked on either.** **OD-2** asks whether `SAFETY.md` §4
+matches the approved draft, which only the owner can compare because the draft is private planning
+state. **OD-8** needs one signed-in human look at the issue form: it is published where the platform
+reads issue forms from, and no path available to a session shows it rendering. Both are open for the
+same reason — each needs a human to look at something no session can reach.
 
 ## Phase P1 — Conceptual & content model (full briefs)
 

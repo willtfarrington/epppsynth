@@ -36,7 +36,7 @@ Opened **2026-08-31** from the completion notes of EP-1 … EP-4. EP-0 is not su
 | OD-14 | Ratify the `bibliographic-identity` refinement to the OD-10 modality sweep | EP-6 dev. 1 | confirmation | EP-6's scanner definition; a further ruling if overturned | ☑ 2026-09-01 — ratified as implemented; EP-6 §1.8, `ADR-008` |
 | OD-15 | Must a completion note name the CI run it claims to be green on? | EP-7 dev. | ruling | `CLAUDE.md` §Committing; `roadmap/README.md` Definition of Done | ☑ 2026-09-01 — yes, as a linked id; both files updated |
 | OD-16 | The load order's fixed overhead leaves the tightest brief 46 tokens of headroom | EP-8 | ruling | the remedy, named in advance, in `roadmap_check.py` and the roadmap README | ☑ 2026-09-01 — accept and **name the trigger**: the remedy is to split the brief |
-| OD-17 | `astral-sh/setup-uv` is pinned to v9.0.0; v10.0.1 is current | EP-8 | ruling | `ci.yml` and `ADR-008`, in a commit of its own | ◐ ruled 2026-09-01 — **bump, after EP-8's CI run is recorded**; action outstanding |
+| OD-17 | `astral-sh/setup-uv` is pinned to v9.0.0; v10.0.1 is current | EP-8 | ruling | `ci.yml` and `ADR-008`, in a commit of its own | ☑ 2026-09-01 — ruled **bump** and **performed**, after EP-8's run; `ADR-008` amendment |
 | OD-18 | Normalise the deliberate GiB/GB transcription, or keep it | EP-8 | ruling | an addendum under D-78 | ☑ 2026-09-01 — **keep**; each unit matches what it measures |
 
 **Status at 2026-08-31.** Ten of thirteen ruled and landed. Three are not: **OD-1** is ruled but the
@@ -748,6 +748,13 @@ push, because that push produces the CI run that is EP-8's acceptance 11 evidenc
 then be ambiguous between the brief and the bump. EP-8 lands and records its run first, then the
 bump lands with a run of its own and an `ADR-008` amendment. The row stays `◐` until that commit
 exists — **ruled, not yet performed**, the same state OD-1 sat in for a day and for the same reason.
+
+> **Performed 2026-09-01, and the row is now ☑.** EP-8 landed and recorded run 33549349557 first;
+> the bump then landed alone, replacing `c771a70e…` with `20cfd1bf945f4377ade1205e4dbc17946fc9a30d`
+> (v10.0.1) in both jobs, with the full review — both pins, what each resolves to, what is current,
+> and why a major version was safe here — recorded as an `ADR-008` amendment. `version:
+> latest-known` was **not** adopted and stays parked, better specified than before. The next by-hand
+> review is EP-16's.
 
 **OD-18 — ruled: keep the transcription; closed as confirmed.** The floor stays binary (250 GiB) and
 the ceiling stays decimal (25 GB, warned at 20 GB), exactly as D-49 and D-78 state them. The reason
