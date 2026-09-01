@@ -636,9 +636,21 @@ def check_sections(briefs: dict[int, Brief]) -> CheckResult:
     return result
 
 
-def _charter_upgrader(brief: Brief) -> set[int]:
+def _charter_upgrader(brief: Brief) -> int | None:
+    """The **first** EP named in the charter note, which is the one that upgrades it.
+
+    The note names others in passing - the brief whose cell count a quota
+    waits on, the phase a re-plan re-charters - and counting all of them made
+    the exemption inventory read `EP-25 (upgraded by EP-23, EP-24)`, which is
+    false. Every charter follows the same convention: the upgrader comes
+    first and in bold. So the first token is the answer and the rest are
+    context.
+    """
     match = re.search(r"^> \*\*Charter\.\*\*.*?(?=\n\n)", brief.brief_text, re.M | re.S)
-    return {int(n) for n in EP_TOKEN_RE.findall(match.group(0))} if match else set()
+    if match is None:
+        return None
+    named = EP_TOKEN_RE.search(match.group(0))
+    return int(named.group(1)) if named else None
 
 
 def check_acceptance(briefs: dict[int, Brief]) -> CheckResult:
@@ -661,20 +673,21 @@ def check_acceptance(briefs: dict[int, Brief]) -> CheckResult:
             result.add(brief.label, "no-acceptance-section", "no verification/acceptance section")
             continue
         if brief.is_charter:
-            upgraders = _charter_upgrader(brief)
-            if not upgraders:
+            upgrader = _charter_upgrader(brief)
+            if upgrader is None:
                 result.add(
                     brief.label,
                     "charter-without-upgrader",
                     "a charter note that names no re-plan EP is a permanent sketch",
                 )
-            for ep in sorted(upgraders - briefs.keys()):
+            elif upgrader not in briefs:
                 result.add(
-                    brief.label, "upgrader-missing", f"names EP-{ep}, which has no brief file"
+                    brief.label,
+                    "upgrader-missing",
+                    f"names EP-{upgrader}, which has no brief file",
                 )
             exempt.append(
-                f"{brief.label} (upgraded by "
-                f"{', '.join(f'EP-{n}' for n in sorted(upgraders)) or 'nobody'})"
+                f"{brief.label} (upgraded by {f'EP-{upgrader}' if upgrader else 'nobody'})"
             )
             continue
         if not _names_a_command(body):

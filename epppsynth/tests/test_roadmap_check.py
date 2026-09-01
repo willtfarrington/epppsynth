@@ -372,7 +372,7 @@ def test_a_charter_note_is_not_read_as_a_dependency(roadmap: pathlib.Path) -> No
     briefs = rc.load_briefs(roadmap)
     assert briefs[2].blocks == set()
     assert briefs[2].depends == set()
-    assert rc._charter_upgrader(briefs[2]) == {1}
+    assert rc._charter_upgrader(briefs[2]) == 1
 
 
 # -- table --------------------------------------------------------------------
@@ -471,6 +471,23 @@ def test_a_charter_brief_is_exempt_but_must_name_its_upgrader(roadmap: pathlib.P
     assert failures(roadmap, "acceptance") == []
     write(roadmap, "roadmap/EP-2-gamma.md", EP2.replace("**EP-1 (beta)**", "a later re-plan"))
     assert failures(roadmap, "acceptance") == ["charter-without-upgrader"]
+
+
+def test_only_the_first_ep_in_a_charter_note_is_the_upgrader(roadmap: pathlib.Path) -> None:
+    """A charter note names other briefs in passing; they are context, not upgraders."""
+    write(
+        roadmap,
+        "roadmap/EP-2-gamma.md",
+        EP2.replace(
+            "> from the sketch alone.",
+            "> from the sketch alone. The quota below waits on EP-0's count.",
+        ),
+    )
+    briefs = rc.load_briefs(roadmap)
+    assert rc._charter_upgrader(briefs[2]) == 1
+    report = rc.run(roadmap, ["acceptance"])
+    assert report.ok, report.render()
+    assert "EP-2 (upgraded by EP-1)" in report.render()
 
 
 # -- hazards ------------------------------------------------------------------
