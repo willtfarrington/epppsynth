@@ -3,7 +3,7 @@
 **existential perspectives for physicians & patients**
 
 ```
-status: design
+status: skeleton
 ```
 
 Design and planning artifact — v1 in progress; no release, no demo, no validation.
