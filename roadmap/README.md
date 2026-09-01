@@ -135,15 +135,17 @@ EP-8 opened three. Each names where its ruling lands (a dated `DECISIONS.md` add
 action, or a re-plan note); the register records them, it does not settle them, and the ☑ goes on
 only once the ruling exists where that line says.
 
-**Six are unresolved as P0 closes, and no P1 brief is blocked on any of them.** **OD-1** is ruled —
-Projects off, matching D-76 — and the platform setting was **still not changed** when all four flags
-were re-observed on 2026-09-01, so the row stays `◐`. **OD-2** asks whether `SAFETY.md` §4 matches
-the approved draft; only the owner can compare, because the draft is private planning state, and
-EP-8 was told not to tick it and did not. **OD-8** is now pushed and *still* unobserved: the form is
-published at the path the platform reads issue forms from, and no path available to a session shows
-it rendering — closing it needs one signed-in human look. **OD-16** (the load order's headroom),
-**OD-17** (`setup-uv` is a major version behind) and **OD-18** (the deliberate GiB/GB transcription)
-were opened by EP-8 and each states what EP-8 did *not* do, and why.
+**The owner ruled at the re-plan on 2026-09-01, and three remain.** Closed that day: **OD-1** —
+Projects was disabled through the platform and all four D-76 flags re-observed matching; **OD-16** —
+the context ceiling is accepted as it stands and the remedy for the next breach is **named in
+advance**, split the offending brief (D-22), never a shared load-order file and never the ceiling;
+**OD-18** — the GiB/GB transcription is kept, because each unit matches what its number is compared
+against. Still open, and **no P1 brief is blocked on any of them**: **OD-2** asks whether
+`SAFETY.md` §4 matches the approved draft, which only the owner can compare because the draft is
+private planning state; **OD-8** needs one signed-in human look at the issue form, which is published
+where the platform reads it and has never been seen to render; and **OD-17** is *ruled but not yet
+performed* — `setup-uv` is bumped to v10.0.1 in a commit of its own, after EP-8's CI run is
+recorded, so a red run cannot be ambiguous between the two.
 
 ## Phase P1 — Conceptual & content model (full briefs)
 

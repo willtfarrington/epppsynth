@@ -501,7 +501,12 @@ def test_a_gap_in_the_register_fails(roadmap: pathlib.Path) -> None:
 
 def test_a_bloated_brief_fails_the_context_budget(roadmap: pathlib.Path) -> None:
     write(roadmap, "roadmap/EP-1-beta.md", EP1 + "\nfiller. " * 10_000)
-    assert failures(roadmap, "context-budget") == ["over-budget"]
+    report = rc.run(roadmap, ["context-budget"])
+    assert [f.rule for f in report.findings] == ["over-budget"]
+    # Owner ruling OD-16: the finding carries its own remedy, so the session
+    # that trips the gate is not left choosing between the four shared files.
+    assert "split this brief" in report.findings[0].detail
+    assert "never raise the ceiling" in report.findings[0].detail
 
 
 def test_the_budget_measures_the_brief_without_its_completion_note(roadmap: pathlib.Path) -> None:

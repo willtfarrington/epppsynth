@@ -20,7 +20,7 @@ Opened **2026-08-31** from the completion notes of EP-1 … EP-4. EP-0 is not su
 
 | # | Ruling needed | Raised by | Class | Ruling lands in | Done |
 |---|---|---|---|---|---|
-| OD-1 | Projects is **on**; D-76 says off | EP-4 dev. 3 | drift | platform setting, or addendum under D-76 | ◐ ruled (a) 2026-08-31 — **still on when re-observed 2026-09-01 at EP-8** |
+| OD-1 | Projects is **on**; D-76 says off | EP-4 dev. 3 | drift | platform setting, or addendum under D-76 | ☑ 2026-09-01 — **performed by the owner**; all four flags re-observed and matching |
 | OD-2 | Does the authored *"What it does not know"* block match the approved draft? | EP-3 dev. 1 | confirmation | addendum under D-69 | ☐ **open — owner only** |
 | OD-3 | Is a settled decision statement shared with the private ledger a leak? | EP-2 dev. 5 | ruling | addendum under D-2; EP-6 implements | ☑ 2026-08-31 — addendum under D-2; EP-6 §1.9 |
 | OD-4 | Escalation-panel invariance is **per mode**, not global | EP-3 dev. 4 | refinement | addendum under D-57 | ☑ 2026-08-31 — addendum under D-57; EP-44 |
@@ -35,9 +35,9 @@ Opened **2026-08-31** from the completion notes of EP-1 … EP-4. EP-0 is not su
 | OD-13 | Owner-judgement acceptance criteria, offered and unruled (× 5) | EP-1 … EP-4 | confirmation | EP-8 re-plan note | ☑ 2026-08-31 — four pass, EP-2 #10 **fails**; the overflow was resolved at EP-8 by shrinking load-order item 3 |
 | OD-14 | Ratify the `bibliographic-identity` refinement to the OD-10 modality sweep | EP-6 dev. 1 | confirmation | EP-6's scanner definition; a further ruling if overturned | ☑ 2026-09-01 — ratified as implemented; EP-6 §1.8, `ADR-008` |
 | OD-15 | Must a completion note name the CI run it claims to be green on? | EP-7 dev. | ruling | `CLAUDE.md` §Committing; `roadmap/README.md` Definition of Done | ☑ 2026-09-01 — yes, as a linked id; both files updated |
-| OD-16 | The load order's fixed overhead leaves the tightest brief 46 tokens of headroom | EP-8 | ruling | where to reclaim headroom; a `DECISIONS.md` addendum if the load order changes | ☐ **open — owner only** |
-| OD-17 | `astral-sh/setup-uv` is pinned to v9.0.0; v10.0.1 is current | EP-8 | ruling | `ci.yml` and `ADR-008`, or a recorded decision to stay | ☐ **open** |
-| OD-18 | Normalise the deliberate GiB/GB transcription, or keep it | EP-8 | ruling | an addendum under D-49 / D-78, or no change | ☐ **open** |
+| OD-16 | The load order's fixed overhead leaves the tightest brief 46 tokens of headroom | EP-8 | ruling | the remedy, named in advance, in `roadmap_check.py` and the roadmap README | ☑ 2026-09-01 — accept and **name the trigger**: the remedy is to split the brief |
+| OD-17 | `astral-sh/setup-uv` is pinned to v9.0.0; v10.0.1 is current | EP-8 | ruling | `ci.yml` and `ADR-008`, in a commit of its own | ◐ ruled 2026-09-01 — **bump, after EP-8's CI run is recorded**; action outstanding |
+| OD-18 | Normalise the deliberate GiB/GB transcription, or keep it | EP-8 | ruling | an addendum under D-78 | ☑ 2026-09-01 — **keep**; each unit matches what it measures |
 
 **Status at 2026-08-31.** Ten of thirteen ruled and landed. Three are not: **OD-1** is ruled but the
 platform setting has not been changed, **OD-2** can be closed only by the owner, and **OD-8** cannot
@@ -690,3 +690,96 @@ bases. Nothing is wrong; the units simply differ because the decisions differ.
 D-78 — or confirm the transcription stands and close this. It is an owner decision and not a code
 change: the code already does what was decided, and changing the base changes the floor by 7 % and
 the ceiling by 7 % in opposite directions.
+
+---
+
+## Resolutions — 2026-09-01, ruled by the project owner at the P0 re-plan
+
+Four of the six entries open at EP-8's close are ruled here; the verdicts and their bases follow.
+**OD-2 and OD-8 remain open**, and both are open for the same reason: each needs a human to look at
+something a session cannot reach.
+
+**OD-1 — closed. The platform setting was performed.** The owner disabled Projects through the web
+interface on 2026-09-01, and all four D-76 flags plus the reporting path were re-observed through
+the API immediately afterwards: `has_issues true`, `has_discussions false`, `has_wiki false`,
+`has_projects false`, `private-vulnerability-reporting {"enabled": true}`. The ruling of 2026-08-31
+was option (a) — match D-76 as written — and no addendum under D-76 was warranted then or now,
+because no carve-out was adopted. **The published decision and the platform now agree**, which is
+the whole point of the row: it was ruled on 2026-08-31, re-observed still divergent on 2026-09-01
+at EP-8, and only then acted on. A ruling recorded as done and never performed is the drift this
+register exists to catch, and this row is the register catching it.
+
+**OD-16 — ruled: accept the margin, and name the trigger.** Nothing is changed now. Every brief in
+the roadmap fits, the tool prints the tightest brief's headroom on every run, and the ceiling
+remains 15,000. What is decided in advance is **the remedy for the next breach**, so that the
+session which trips the gate is not left improvising between four documents it should not touch:
+
+> **When a brief breaches the context ceiling, split that brief.** D-22 already says a unit larger
+> than L is split at pickup; this is that rule reaching the load order. Never trim `CLAUDE.md`,
+> `GOVERNANCE.md`, the `DECISIONS.md` index block or a phase table to make a brief fit — those are
+> paid by every session, and shrinking them to accommodate one oversized brief spends everyone's
+> budget on one brief's excess. Never trim a brief below the self-containment the load order exists
+> to guarantee. Never raise the ceiling.
+
+The ruling is **operational, not documentary**: `roadmap_check.py` carries it as
+`OVER_BUDGET_REMEDY`, every `over-budget` finding prints it, and a unit test asserts that the
+finding still names it. The alternatives were considered and rejected — splitting EP-11 pre-emptively
+(real work against a brief that currently passes, and P1 content EP-8 put out of scope), and
+trimming `GOVERNANCE.md` (the largest single lever at 34 % of the ceiling, and the highest-risk edit
+in the repository, because it is the document that overrides `DESIGN.md` and every brief and a cold
+session needs it whole).
+
+**The figure that will trigger it, recorded so nobody is surprised.** Items 1–3 cost 7,827 tokens —
+52 % of the ceiling — before a brief is opened. Each new decision adds roughly 25 tokens to item 3,
+and the tightest brief, EP-11, clears by 46. **D-81 is approximately where the gate fires.** When it
+does, EP-11 is split, and the paragraph above is why.
+
+**OD-17 — ruled: bump, in a commit of its own, after EP-8's CI run is recorded.** The review found
+`actions/checkout` current at v7.0.1 and `astral-sh/setup-uv` a major version behind. Reading v10's
+release notes changed the risk assessment: **v10.0.0's only breaking change is that
+`enable-cache: auto` now disables the cache for `pull_request_target`, `workflow_run` and `release`
+events — and this repository sets `enable-cache: false` explicitly**, so the breaking change cannot
+reach it. v10.0.0 also adds `version: latest-known`, which installs the newest uv whose checksum the
+action knows, and that is precisely the supply-chain nicety EP-1 parked as *pinning the uv binary
+version in CI*. v10.0.1 is a one-line resilience fix.
+
+**The sequencing is the substance of the ruling.** The bump does **not** ride along with EP-8's
+push, because that push produces the CI run that is EP-8's acceptance 11 evidence; a red run would
+then be ambiguous between the brief and the bump. EP-8 lands and records its run first, then the
+bump lands with a run of its own and an `ADR-008` amendment. The row stays `◐` until that commit
+exists — **ruled, not yet performed**, the same state OD-1 sat in for a day and for the same reason.
+
+**OD-18 — ruled: keep the transcription; closed as confirmed.** The floor stays binary (250 GiB) and
+the ceiling stays decimal (25 GB, warned at 20 GB), exactly as D-49 and D-78 state them. The reason
+recorded is stronger than "it is already written down": **each unit matches what its number is
+actually compared against.** The floor is checked against free space as the operating system reports
+it, and Windows reports free space in binary units; the ceiling is a budget against model sizes as
+they are published, and those are quoted in decimal — a "5 GB model" is 5 × 10⁹ bytes. Normalising
+would force one of the two numbers to disagree with the thing it measures, and would move the real
+floor and the real ceiling by about 7 % in opposite directions. The mismatch is not untidiness; it
+is each number speaking the units of its own domain. Landed as a dated addendum under **D-78**,
+alongside the EP-8 addendum that registered the question.
+
+### Still open, and why neither can be closed by a session
+
+**OD-2 — `SAFETY.md` §4 against the approved draft.** Unchanged. §4 was authored at EP-3 from D-8,
+D-14, D-18, D-25, D-63 and D-79 rather than copied, because the approved draft's only surviving copy
+is private planning state (D-2). It is the one block of approved public safety-facing wording whose
+shipped text has never been compared against what was approved. **Only the owner can compare it**,
+and until that comparison happens the row is not ticked. It lands as a dated addendum under D-69
+recording that the block was authored at EP-3 and either matches or has been replaced.
+
+**OD-8 — the issue form.** Unchanged, and now demonstrably not a push problem. The form is published
+where the platform reads issue forms from — `origin/main`, default branch, `.github/ISSUE_TEMPLATE/`
+— and no path available to a session shows it rendering: the REST route does not exist, GraphQL's
+`repository.issueTemplates` returns an empty list and is not known to cover YAML issue *forms*, and
+an unauthenticated fetch of the chooser returns the sign-in interstitial. **Closing it needs one
+signed-in human look** at `/issues/new/choose`, confirming the card renders, the preamble renders,
+and that the two acknowledgement checkboxes are present and block submission until both are ticked.
+That last is the part nobody has ever exercised.
+
+**Acceptance criterion 12 of EP-8 — held open by the owner.** *"Handing any one P1 brief to a cold
+session, with only the load order files, is sufficient to execute it."* The owner declined to rule it
+on the strength of the mechanical checks and will read EP-9 first. Recorded here so that it is not
+quietly counted as passed: the executing session could not judge it, having read the whole tree, and
+the owner has not yet judged it either.

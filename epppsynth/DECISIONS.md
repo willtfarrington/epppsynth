@@ -504,6 +504,15 @@ single envelope number; no ceiling; a percentage-of-disk allocation.
 > about 7 % in opposite directions, which is an owner decision about how much disk the project may
 > use, not a tidying-up. Registered open as **OD-18**.
 
+> **Addendum (2026-09-01, EP-8 — owner ruling OD-18).** Ruled: **keep the transcription.** The floor
+> stays binary and the ceiling stays decimal, and the reason is not inertia. **Each unit matches what
+> its number is compared against.** The floor is checked against free space as the operating system
+> reports it, and Windows reports free space in binary units; the ceiling is a budget against model
+> sizes as they are published, and those are quoted in decimal — a "5 GB model" is 5 × 10⁹ bytes.
+> Normalising either way would force one of the two numbers to disagree with the thing it measures,
+> and would move the real floor and the real ceiling by about 7 % in opposite directions. OD-18 is
+> closed; `ADR-009`'s unit note and the test asserting the two bases stand unchanged.
+
 ---
 
 ## Data, privacy & rights
@@ -862,6 +871,18 @@ larger briefs and fewer of them; no fixed sizing; a 6-month horizon. *Refined by
 > none of them measured directly, is not a basis for redefining S, M and L — and saying so is
 > cheaper than a recalibration nobody could reproduce. Revisit at the P1 and P2 re-plans (parked);
 > the full table is in `roadmap/P0-retro.md`.
+>
+> **Addendum (2026-09-01, EP-8 — owner ruling OD-16).** D-22's *split when in doubt* now governs the
+> **context ceiling** as well as the clock. When `roadmap_check --context-budget` fails for a brief,
+> **that brief is split.** Never trim `CLAUDE.md`, `GOVERNANCE.md`, the `DECISIONS.md` index block or
+> a phase table to make one brief fit — those four are paid by every session, and shrinking them to
+> accommodate one oversized brief spends everyone's budget on one brief's excess. Never trim a brief
+> below the self-containment the load order exists to guarantee, and never raise the ceiling. The
+> remedy is carried in `tools/roadmap_check.py` as `OVER_BUDGET_REMEDY` and printed with every
+> `over-budget` finding, so the session that trips the gate is told the answer rather than left to
+> choose. Observed at the ruling: items 1-3 cost 7,827 tokens, 52 % of the ceiling, before a brief is
+> opened; the tightest brief clears by 46; each new decision costs about 25. The gate is expected to
+> fire around D-81, and EP-11 is the brief it will name.
 
 **D-29 The employment/IP clearance checkpoint gates the first public release or tag.** Ownership is
 uncertain, so the checkpoint is issue-spotting only: it **names** qualified review, it does not

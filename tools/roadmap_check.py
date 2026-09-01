@@ -77,6 +77,16 @@ SIZE_HOURS: dict[str, float] = {"S": 0.5, "M": 1.0, "L": 2.0}
 #: project marking its own exam.
 CONTEXT_CEILING = 15_000
 
+#: What to do when the ceiling is breached, decided in advance so that the
+#: session which trips the gate is not left improvising (owner ruling OD-16,
+#: 2026-09-01). The remedy is always the offending brief, never the four files
+#: every session shares and never the ceiling: D-22 already says a unit larger
+#: than L is split at pickup, and this is that rule reaching the load order.
+OVER_BUDGET_REMEDY = (
+    "split this brief (D-22, owner ruling OD-16); never trim CLAUDE.md, GOVERNANCE.md, "
+    "the DECISIONS index or a brief's self-containment, and never raise the ceiling"
+)
+
 #: Characters per token. Not measured - assumed, and printed on every run. 4.0
 #: is the common English-prose rule of thumb. Dense markdown - tables, pipes,
 #: backticks, em dashes - tokenizes worse than prose, so this figure is
@@ -822,7 +832,7 @@ def check_context_budget(
             result.add(
                 brief.label,
                 "over-budget",
-                f"{total:,} tokens against a {CONTEXT_CEILING:,} ceiling",
+                f"{total:,} tokens against a {CONTEXT_CEILING:,} ceiling - {OVER_BUDGET_REMEDY}",
             )
     if tightest is not None:
         fixed = round(

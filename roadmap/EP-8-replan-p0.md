@@ -580,3 +580,21 @@ Acceptance:
 > (only the owner can compare), OD-8 (one signed-in look), OD-16, OD-17 and OD-18. The by-hand pin
 > review is now EP-16's obligation. Nothing is pushed; the third commit, `docs(roadmap): record EP-8
 > CI run`, follows the push (OD-15).
+
+> **Owner rulings (2026-09-01, after this brief's two commits).** Appended rather than woven in,
+> because the paragraph above records the position as the brief closed and that record stands.
+> **Four of the six were ruled the same day and three are now closed.** **OD-1** — the owner
+> disabled Projects through the platform; all four D-76 flags and the reporting path re-observed
+> matching, and the row is ☑. **OD-16** — accept the 46-token margin and **name the trigger**: when
+> a brief breaches the ceiling, that brief is split (D-22); never a shared load-order file, never
+> the ceiling. The ruling is carried in `roadmap_check.py` as `OVER_BUDGET_REMEDY`, printed with
+> every `over-budget` finding, and asserted by a test — a ruling that lives only in a register is a
+> ruling the next session has to find. **OD-18** — keep the GiB/GB transcription, because each unit
+> matches what its number is compared against: the floor against free space as the operating system
+> reports it, the ceiling against model sizes as they are published. **OD-17** — ruled *bump*, and
+> deliberately **not performed here**: it lands in a commit of its own after the CI run below, so a
+> red run cannot be ambiguous between this brief and a pinned-action change. The row is `◐`.
+> **OD-2 and OD-8 remain open**, both because each needs a human to look at something no session can
+> reach. **Acceptance criterion 12 remains offered and unruled** — the owner declined to rule it on
+> the mechanical checks alone and will read EP-9 first, which is the right answer to a criterion
+> about whether a brief reads well cold.
