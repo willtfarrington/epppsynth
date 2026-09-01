@@ -257,7 +257,7 @@ not belong in this file; the disclosures in §8 are in §8 precisely because the
 
 | # | Promise | Mechanism | Built by | Proved by | Status |
 |---|---|---|---|---|---|
-| 1 | No PHI, no real cases; fictional scenarios only | intended-use and excluded-use text at the top of every public artifact; PHI-shaped pattern sweep over tracked files and fixtures | EP-2, EP-3 (done); EP-6 | the pre-publication review packet, dated and commit-stamped | text landed; scanner *planned — EP-6* |
+| 1 | No PHI, no real cases; fictional scenarios only | intended-use and excluded-use text at the top of every public artifact; PHI-shaped pattern sweep over tracked files and fixtures | EP-2, EP-3 (done); EP-6 (done) | the pre-publication review packet, dated and commit-stamped | text landed; scanner runs in CI and in the pre-commit hook |
 | 2 | No retention of prompts or outputs | `UserUtterance` redaction plus a logging filter that raises on a raw envelope | *planned — EP-17* | the filter's own raising tests | not built |
 | 3 | No retention of prompts or outputs | filesystem-delta snapshot across a full session | *planned — EP-46* | empty-delta assertion | not built |
 | 4 | No runtime network — Python layer | in-process socket guard | *planned — EP-46* | guard tests | not built |

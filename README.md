@@ -54,7 +54,7 @@ classes**, with named preconditions rather than a schedule — see
 
 The badge above is a plain-text string, not an image: a shield would be a network fetch on a page
 the project does not control. It is a claim about **evidence**, not about effort, and CI resolves it
-to an evidence file whose checklist must be fully ticked (*checker planned — EP-6*).
+to an evidence file whose checklist must be fully ticked.
 
 | Badge string | Meaning | Earned when | Evidence file |
 |---|---|---|---|

@@ -489,3 +489,53 @@ Additional acceptance:
 > Verified by cloning this repository `--depth 1` and running the CI commands inside it: **142 passed,
 > 2 skipped**, and the `phi` row carries the shallow-clone note. On the full clone: 144 passed,
 > `--history` exit 0. Recorded in `ADR-008` as a second dated EP-6 amendment.
+
+> **Addendum (2026-09-01) — the two CI rows are closed. EP-6 is complete.**
+>
+> | Row | Run | Observed |
+> |---|---|---|
+> | clean green run, `main` | [33536220160](https://github.com/willtfarrington/epppsynth/actions/runs/33536220160) | ✅ `scan` 26 s, `test` 1m02s. `secrets  passed  tree + history (1,503,038 patch bytes)`; `ledger  skipped  skipped — no ledger present`; `test` 142 passed, 2 skipped |
+> | pushed red run, `ep6-badge-canary` | [33537175379](https://github.com/willtfarrington/epppsynth/actions/runs/33537175379) | ❌ `scan` failed on **`badge  epppsynth/docs/evidence/skeleton.md  evidence-file-absent`** — every other check passed, `ledger` skipped |
+>
+> The badge canary was one commit changing one line of `README.md`, committed with `--no-verify`
+> because the pre-commit hook runs the same scan and refused it. That refusal is the hook proving
+> itself. The branch was deleted from the remote and locally afterwards.
+>
+> **Three things the pushed runs proved that no local run could.**
+>
+> 1. `secrets  passed  tree + history (1,503,038 patch bytes)` on the runner — `fetch-depth: 0`, the
+>    deep fetch and the full-history sweep all work in CI, not just on a machine that happens to have
+>    the history lying around.
+> 2. `ledger  skipped  skipped — no ledger present`, on a runner where `.local/` genuinely does not
+>    exist. Locally that path can only be simulated. This is the row OD-3 warned would be easiest to
+>    get quietly wrong, and it is **skipped**, not passed.
+> 3. The `scan` job is wired to the rules: changing one line of a public artifact turned it red, with
+>    the right check id and the right rule, and nothing else moved.
+>
+> On the canary branch the `test` job also failed, with `1 failed, 141 passed, 2 skipped` — the one
+> failure being `test_the_cli_scan_accepts_a_single_check`, which asserts a clean-tree exit 0 and is
+> correctly red while a canary is planted. Two of the three tests that would have failed locally were
+> *skipped* there, because that job checks out shallow; the local run on the same branch failed all
+> three. Both are right, and the difference is the shallow-clone behaviour documented above.
+>
+> **An incidental finding, recorded because it was not asked for.** The first attempt at the canary
+> wrote the badge line as `status: design → status: skeleton`, and the checker reported
+> `badge-unparseable  0 line(s) match the EP-2 badge contract; exactly one must` rather than
+> `evidence-file-absent`. That is check 7's *other* behaviour — a **malformed** badge is caught
+> distinctly from a badge that has outrun its evidence — demonstrated by accident and worth keeping,
+> because a badge nobody can parse is a badge nobody is checking.
+>
+> **Stale markers retired.** `EP-6` is done, so three `planned — EP-6` markers were removed: the
+> badge checker in `README.md` §Maturity badge, the secret-scanner assertion in `SECURITY.md`, and
+> row 1 of the `PRIVACY.md` §11 enforcement register, which now reads *scanner runs in CI and in the
+> pre-commit hook*. Present tense only for what exists today (`CLAUDE.md`, GOVERNANCE §1) — leaving a
+> `planned` marker on a thing that now exists is an understatement, but it is still a public artifact
+> disagreeing with the repository.
+>
+> **One last thing the scanner caught, on the commit that closed it.** This addendum first quoted the
+> runner's patch size as a bare seven-digit figure, and `phi` reported two `mrn-shaped-digit-run`
+> findings against this file. Correct: a bare seven-digit run in prose is precisely the shape the
+> rule exists for, and `git rev-parse` cannot vouch for it. Written with thousands separators, which
+> is the better prose form regardless. The completion note for the brief that built the scanners was
+> edited by the scanners, twice — which is the most direct evidence available that they run on
+> everything and are exempt from nothing.

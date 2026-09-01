@@ -131,10 +131,11 @@ The two things that might look like exceptions are not credentials:
   actions to commit SHAs, and no job may reference a secret, a model root, an index root, or the
   corpus directory (D-42; `epppsynth/docs/adr/ADR-008-ci-scope-and-pinning.md`).
 
-This is written as an assertion so it can be tested rather than believed: the secret scanner and
-the CI assertion that no secret-shaped string exists anywhere in the tree — and across the full
-history, because this repository's history was erased and re-created and a clean tree is not a clean
-history claim — are *planned — EP-6*.
+This is written as an assertion so it can be tested rather than believed. `epppsynth scan` sweeps
+every tracked file for secret-shaped strings, and `epppsynth scan --history` sweeps
+`git log -p --all` as well — because this repository's history was erased and re-created, and a
+clean tree is not a clean history claim. The CI `scan` job runs the full-history form on every
+push and is the only job that fetches the whole history.
 
 ## Model and weight loading
 

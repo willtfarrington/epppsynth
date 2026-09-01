@@ -92,11 +92,11 @@ hash · for any brief touching a public artifact, the relevant pre-publication c
 | EP-3 | [SAFETY.md — clinical-ethics charter](EP-3-safety-charter.md) | L | EP-2 | core | ☑ 7a5ecbb |
 | EP-4 | [PRIVACY, SECURITY, CODE_OF_CONDUCT, CONTRIBUTING](EP-4-privacy-security-conduct.md) | M | EP-2, EP-3 | core | ☑ 083137d |
 | EP-5 | [Licensing pack + per-source rights table](EP-5-licensing-rights.md) | L | EP-2 | core | ☑ b3424b2 |
-| EP-6 | [Leak-prevention CI + pre-publication packet](EP-6-leak-prevention-ci.md) | L | EP-1, EP-2, EP-5 | core | ◐ c0edef5 |
+| EP-6 | [Leak-prevention CI + pre-publication packet](EP-6-leak-prevention-ci.md) | L | EP-1, EP-2, EP-5 | core | ☑ c0edef5 + 4efc7a2 |
 | EP-7 | [Storage roots, cache inventory, reserve floor & project ceiling](EP-7-storage-inventory.md) | L | EP-1 | core | ☐ |
 | EP-8 | [Roadmap tooling, EP template, re-plan P0](EP-8-replan-p0.md) | L | EP-0 … EP-7 | core | ☐ |
 
-> **EP-6 is `◐`, not `☑`, and the distinction is the point.** Every deliverable is committed and every local acceptance command is green, including nine deliberate red runs. Two acceptance rows are not: the pushed CI red run and the clean green run on `windows-latest`, both of which need the commits to reach the remote. `◐` is the register's own convention for *done but not landed* — a brief recorded as complete on evidence that does not yet exist is the drift the roadmap exists to catch. EP-8 closes the row and teaches `roadmap_check --table` to read `◐`.
+> **EP-6 was `◐` for a day, and the distinction earned its keep.** The row was held at *done but not landed* until the two CI rows existed, because a brief recorded as complete on evidence that does not yet exist is the drift the roadmap exists to catch. Closing them took three further commits: the first pushed run caught a shallow-clone defect that no local run could reach. Both runs are recorded in the brief's completion note. `roadmap_check --table` (EP-8) should still read `◐`, because the state recurs.
 
 **Ordering rationale.** EP-0 first so every later commit is guarded by a verified `.gitignore` and a
 clean-history assertion before any content exists — the repository is already public (D-3), so the
