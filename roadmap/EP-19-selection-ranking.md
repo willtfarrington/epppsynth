@@ -162,3 +162,18 @@ any template or prose (EP-21). This brief emits concept IDs and integers, not se
 - A "why not" explainer surfacing the typed drop reasons to the reader. The data is produced here;
   the affordance is a v1.x question because it risks reading as a ranking.
 - Multi-registry or per-institution weight overlays.
+
+---
+
+> **EP-8 pickup note (2026-09-01).** The P0 re-plan's P2 consistency check found the one place this
+> brief and **EP-11 (composer specification)** disagree, and EP-11 governs. §5 above describes
+> `clause_weight` as *"authored per activation clause"*. EP-11's in-scope item 4(c) says the weight
+> is keyed by `(input field, predicate kind)` in the composer's frozen `SCORING` table and is
+> **never stored on a concept** — because EP-9's deny-list regex forbids a concept from carrying any
+> ordinal, severity, score or count field, and a per-clause weight authored onto a concept would
+> violate it. EP-11 asks for this to be raised on EP-19 and reconciled there; EP-11 has not run yet,
+> so the note is raised here by the re-plan instead.
+>
+> **Nothing in this brief is changed.** Reconciling the two is EP-11's work, and EP-11 is a
+> dependency of EP-17, which is a dependency of EP-18, which is a dependency of this brief — so the
+> spec will exist before this brief is picked up. **Do not resolve it by relaxing EP-9's deny-list.**

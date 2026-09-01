@@ -31,8 +31,12 @@ jobs:
         with:
           enable-cache: false # keeps uv cache paths out of the public log (D-3)
       - run: uv sync --locked
-      - run: uv run ruff check .
-      - run: uv run ruff format --check .
+      # `tools/` is outside the uv project, so `.` does not reach it. The one
+      # file there that CI depends on is linted by name rather than the whole
+      # directory: `epub_to_md_pipeline.py` predates the toolchain and was
+      # imported as-is at EP-0 (ADR-001).
+      - run: uv run ruff check . ../tools/roadmap_check.py
+      - run: uv run ruff format --check . ../tools/roadmap_check.py
       - run: uv run pytest -m "not requires_index and not requires_model" -q
 
   # EP-6. The leak-prevention scanners, run by the same CLI entry point as the
@@ -59,3 +63,9 @@ jobs:
           enable-cache: false # keeps uv cache paths out of the public log (D-3)
       - run: uv sync --locked
       - run: uv run epppsynth scan --history
+      # EP-8. The roadmap's own consistency checks. They live in this job
+      # rather than in `test` because two of them need git history that a
+      # shallow clone does not have: `--hashes` resolves every done box's
+      # commit, and `--immutable` reads each executed brief's `## Context`
+      # from the blob at the commit its box records.
+      - run: uv run python ../tools/roadmap_check.py --all

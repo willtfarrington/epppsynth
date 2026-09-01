@@ -20,21 +20,24 @@ Opened **2026-08-31** from the completion notes of EP-1 … EP-4. EP-0 is not su
 
 | # | Ruling needed | Raised by | Class | Ruling lands in | Done |
 |---|---|---|---|---|---|
-| OD-1 | Projects is **on**; D-76 says off | EP-4 dev. 3 | drift | platform setting, or addendum under D-76 | ◐ ruled (a) 2026-08-31 — **platform action outstanding** |
+| OD-1 | Projects is **on**; D-76 says off | EP-4 dev. 3 | drift | platform setting, or addendum under D-76 | ◐ ruled (a) 2026-08-31 — **still on when re-observed 2026-09-01 at EP-8** |
 | OD-2 | Does the authored *"What it does not know"* block match the approved draft? | EP-3 dev. 1 | confirmation | addendum under D-69 | ☐ **open — owner only** |
 | OD-3 | Is a settled decision statement shared with the private ledger a leak? | EP-2 dev. 5 | ruling | addendum under D-2; EP-6 implements | ☑ 2026-08-31 — addendum under D-2; EP-6 §1.9 |
 | OD-4 | Escalation-panel invariance is **per mode**, not global | EP-3 dev. 4 | refinement | addendum under D-57 | ☑ 2026-08-31 — addendum under D-57; EP-44 |
 | OD-5 | Should the escalation-panel copy be settled as a decision? | EP-3 handoff | ruling | addendum under D-18 / D-57 at EP-8 | ☑ 2026-08-31 — addendum under D-18 (landed early); EP-44 |
 | OD-6 | Is the tracked chapter-title table a **live** rights exposure? | EP-2 parked | ruling | addendum under D-10 / D-74; EP-5, EP-6, EP-22 | ☑ 2026-08-31 — **live**; addendum under D-74; spine externalised; EP-6 §1.3 + §1.8, EP-22 |
 | OD-7 | Dedicated contact alias, or keep the git author address? | EP-4 dev. 4 | ruling | `CODE_OF_CONDUCT.md`, `SECURITY.md`, the test constant | ☑ 2026-08-31 — keep; no file changed |
-| OD-8 | Confirm the issue form renders and its two checkboxes behave | EP-4 dev. 2 | verification | observation recorded at EP-8 | ☐ ruled self-correcting 2026-08-31 — **verification outstanding, needs the push** |
-| OD-9 | Dependabot / renovate for pinned action SHAs vs D-34's no-PR posture | EP-1 parked | ruling | addendum under D-34, or a re-plan note under D-42 | ☑ 2026-08-31 — (a) no automation; EP-8 re-plan note under D-42 |
+| OD-8 | Confirm the issue form renders and its two checkboxes behave | EP-4 dev. 2 | verification | observation recorded at EP-8 | ☐ pushed 2026-09-01; **form still not observed** — see the EP-8 note |
+| OD-9 | Dependabot / renovate for pinned action SHAs vs D-34's no-PR posture | EP-1 parked | ruling | addendum under D-34, or a re-plan note under D-42 | ☑ 2026-08-31 — (a) no automation; **first by-hand pin review performed 2026-09-01 at EP-8, one finding — OD-17** |
 | OD-10 | Confirm the four-entry modality-sweep exemption list | EP-2 dev. 4 | confirmation | EP-6's scanner definition | ☑ 2026-08-31 — confirmed as **three** entries; EP-6 §1.8 |
 | OD-11 | Confirm the hazard register stays in `DESIGN.md` §14 alone | EP-2 dev. 3 | confirmation | EP-8 re-plan note | ☑ 2026-08-31 — confirmed; EP-8 re-plan note |
 | OD-12 | Confirm the banned-phrase ban's documentation carve-out | EP-3 dev. 7 | confirmation | EP-39's lint specification | ☑ 2026-08-31 — confirmed; EP-39 scope sketch item 3 |
-| OD-13 | Owner-judgement acceptance criteria, offered and unruled (× 5) | EP-1 … EP-4 | confirmation | EP-8 re-plan note | ☑ 2026-08-31 — four pass, EP-2 #10 **fails**; EP-8 re-plan note |
+| OD-13 | Owner-judgement acceptance criteria, offered and unruled (× 5) | EP-1 … EP-4 | confirmation | EP-8 re-plan note | ☑ 2026-08-31 — four pass, EP-2 #10 **fails**; the overflow was resolved at EP-8 by shrinking load-order item 3 |
 | OD-14 | Ratify the `bibliographic-identity` refinement to the OD-10 modality sweep | EP-6 dev. 1 | confirmation | EP-6's scanner definition; a further ruling if overturned | ☑ 2026-09-01 — ratified as implemented; EP-6 §1.8, `ADR-008` |
 | OD-15 | Must a completion note name the CI run it claims to be green on? | EP-7 dev. | ruling | `CLAUDE.md` §Committing; `roadmap/README.md` Definition of Done | ☑ 2026-09-01 — yes, as a linked id; both files updated |
+| OD-16 | The load order's fixed overhead leaves the tightest brief 46 tokens of headroom | EP-8 | ruling | where to reclaim headroom; a `DECISIONS.md` addendum if the load order changes | ☐ **open — owner only** |
+| OD-17 | `astral-sh/setup-uv` is pinned to v9.0.0; v10.0.1 is current | EP-8 | ruling | `ci.yml` and `ADR-008`, or a recorded decision to stay | ☐ **open** |
+| OD-18 | Normalise the deliberate GiB/GB transcription, or keep it | EP-8 | ruling | an addendum under D-49 / D-78, or no change | ☐ **open** |
 
 **Status at 2026-08-31.** Ten of thirteen ruled and landed. Three are not: **OD-1** is ruled but the
 platform setting has not been changed, **OD-2** can be closed only by the owner, and **OD-8** cannot
@@ -539,3 +542,151 @@ once here; they are the re-plan's business, not this register's.
   `leak-scan-allow: rule-definition` marker the scanner must honour.
 - **EP-17 / EP-40 / EP-41 / EP-42 / EP-46 / EP-47** — each owns named rows of the `PRIVACY.md` §11
   enforcement register and must move its status column off *not built*.
+
+---
+
+## P0 re-plan — EP-8, 2026-09-01
+
+The re-plan discharges the obligations the 2026-08-31 rulings handed it, re-observes the two that
+could not be observed then, and opens three new entries. Every observation below is what was
+**seen** on 2026-09-01, not what was expected.
+
+### Obligations discharged
+
+**OD-9 — the by-hand pin review, performed.** OD-9 ruled out update automation and made the
+by-hand review `ADR-008` promises the compensating control. A review promised at every re-plan and
+performed at none is not a control, so here is the first one, in full.
+
+| Action | Pin in `ci.yml` | Resolves to | Latest upstream release | Finding |
+|---|---|---|---|---|
+| `actions/checkout` | `3d3c42e5aac5ba805825da76410c181273ba90b1` | tag `v7.0.1` | **v7.0.1** (2026-07-20) | none — current |
+| `astral-sh/setup-uv` | `c771a70e6277c0a99b617c7a806ffedaca235ff9` | tag `v9.0.0` | **v10.0.1** (2026-08-14) | **one major version behind** — OD-17 |
+
+Both pins were confirmed to be the commit the named tag points at, so neither comment is decoration.
+The obligation is **handed forward to EP-16**, the P1 re-plan, and to every phase re-plan after it.
+
+**OD-11 — one hazard register, recorded as ruled.** `tools/roadmap_check.py --hazards` reads
+`epppsynth/DESIGN.md` §14 and nothing else. It reports 41 hazards, R-1 … R-41, contiguous, each
+naming a mitigating brief that exists and a verifying gate. No second register was created and none
+should be.
+
+**OD-13 — the five verdicts, recorded, and the one failure resolved.** The four passes stand as
+ruled on 2026-08-31. **EP-2 #10**, the context budget, was ruled a known finding accepted into
+EP-8 with a directed remedy: shrink load-order item 3 or 4, never the ceiling and never a brief's
+self-containment. It was resolved by compressing item 3 — the `DECISIONS.md` index block's
+`Decides` column, from an average of 84 characters to an average of 55 — which recovered **623
+tokens for every session**, not just for the briefs that were over. Every brief in the roadmap now
+fits. The observed figures differ from the ruling's estimate and the difference is recorded rather
+than smoothed: the ruling put items 1–4 at ≈ 11.5k tokens; the tool measures them at 8.9k–9.0k
+under a stated 4-characters-per-token approximation. Only **EP-11** was ever over, at 15,577
+against a 15,000 ceiling — not EP-2 and EP-9, which the ruling predicted would fail. What the
+ruling got right is the shape: the load order was over its own ceiling, and the fix belonged in
+item 3.
+
+**OD-5 — recorded and closed.** Landed early, on 2026-08-31, as an addendum under D-18. The
+register expected it here; EP-8 records it and moves on.
+
+### Re-observations
+
+**OD-1 — Projects is still on.** All four D-76 flags and the private-reporting path were
+re-observed through the API on 2026-09-01:
+
+| Setting | D-76 says | Observed | Verdict |
+|---|---|---|---|
+| `has_issues` | on | `true` | matches |
+| `has_discussions` | off | `false` | matches |
+| `has_wiki` | off | `false` | matches |
+| `has_projects` | **off** | **`true`** | **diverges — the ruled platform action has not been performed** |
+| private vulnerability reporting | on | `{"enabled": true}` | matches |
+
+The ruling is unchanged and correct; what is missing is the click. The row stays `◐` and is handed
+to the next re-plan, because a divergence that is re-observed and re-recorded without being fixed is
+how a published decision quietly becomes false (D-59's whole reason for existing).
+
+**OD-8 — pushed, and still not observed.** The commits reached the remote: `origin/main` is at
+`638a0fe`, the default branch is `main`, and `.github/ISSUE_TEMPLATE/discussion.yml` is present in
+that tree. The form is therefore where the platform reads issue forms from. It still could not be
+seen rendering, by any path available to a session:
+
+- the REST route `repos/{owner}/{repo}/issues/templates` returns 404 with a `documentation_url`
+  pointing at *get-an-issue* — it is a route that does not exist, which is the likeliest explanation
+  of EP-4's original 404 as well;
+- the GraphQL `repository.issueTemplates` field returns an **empty list**, and that field is not
+  known to surface YAML issue *forms* as distinct from markdown templates, so the empty list is not
+  evidence either way;
+- an unauthenticated fetch of `/issues/new/choose` returns the sign-in interstitial, exactly as the
+  private-vulnerability-reporting form does.
+
+**Recorded as it stands: the file is published at the path the platform reads, and the rendered form
+has not been seen.** The two required acknowledgement checkboxes have not been exercised. Closing
+this needs one signed-in human look at the new-issue chooser, which is not a thing a session can do.
+
+**OD-2 — still open, deliberately, and not ticked.** `SAFETY.md` §4 was authored at EP-3 from the
+decisions rather than copied from the approved draft, and the only remaining copy of that draft is
+private planning state a session may not open (D-2). EP-8 was told not to tick it and has not. It is
+the one block of approved public safety-facing wording whose shipped text has never been compared
+against what was approved.
+
+---
+
+### OD-16 — the load order's fixed overhead
+
+**Class:** ruling · **Raised by:** EP-8 · **Opened:** 2026-09-01
+
+**Observed while executing EP-8.** After item 3 was compressed as OD-13 directed, every brief in the
+roadmap fits the ceiling — the tightest, **EP-11**, by **46 tokens**. That is a pass, and it is a
+pass smaller than the error of the approximation that produced it, which the tool prints on every
+run. The structural figure behind it is the one worth ruling on: load-order items 1–3 cost **7,827
+tokens before any brief is opened** — 52 % of the ceiling — and item 2, `GOVERNANCE.md`, is 5,084 of
+them on its own. Item 3 grows with every new decision, and D-80 will cost about 25 tokens of every
+future session.
+
+**Why this is a ruling and not a fix.** The three candidate remedies each cost something the owner
+has already priced once, and OD-13's directive placed two of them out of bounds:
+
+1. **Compress item 3 further.** The `Decides` column is now a 55-character signpost. Below about 45
+   it stops letting a session decide whether to open an entry, which means *more* context spent in
+   item 6, not less — the check would improve while the session got worse.
+2. **Compress item 2.** `GOVERNANCE.md` overrides every brief, which is exactly why OD-13 put it
+   out of bounds; it is also the largest single item and the only one with real slack.
+3. **Split the two largest briefs.** D-22 already says anything larger than L is split at pickup,
+   and EP-11 at 6,624 tokens is the largest un-executed brief in the plan. Splitting renumbers the
+   roadmap, which is why EP-8 did not do it unasked.
+
+**What EP-8 did instead.** Recorded the margin in the tool's own output, so that every CI run prints
+the tightest brief and its headroom, and parked a real tokenizer so the approximation cannot become
+permanent. Nothing was raised and no brief was trimmed.
+
+---
+
+### OD-17 — `astral-sh/setup-uv` is a major version behind
+
+**Class:** ruling · **Raised by:** EP-8 · **Opened:** 2026-09-01
+
+**Observed while executing EP-8.** The OD-9 pin review found `astral-sh/setup-uv` pinned at the
+`v9.0.0` commit while **v10.0.1** has been current since 2026-08-14. `actions/checkout` is current.
+The pin is not a vulnerability and CI is green on it; a major version is a behaviour change, and
+`enable-cache: false` — the input that keeps uv cache paths out of the public log (D-3) — is the one
+this repository depends on.
+
+**The ruling needed.** Bump to the v10.0.1 commit and verify on a pushed run, or record a dated
+decision to hold at v9.0.0 with the reason. **EP-8 did neither**, because bumping a pinned action is
+a CI posture change that `ADR-008` reserves for a by-hand review with a run behind it, and inventing
+one inside a re-plan would be the automation OD-9 declined, wearing a different hat.
+
+---
+
+### OD-18 — normalise the GiB/GB transcription, or keep it
+
+**Class:** ruling · **Raised by:** EP-7, flagged for this re-plan · **Opened:** 2026-09-01
+
+**Observed while executing EP-7, confirmed here.** D-49 states the free-space floor in **binary**
+units — 250 GiB — and D-78 states the project ceiling in **decimal** units — 25 GB, warned at 20 GB.
+`epppsynth/src/epppsynth/storage/limits.py` transcribes both exactly as decided, `ADR-009` records
+that the mismatch is deliberate, and a unit test asserts the two constants keep their different
+bases. Nothing is wrong; the units simply differ because the decisions differ.
+
+**The ruling needed.** Normalise the two decisions onto one base, as a dated addendum under D-49 and
+D-78 — or confirm the transcription stands and close this. It is an owner decision and not a code
+change: the code already does what was decided, and changing the base changes the floor by 7 % and
+the ceiling by 7 % in opposite directions.

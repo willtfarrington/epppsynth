@@ -7,6 +7,10 @@ that makes it true, so the claim can be checked without trusting the person who 
 **Badge string:** `status: design`
 **Claim:** design and planning artifact — roadmap and canonical docs exist; no engine exists.
 **Ticked:** 2026-08-31, by the author, at EP-2.
+**Re-checked:** 2026-09-01, by the author, at EP-8 — the P0 re-plan. Every box below was re-read
+against the tree as P0 closes. **No box changed state.** One box's *evidence* changed and was
+rewritten, because the package is no longer empty: see "No engine exists". The claim it supports —
+that no engine exists — is unchanged and is what keeps the badge at `status: design`.
 **Review:** author only. No external reviewer has read any artifact named here.
 
 ## Checklist
@@ -21,10 +25,14 @@ that makes it true, so the claim can be checked without trusting the person who 
 - [x] **Public front matter exists and states its own limits.** `README.md` carries the D-24
       expansion and status line, the not-a-risk-detector line, the badge scheme and its parse
       contract, the no-evidence statement, and an explicit "author review only" section.
-- [x] **No engine exists.** `epppsynth/src/epppsynth/` contains `__init__.py` (a docstring and
-      `__version__ = "0.0.0"`) and `cli.py` only. There is no concept registry, no composer, no
-      traversal, no abstention chain, no renderer, and no UI. `epppsynth/tests/test_smoke.py` tests
-      the skeleton, not behaviour.
+- [x] **No engine exists.** `epppsynth/src/epppsynth/` holds `cli.py` and three packages, and
+      every one of them checks the project rather than being it: `publicsafety/` (the nine
+      leak-prevention scanners, EP-6), `rights/` (the per-source rights and licence checks, EP-5),
+      and `storage/` (the two roots, the reserve floor and the project ceiling, EP-7). There is no
+      concept registry, no composer, no traversal, no abstention chain, no renderer, and no UI —
+      not one module on the engine side of `epppsynth/DESIGN.md` §17's module map exists as a file.
+      The test suite tests **that tooling**, never engine behaviour, because there is no engine
+      behaviour to test.
 - [x] **No evaluation exists.** There is no `epppsynth/eval/` directory, no scenario set, no
       threshold table populated with observed numbers, and no evaluation report. The evaluation
       architecture is described in `epppsynth/DESIGN.md` §12 as planned work (EP-24 … EP-31).

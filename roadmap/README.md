@@ -35,7 +35,9 @@ acceptance criteria, commit, then check the box here.
 
 **Never read at pickup:** `.local/` (private planning state), `source material/` (copyrighted,
 D-10), other briefs, `final-roadmap.md`, or `DESIGN.md` in full. `tools/roadmap_check.py
---context-budget EP-n` (built in EP-8) sums items 1–5 and fails above ~15k tokens.
+--context-budget EP-n` sums items 1–5 and fails above 15k tokens. It is close: items 1–3 alone cost
+about **52 %** of the ceiling before a brief is opened, and the tightest brief clears it by fewer
+tokens than the approximation's own error. The tool prints both figures on every run (OD-16).
 
 Workspace: `epppsynth/` (the uv project, directly under the repository root). Git root: the
 repository root (`README.md`, `epppsynth/`, `roadmap/`, `source material/`, `tools/`).
@@ -46,7 +48,10 @@ the concept registry lives under `epppsynth/registry/` (`epppsynth/registry/sour
 evidence under `release-evidence/<tag>/`; the model and index roots are outside the repository.
 
 **Sizes** (D-22): S ≈ 30 min · M ≈ 1 h · L ≈ 2 h of one supervised session; anything larger is split
-at pickup. Current mix: **2 S · 17 M · 36 L ≈ 90 h** — roughly three months at 7 h/week (D-39). `EP-8` recomputes this table after P0 and `roadmap_check --table` asserts it thereafter.
+at pickup. Current mix: **2 S · 17 M · 36 L ≈ 90 h** — roughly three months at 7 h/week (D-39). This
+line is **derived, not maintained**: `roadmap_check --table` recomputes it from the eight phase
+tables and fails if the two disagree. Recomputed at EP-8 it was unchanged. Sizes were **not**
+recalibrated against P0's actuals, and [`P0-retro.md`](P0-retro.md) says why.
 
 **Core / Stretch.** The `Core` column is the cutline: if time runs short, stretch briefs drop first
 (numbering gaps are fine — hupsim precedent). Re-plan EPs may move briefs across the line.
@@ -70,7 +75,9 @@ transitive ones — and the two must be **exact mirrors** of each other: `EP-a` 
 `Depends on` **if and only if** `EP-b` lists `EP-a` under `Blocks`. The `Depends on` column of the
 phase tables above is the authority; every brief's `Blocks` line is derived from it. A brief that
 nothing depends on carries `Blocks: —` (phase-gate ordering that is not a dependency is stated in
-this README, not in the header line). `roadmap_check --deps` (EP-8) fails on any asymmetry.
+this README, not in the header line). `roadmap_check --deps` fails on any asymmetry. The header block
+is one contiguous block ending at the first blank line; a `> **Charter.**` note goes below it, never
+inside it.
 
 **Definition of Ready.** Every `Depends on` is ☑ · the safety-preconditions section is written ·
 every acceptance criterion names a command or an artifact · no step requires a decision the owner
@@ -97,9 +104,15 @@ acceptance names CI stays `◐` until that run exists.
 | EP-5 | [Licensing pack + per-source rights table](EP-5-licensing-rights.md) | L | EP-2 | core | ☑ b3424b2 |
 | EP-6 | [Leak-prevention CI + pre-publication packet](EP-6-leak-prevention-ci.md) | L | EP-1, EP-2, EP-5 | core | ☑ c0edef5 + 4efc7a2 |
 | EP-7 | [Storage roots, cache inventory, reserve floor & project ceiling](EP-7-storage-inventory.md) | L | EP-1 | core | ☑ 88faeef |
-| EP-8 | [Roadmap tooling, EP template, re-plan P0](EP-8-replan-p0.md) | L | EP-0 … EP-7 | core | ☐ |
+| EP-8 | [Roadmap tooling, EP template, re-plan P0](EP-8-replan-p0.md) | L | EP-0 … EP-7 | core | ◐ |
 
 > **EP-6 was `◐` for a day, and the distinction earned its keep.** The row was held at *done but not landed* until the two CI rows existed, because a brief recorded as complete on evidence that does not yet exist is the drift the roadmap exists to catch. Closing them took three further commits: the first pushed run caught a shallow-clone defect that no local run could reach. Both runs are recorded in the brief's completion note. `roadmap_check --table` (EP-8) should still read `◐`, because the state recurs.
+
+**P0 closed 2026-09-01 at EP-8.** The retro — estimate against actual, deviations, and what each
+brief found harder than it expected — is [`P0-retro.md`](P0-retro.md). Its headline: **55 deviations
+across eight executed briefs, and not one executed exactly as written.** Nine briefs' parked items
+are mirrored into [`final-roadmap.md`](final-roadmap.md), and `tools/roadmap_check.py --parked`
+counts them one for one from here on.
 
 **Ordering rationale.** EP-0 first so every later commit is guarded by a verified `.gitignore` and a
 clean-history assertion before any content exists — the repository is already public (D-3), so the
@@ -116,16 +129,21 @@ for the project's model and index roots, warned at 20 GB (D-78). Scanners are de
 proof (GOVERNANCE §Public-safety).
 
 **Pending owner decisions.** Rulings that an executed brief raised and could not make for itself are
-registered in [`owner-decisions.md`](owner-decisions.md) — thirteen were opened on 2026-08-31 from
-EP-1 … EP-4, and **ten were ruled and landed the same day**. Each names where its ruling lands (a
-dated `DECISIONS.md` addendum, a platform action, or a re-plan note); the register records them, it
-does not settle them, and the ☑ goes on only once the ruling exists where that line says.
+registered in [`owner-decisions.md`](owner-decisions.md). **Eighteen are open or ruled at P0's
+close**: thirteen were opened on 2026-08-31 from EP-1 … EP-4, two more came from EP-6 and EP-7, and
+EP-8 opened three. Each names where its ruling lands (a dated `DECISIONS.md` addendum, a platform
+action, or a re-plan note); the register records them, it does not settle them, and the ☑ goes on
+only once the ruling exists where that line says.
 
-**Three remain, and EP-5 is not blocked on any of them.** **OD-1** is ruled — Projects off, matching
-D-76 — but the platform setting has not been changed; **OD-2** asks whether `SAFETY.md` §4 matches
-the approved draft, which only the owner can compare because the draft is private planning state;
-**OD-8** cannot be observed until the local commits reach the remote, since the platform reads issue
-forms from `.github/ISSUE_TEMPLATE/`. EP-8 re-observes the first and third and records the second.
+**Six are unresolved as P0 closes, and no P1 brief is blocked on any of them.** **OD-1** is ruled —
+Projects off, matching D-76 — and the platform setting was **still not changed** when all four flags
+were re-observed on 2026-09-01, so the row stays `◐`. **OD-2** asks whether `SAFETY.md` §4 matches
+the approved draft; only the owner can compare, because the draft is private planning state, and
+EP-8 was told not to tick it and did not. **OD-8** is now pushed and *still* unobserved: the form is
+published at the path the platform reads issue forms from, and no path available to a session shows
+it rendering — closing it needs one signed-in human look. **OD-16** (the load order's headroom),
+**OD-17** (`setup-uv` is a major version behind) and **OD-18** (the deliberate GiB/GB transcription)
+were opened by EP-8 and each states what EP-8 did *not* do, and why.
 
 ## Phase P1 — Conceptual & content model (full briefs)
 
@@ -321,5 +339,6 @@ that is not visible is itself an overclaim (D-37, R-9).
 Concept/need → requirement → architecture/content → brief → evidence is maintained in
 [`../epppsynth/DESIGN.md`](../epppsynth/DESIGN.md) §Traceability. Every hazard `R-1 … R-41` in
 [`../epppsynth/DESIGN.md`](../epppsynth/DESIGN.md) §14 names the brief that mitigates it and the gate
-that verifies it; `tools/roadmap_check.py` (EP-8) fails if a hazard names no brief or a core
-brief names no acceptance evidence.
+that verifies it; `tools/roadmap_check.py --hazards` fails if a hazard names no brief, if a cited
+`R-n` does not exist there, or if a core brief names no acceptance evidence. `--all` runs all ten
+checks and is what CI calls.

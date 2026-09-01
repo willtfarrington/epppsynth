@@ -18,91 +18,98 @@ published.
 
 ---
 
+> **Compacted 2026-09-01 (EP-8).** This block is load-order item 3 and every session pays for its
+> length. The `Decides` column was compressed from an average of 84 characters to 55 — a signpost
+> that tells a reader whether to open the entry, rather than a second summary competing with it.
+> **No row was removed and no decision text was touched**; each decision's own entry below is
+> unchanged and remains the record. `tools/roadmap_check.py --context-budget` measures this block
+> and prints what it costs.
+
 ## Index
 
 One row per decision, so a working session can load this block instead of the whole log.
 
 | # | Title | Decides |
 |---|---|---|
-| D-1 | Planning cadence | Terse per-question answers in batches of ~10 with a checkpoint each batch. |
-| D-2 | Deliberations unpublished, decisions published | Working planning notes stay out of version control; this file is the public record. |
-| D-3 | Repository is public | Public from 2026-08-23 with a corpus-safe history, so every artifact is public-safe by default. |
-| D-4 | Public expansion re-worded | The slug stays opaque; the public expansion drops the regulated-modality name. |
-| D-5 | Three v1 modes | (a) pre-encounter reflection, (b) trainee reflection, (c) clinician self-reflection; (d) and (e) excluded. |
-| D-6 | Sole accountable human | The operating clinician or trainee; output stays on their screen; no export in v1. |
-| D-7 | Success = measured claim + portfolio claim | 3–5 waypoints in under 60 s plus one useful new question, on fictional cases, under a documented evaluation. |
-| D-8 | Data boundary | No PHI, no real cases, no retention, no runtime network, offline-capable. |
-| D-9 | Publication posture | Planning bundle public first, application code held to a gate. |
-| D-10 | Corpus rights posture | Original-prose public artifact plus a gitignored local index built from the reader's own copy. |
-| D-11 | Output contract replaced | Retires the persuasion-shaped model for facts/unknowns, plural hypotheses, disconfirming questions, neutral framing. |
-| D-12 | Publication mechanics | Source public as built; no releases, tags or demo until the evidence gate. |
-| D-13 | One engine, three purpose profiles | Shared engine and contracts, per-mode prompts and eval sets, built a → b → c. |
-| D-14 | Content traditions, declared Western-secular | Four named traditions as content, three as critique lenses; out-of-scope frameworks trigger abstention. |
-| D-15 | Concept registry | YAML/JSON registry with stable IDs, typed relations and per-concept metadata; no ontology, no graph DB. |
-| D-16 | Local index contents | Embeddings and verbatim spans from the reader's own copy, local and gitignored only. |
-| D-17 | Deterministic baseline first | The baseline ships as default and permanent fallback; the LLM is gated on beating it. |
-| D-18 | Hard stops deterministic only | Declared flags plus a checklist, never a classifier; always-visible escalation panel; not a risk detector. |
-| D-19 | Trainee mode non-surveilling | Local only, no accounts, scoring, retention, export or employer visibility. |
-| D-20 | Mode (c) scope | Names structural and existential dimensions; refuses screening, scoring and diagnosis. |
-| D-21 | Stack | Python core as a library with a CLI, plus a small loopback web UI, threat model from the start. |
-| D-22 | Roadmap sizing | Sibling-project sizing verbatim: S/M/L = 30 min / 1 h / 2 h, split when in doubt. |
-| D-23 | Verbatim spans | Never emitted; optionally displayed in a local-only source pane. |
-| D-24 | Public wording | Fixes the expansion and status line; the tool is for private local use, the repo is a public artifact. |
-| D-25 | Input contract | Structured enums plus one free-text field; protected traits may change framing only, enforced by counterfactual tests. |
-| D-26 | Preserved output functions | Four functions survive the retired model; every suggested utterance is a question or an offer. |
-| D-27 | Review status | Author-only now; recruited role-identified reviewers become the release gate. |
-| D-28 | Licensing split | Apache-2.0 for code, CC BY 4.0 for content, plus NOTICE, CITATION.cff and a rights table. |
-| D-29 | Employment/IP clearance | A clearance checkpoint gates the first public release or tag. |
-| D-30 | Model storage and download rules | Models live at `C:\epppmodels`, one at a time, ≤ ~8 GB each, never in Git/LFS. |
-| D-31 | Runtime family | Native Windows llama.cpp GGUF; hash-verified weights, no remote code, no pickle formats. |
-| D-32 | v1 UI | One loopback page, no persistence, WCAG 2.2 AA, origin/CSRF plus a one-shot launch token. |
-| D-33 | Third-party use not intended | Personal tool, public source; no installability or supported-machine claim in v1. |
-| D-34 | Contribution posture | No PRs in v1; issues open; SECURITY.md and CODE_OF_CONDUCT.md present. |
-| D-35 | Mode (a) release-gate evidence | Eight required evidence items before any `v1` tag. |
-| D-36 | Eval scenario provenance | Authored and reviewed scenarios, provenance-tagged, with an author-only frozen held-out set. |
-| D-37 | Stop criterion operationalized | Paired opposite-preference runs; halt above 10 % substance divergence or 5 % directive-language flags. |
-| D-38 | Abstention taxonomy | Five required abstention triggers, each with an eval case. |
-| D-39 | Phase structure | P0 … P7, ~40–50 briefs, ~3 months; evaluation precedes the LLM work. |
-| D-40 | Repo layout and canonical docs | Fixes the package, roadmap, licensing and governance file set. |
-| D-41 | Corpus ingest becomes a module | The EPUB→markdown pipeline moves into the package as a CLI subcommand. |
-| D-42 | CI | GitHub Actions on `windows-latest`, pinned actions, no-model test path, secret/PHI/licence scanning. |
-| D-43 | Site integration | Fix the portfolio card now; all other site work is one late-phase brief. |
-| D-44 | Embedding models are models | D-31's verification and storage rules apply to embedding models identically. |
-| D-45 | Lens veto is conditional | A critique lens may block a concept; overriding requires a published dated rationale. |
-| D-46 | Withdrawn concepts are published | Blocked and deprecated concepts stay visible with the blocking finding attached. |
-| D-47 | Registry size | ≈ 40 concepts, gated on a coverage dry-run; honest thinness beats padding. |
-| D-48 | Confidence placement | `confidence` shows in the provenance drawer only, never beside a waypoint. |
-| D-49 | Free-space floor | 250 GiB binary, checked before and after every write. |
-| D-50 | Template licensing | `templates/**` is CC BY 4.0 because their value is the wording. |
-| D-51 | Index location | The local index lives at `C:\epppindex`, separate from the model root. |
-| D-52 | Local logging | Off by default, hash-only when enabled, never in trainee mode. |
-| D-53 | Waypoint is a render | Never a stored object; counter-reading and insufficient-basis are required composer fields. |
-| D-54 | LLM is a renderer, not an author | It sees selected IDs, authored paraphrases and the user's quote; unbound sentences are dropped. |
-| D-55 | Injection control | Output-side structural validation is the primary control, stated as an architectural invariant. |
+| D-1 | Planning cadence | Terse answers in batches of ~10, checkpointed. |
+| D-2 | Deliberations unpublished, decisions published | Planning notes stay out of Git; this file is the record. |
+| D-3 | Repository is public | Public since 2026-08-23, with a corpus-safe history. |
+| D-4 | Public expansion re-worded | Opaque slug; the regulated-modality name is retired. |
+| D-5 | Three v1 modes | (a) pre-encounter, (b) trainee, (c) self-reflection. |
+| D-6 | Sole accountable human | The operating clinician or trainee; no export in v1. |
+| D-7 | Success = measured claim + portfolio claim | 3-5 waypoints under 60 s plus one new question. |
+| D-8 | Data boundary | No PHI, no real cases, no retention, no runtime network. |
+| D-9 | Publication posture | Planning bundle public first; code held to a gate. |
+| D-10 | Corpus rights posture | Original prose public; the index local and gitignored. |
+| D-11 | Output contract replaced | Facts/unknowns, plural hypotheses, disconfirming questions. |
+| D-12 | Publication mechanics | No release, tag or demo before the evidence gate. |
+| D-13 | One engine, three purpose profiles | One engine; per-mode prompts, evals and gates; a -> b -> c. |
+| D-14 | Content traditions, declared Western-secular | Four traditions as content, three as critique lenses. |
+| D-15 | Concept registry | YAML/JSON with stable IDs; no ontology, no graph DB. |
+| D-16 | Local index contents | Embeddings and spans from the reader's own copy, local only. |
+| D-17 | Deterministic baseline first | The shipped default and permanent fallback; the LLM must beat it. |
+| D-18 | Hard stops deterministic only | Declared flags plus a checklist, never a classifier. |
+| D-19 | Trainee mode non-surveilling | No accounts, scoring, retention, export or employer sight. |
+| D-20 | Mode (c) scope | Names structural and existential dimensions; no screening. |
+| D-21 | Stack | Python library plus a CLI and a small loopback web UI. |
+| D-22 | Roadmap sizing | S/M/L = 30 min / 1 h / 2 h; split when in doubt. |
+| D-23 | Verbatim spans | Never emitted; a local-only source pane may show them. |
+| D-24 | Public wording | Fixes the public expansion and the status line. |
+| D-25 | Input contract | Eight structured enums plus one inert free-text field. |
+| D-26 | Preserved output functions | Four functions survive; every utterance asks or offers. |
+| D-27 | Review status | Author-only now; recruited reviewers become the gate. |
+| D-28 | Licensing split | Apache-2.0 code, CC BY 4.0 content, NOTICE, CITATION.cff. |
+| D-29 | Employment/IP clearance | A clearance checkpoint gates the first public tag. |
+| D-30 | Model storage and download rules | One model at a time, <= ~8 GB, never in Git/LFS. |
+| D-31 | Runtime family | Native llama.cpp GGUF, hash-verified, no remote code. |
+| D-32 | v1 UI | One loopback page, no persistence, WCAG 2.2 AA, token. |
+| D-33 | Third-party use not intended | A personal tool, public source; no installability claim. |
+| D-34 | Contribution posture | No PRs in v1; issues open; SECURITY and the CoC present. |
+| D-35 | Mode (a) release-gate evidence | Eight evidence items before any `v1` tag. |
+| D-36 | Eval scenario provenance | Provenance-tagged scenarios plus a frozen held-out set. |
+| D-37 | Stop criterion operationalized | Paired opposite-preference runs; 10 % / 5 % halt lines. |
+| D-38 | Abstention taxonomy | Five required triggers, each with an eval case. |
+| D-39 | Phase structure | P0 ... P7; evaluation precedes the LLM work. |
+| D-40 | Repo layout and canonical docs | Fixes the package, roadmap, licensing and doc file set. |
+| D-41 | Corpus ingest becomes a module | The EPUB-to-markdown pipeline becomes a CLI subcommand. |
+| D-42 | CI | GitHub Actions, pinned, no-model path, leak scanning. |
+| D-43 | Site integration | Fix the portfolio card now; other site work is one brief. |
+| D-44 | Embedding models are models | D-31's rules apply to embedding models identically. |
+| D-45 | Lens veto is conditional | A lens may block a concept; overriding is published. |
+| D-46 | Withdrawn concepts are published | Blocked concepts stay visible with the finding attached. |
+| D-47 | Registry size | ~ 40 concepts, gated on a coverage dry-run. |
+| D-48 | Confidence placement | The provenance drawer only, never beside a waypoint. |
+| D-49 | Free-space floor | 250 GiB, checked before and after every write. |
+| D-50 | Template licensing | `templates/**` is CC BY 4.0; their value is the wording. |
+| D-51 | Index location | A local index root, separate from the model root. |
+| D-52 | Local logging | Off by default, hash-only, never in trainee mode. |
+| D-53 | Waypoint is a render | Never stored; counter-reading and basis clause required. |
+| D-54 | LLM is a renderer, not an author | It sees IDs and paraphrases; unbound sentences drop. |
+| D-55 | Injection control | Output-side structural validation is the main control. |
 | D-56 | Determinism vocabulary | Public text never calls the LLM path deterministic. |
-| D-57 | Escalation panel invariance | The panel renders byte-identically on every response; hard stops render inside the waypoints region. |
-| D-58 | Uniform waypoint typography | Uncertainty and abstention render at the same size, weight and contrast as hypotheses. |
-| D-59 | Maturity badge | A static README string that CI resolves to an evidence file and fails if unticked. |
-| D-60 | Interface and doc additions | CONTRIBUTING, in-repo clinical narrative, first-run interstitial, local escalation config, vendored htmx with a tested fallback. |
+| D-57 | Escalation panel invariance | Byte-identical on every response, within a mode. |
+| D-58 | Uniform waypoint typography | Uncertainty renders like hypotheses, never below them. |
+| D-59 | Maturity badge | A static string CI resolves to a ticked evidence file. |
+| D-60 | Interface and doc additions | CONTRIBUTING, narrative, interstitial, escalation cfg, htmx. |
 | D-61 | Modes (d) and (e) excluded | Excluded with seven named preconditions, not deferred. |
-| D-62 | Source rights flags | WHO guidance referenced never ingested; SAMHSA, AHRQ and the FDA CDS guidance flagged unverified. |
-| D-63 | Evidence standing | Closest analogue trials are null-to-adverse; the claim is feasibility and acceptability, never effectiveness. |
-| D-64 | Reviewer roles and timing | Clinician, educator and a person with lived experience, recruited only once the engine runs end-to-end. |
-| D-65 | Sign-off scope | Reviewer sign-off gates mode (a) only; (b) and (c) ship author-reviewed with explicit public labels. |
-| D-66 | Mode (c) labelling | Ships `draft` with a "no evaluation exists for this mode" banner even after its own gate. |
-| D-67 | Accessibility is a gate item | The accessibility packet is the eighth mode-(a) gate item. |
-| D-68 | UI stack | Starlette + Jinja2 + vendored htmx + hand-written CSS; no npm, no build step, no CDN. |
-| D-69 | Public wording approved | Intended use, excluded uses, what it does not know, and status ship as drafted. |
-| D-70 | Runtime implementation | `llama-cpp-python` in-process; Ollama rejected for auto-update and login-start service behaviour. |
-| D-71 | Pre-existing model cache kept | The third-party cache stays, outside the project budget; no purge tool is built. |
-| D-72 | Stop-criterion pivots | Both the structured-preference and free-text clinician-leaning channels, reported separately. |
-| D-73 | Field sensitivity declaration | Every input field is `invariant`, `clinically-load-bearing`, or framing-plus-one-additive-waypoint. |
-| D-74 | Citation and quotation limits | Chapter-level locators only; ≤ 25 words per quote, ≤ 150 per source, CI-enforced. |
-| D-75 | Numeric thresholds | Ratified as a table and revisited at the evaluation-phase re-plan. |
-| D-76 | Repository settings | Issues on with a no-support template; Discussions, Wiki, Projects off; private vulnerability reporting on. |
-| D-77 | Reviewer study is not research | Not intended for publication and the consent form says so; the escalation trigger is named in governance. |
-| D-78 | Storage floor and ceiling | A 250 GiB machine floor and a 25 GB project ceiling; expected real usage ≈ 8–12 GB. |
-| D-79 | Output contract reduced to three parts | The values-to-options part is deleted rather than shipped empty; the no-ranking prohibition stands. |
+| D-62 | Source rights flags | WHO referenced not ingested; three families unverified. |
+| D-63 | Evidence standing | Analogues are null-to-adverse; feasibility, not efficacy. |
+| D-64 | Reviewer roles and timing | Three roles, recruited once the engine runs end-to-end. |
+| D-65 | Sign-off scope | Gates mode (a) only; (b) and (c) ship author-reviewed. |
+| D-66 | Mode (c) labelling | Ships `draft` with a no-evaluation-exists banner. |
+| D-67 | Accessibility is a gate item | The accessibility packet is the eighth gate item. |
+| D-68 | UI stack | Starlette, Jinja2, vendored htmx, plain CSS; no npm. |
+| D-69 | Public wording approved | The four public blocks ship as drafted. |
+| D-70 | Runtime implementation | `llama-cpp-python` in-process; Ollama rejected. |
+| D-71 | Pre-existing model cache kept | Outside the project budget; no purge tool is built. |
+| D-72 | Stop-criterion pivots | Structured-preference and free-text channels, reported apart. |
+| D-73 | Field sensitivity declaration | Every input field carries one of three sensitivity classes. |
+| D-74 | Citation and quotation limits | Chapter-level locators; <= 25 words a quote, <= 150 a source. |
+| D-75 | Numeric thresholds | Ratified as a table, revisited at the eval re-plan. |
+| D-76 | Repository settings | Issues on; Discussions, Wiki, Projects off; PVR on. |
+| D-77 | Reviewer study is not research | Non-generalizable knowledge; the escalation trigger named. |
+| D-78 | Storage floor and ceiling | A 250 GiB machine floor and a 25 GB project ceiling. |
+| D-79 | Output contract reduced to three parts | The values-to-options part is deleted, not shipped empty. |
 
 ---
 
@@ -488,6 +495,15 @@ described headroom rather than intent; the project never claims the machine's sp
 its budget. The pre-existing third-party cache (D-71) sits outside both figures. *Alternatives:* a
 single envelope number; no ceiling; a percentage-of-disk allocation.
 
+> **Addendum (2026-09-01, EP-8).** The **unit mismatch between D-49 and D-78 is deliberate and
+> stands**: the floor is binary (250 GiB) and the ceiling is decimal (25 GB, warned at 20 GB),
+> transcribed into `epppsynth/src/epppsynth/storage/limits.py` exactly as each decision states it,
+> recorded in `ADR-009`, and asserted by a unit test that fails if either constant changes base.
+> EP-7 flagged it for this re-plan so that a later reader meets it as a decision rather than as a
+> bug. EP-8 records it and does **not** normalise it: normalising moves the floor and the ceiling by
+> about 7 % in opposite directions, which is an owner decision about how much disk the project may
+> use, not a tidying-up. Registered open as **OD-18**.
+
 ---
 
 ## Data, privacy & rights
@@ -580,6 +596,24 @@ test path only; plus secret, PHI-pattern and licence scanning. *Why:* CI is the 
 for the data boundary and the rights rules, so it must not need a model or a secret in order to
 run. *Alternatives:* a self-hosted GPU runner; Linux runners; no CI.
 
+> **Addendum (2026-09-01, EP-8).** Two changes to CI's scope, and one ruling recorded here because
+> the register said it lands under D-42. **(1)** The `scan` job gained a
+> `uv run python ../tools/roadmap_check.py --all` step. It sits in `scan` rather than `test` because
+> two of its ten checks need history a shallow clone does not have — `--hashes` resolves every done
+> box's commit and `--immutable` reads each executed brief's `## Context` from the blob at the commit
+> its box records — and `scan` is already the one job that fetches the full history. **(2)** The
+> `test` job's lint steps gained `../tools/roadmap_check.py` by name. `tools/` sits outside the uv
+> project so `ruff check .` never reached it; the one file there that CI now depends on is linted,
+> and `epub_to_md_pipeline.py`, which predates the toolchain and was imported as-is at EP-0, is not.
+> **(3) Owner ruling OD-9, no update automation for the pinned action SHAs.** Dependabot or renovate
+> would mean a bot opening pull requests, which conflicts with D-34's no-PR posture in v1, and at two
+> pinned actions the by-hand review `ADR-008` promises is proportionate. No carve-out under D-34 was
+> adopted and no addendum was written there. The compensating obligation is a by-hand pin review at
+> **every** phase re-plan: the first was performed on 2026-09-01 and is recorded in
+> `roadmap/owner-decisions.md` with its two rows and its one finding (`setup-uv` is a major version
+> behind, registered as OD-17). A review promised at every re-plan and performed at none is not a
+> control.
+
 **D-76 Repository settings.** Issues **on**, with a "discussion only, no support, no clinical
 advice" template; Discussions, Wiki and Projects **off**; GitHub private vulnerability reporting
 **enabled**. `SECURITY.md` needs nothing further from the platform — it simply points at the
@@ -647,6 +681,20 @@ the first phase, as the lead-time logic argues; recruit after the gate; no exter
 > drafted and outreach opens **together**, at the P4 re-plan, once the engine runs end-to-end. The
 > exposure is named rather than hidden — the human-factors brief is the first work that cannot
 > proceed without recruited reviewers, and the mode-(a) gate cannot close until they sign off.
+
+> **Addendum (2026-09-01, EP-8).** P0 closed with **no reviewer-recruitment brief in it**, and this
+> addendum is the artifact that says so rather than leaving it implicit. The decision text above
+> still reads *"the recruitment pack still drafts in P0"*; that sentence is superseded by the
+> addendum above it and, now, by the observed shape of the executed phase — the P0 table holds
+> EP-0 … EP-8 and none of them is the pack. The re-plan considered the alternative it was offered,
+> which was to add a P0 brief and renumber the roadmap, and **rejected it**: D-64 already ruled that
+> drafting and outreach happen together, renumbering 47 briefs to satisfy a superseded sentence would
+> be the roadmap serving its own bookkeeping, and the pack is a full brief at **EP-37** with the
+> upgrade owned by EP-31. **The cost is restated, not softened: the mode-(a) gate is
+> schedule-exposed.** Reviewer recruitment is the longest-lead item in the plan, release-gate item 2
+> is unmeetable without it, EP-51 is the first brief that cannot proceed without it, and nothing
+> before P4 reduces that exposure. The role that cannot be silently dropped — a person with lived
+> experience of serious illness — is the one most affected by starting late (`GOVERNANCE.md` §10).
 
 **D-65 Reviewer sign-off gates mode (a) only.** Modes (b) and (c) ship on author review. *Required
 consequence:* both carry an explicit **public label** — mode (c) `draft` plus "no evaluation
@@ -800,6 +848,20 @@ split when in doubt; a phase re-plan EP closing each phase; a core/stretch cutli
 completion table. ~35–55 briefs across 6–7 phases on a ~3-month horizon. *Why:* the convention is
 already proven across sibling repositories, and long briefs die uncommitted. *Alternatives:*
 larger briefs and fewer of them; no fixed sizing; a 6-month horizon. *Refined by D-39.*
+
+> **Addendum (2026-09-01, EP-8).** The size mix is now **derived, never restated**.
+> `tools/roadmap_check.py --table` recomputes it from the eight phase tables and fails if the
+> `roadmap/README.md` header disagrees. Recomputed at P0's close it reads **2 S · 17 M · 36 L ≈ 90 h**
+> — byte-identical to the figure the header already carried, so the correction this brief expected to
+> make turned out to be a confirmation. It is recorded anyway, because the point of the check is that
+> nobody has to trust the last person who typed it. **Sizing was not recalibrated.** D-22 says S/M/L
+> are calibrated against actuals and P0 was the first chance; the retro found the only available
+> actuals are commit timestamps, which mark when a session **ended** and never when it began. They
+> bound the four briefs that ran back-to-back inside one sitting and say nothing at all about the
+> other five, which are separated by day-scale gaps. A sample of nine, four of them measurable and
+> none of them measured directly, is not a basis for redefining S, M and L — and saying so is
+> cheaper than a recalibration nobody could reproduce. Revisit at the P1 and P2 re-plans (parked);
+> the full table is in `roadmap/P0-retro.md`.
 
 **D-29 The employment/IP clearance checkpoint gates the first public release or tag.** Ownership is
 uncertain, so the checkpoint is issue-spotting only: it **names** qualified review, it does not

@@ -285,3 +285,298 @@ Acceptance:
 > EP-2's exact-token grep could not match left for EP-6 to reword. OD-12 (banned-phrase carve-out)
 > → confirmed in EP-39, where the entry count needing matcher support is **three**, not the two the
 > register estimated.
+
+---
+
+> **Completion note (2026-09-01).** Executed. Ten checks, 45 unit tests over a fixture roadmap,
+> seven deliberate red runs and seven reverts, and one green `--all`. Everything below records what
+> was **observed**. Two acceptance criteria did not land as written and say so; one is an owner
+> judgement this session cannot make, and one is CI, which cannot be green on a run that does not
+> exist (OD-15).
+>
+> **The tool found real drift on its first run, in a place nobody had looked.** `--deps` reported
+> **40 asymmetries** across every P3–P7 brief. They were not in the roadmap: they were in the
+> checker. Reading the header block to the next `## ` heading swept a charter brief's
+> `> **Charter.**` note — which names the re-plan EP that upgrades it — into that brief's `Blocks`
+> field, inventing a dependency in all 31 charter briefs at once. Fixed by parsing the header as
+> what it is: one contiguous block ending at the first blank line. The regression test
+> (`test_a_charter_note_is_not_read_as_a_dependency`) names the bug, because a checker that is
+> wrong in the same direction as the thing it checks is the failure mode worth a test.
+>
+> #### The size mix — old and new, side by side (acceptance 3)
+>
+> | | S | M | L | hours |
+> |---|---|---|---|---|
+> | Header before EP-8 | 2 | 17 | 36 | 90 |
+> | Recomputed by `--table` from the eight phase tables | **2** | **17** | **36** | **90** |
+>
+> **They are identical.** The brief expected a correction and got a confirmation. It is recorded
+> anyway, and the line in `roadmap/README.md` now says the figure is *derived, not maintained*:
+> `--table` recomputes it from 55 table rows on every run and fails if the header disagrees, so
+> nobody has to trust the last person who typed it.
+>
+> #### Seven deliberate red runs, seven reverts, one green (acceptance 2)
+>
+> Each was planted in the **real** roadmap, run, and reverted. Output is the finding line as printed.
+>
+> | # | Planted | Check | Finding, as printed |
+> |---|---|---|---|
+> | 1 | `roadmap/EP-99-probe.md`, ~96 KB of filler, plus a P0 table row | `--context-budget EP-99` | `over-budget  32,378 tokens against a 15,000 ceiling` |
+> | 2 | EP-9 `Depends on` ← EP-16, EP-16 `Blocks` ← EP-9 | `--deps` | `cycle  EP-9 -> EP-16 -> EP-9` |
+> | 3 | EP-2's box changed to `☑ 0dead00` | `--hashes` | `hash-unresolvable  \`0dead00\` is not a commit in this repository` |
+> | 4 | EP-9's `## Safety preconditions` deleted | `--sections` | `missing-section  no \`## Safety preconditions\`` **and** `empty-safety-preconditions` |
+> | 5 | EP-9's acceptance replaced with *"checked by hand and looks right"* | `--acceptance` | `no-command  acceptance names no fenced block and no command token`, and `--hazards` added `core-without-evidence` |
+> | 6 | one `*(parked at EP-7)*` tag removed from `final-roadmap.md` | `--parked` | `parked-count-mismatch  5 parked item(s) in the brief, 4 entry(ies) tagged` |
+> | 7 | a sentence spliced into EP-7's `## Context` | `--immutable` | `context-edited  \`## Context\` differs from the blob at 88faeef; annotate, never rewrite` |
+>
+> Then `--all`: ten checks, ten `passed`, `no findings.`
+>
+> **Deviation A — red run 6's revert deleted uncommitted work.** `git checkout -- roadmap/final-roadmap.md`
+> reverted the file to `HEAD`, which threw away the whole extended parked section written minutes
+> earlier, because it had not been committed. It was rebuilt and re-verified. Recorded because it is
+> the obvious trap in "plant, run, revert" against a working tree that also holds the brief's own
+> output, and the next re-plan will do the same seven red runs.
+>
+> #### The context budget, and the one thing this brief argued with itself about
+>
+> **Acceptance 5, the per-brief table.** All 55 briefs pass. P0 and P1, which acceptance 5 names:
+>
+> | brief | 1 | 2 | 3 | 4 | 5 | total | margin |
+> |---|---|---|---|---|---|---|---|
+> | EP-0 | 939 | 5,084 | 1,804 | 419 | 2,973 | 11,219 | 3,781 |
+> | EP-1 | 939 | 5,084 | 1,804 | 419 | 3,544 | 11,790 | 3,210 |
+> | EP-2 | 939 | 5,084 | 1,804 | 419 | 4,287 | 12,533 | 2,467 |
+> | EP-3 | 939 | 5,084 | 1,804 | 419 | 4,365 | 12,611 | 2,389 |
+> | EP-4 | 939 | 5,084 | 1,804 | 419 | 3,573 | 11,819 | 3,181 |
+> | EP-5 | 939 | 5,084 | 1,804 | 419 | 4,013 | 12,259 | 2,741 |
+> | EP-6 | 939 | 5,084 | 1,804 | 419 | 5,744 | 13,990 | 1,010 |
+> | EP-7 | 939 | 5,084 | 1,804 | 419 | 4,440 | 12,686 | 2,314 |
+> | EP-8 | 939 | 5,084 | 1,804 | 419 | 5,714 | 13,960 | 1,040 |
+> | EP-9 | 939 | 5,084 | 1,804 | 503 | 6,016 | 14,346 | 654 |
+> | EP-10 | 939 | 5,084 | 1,804 | 503 | 5,219 | 13,549 | 1,451 |
+> | **EP-11** | 939 | 5,084 | 1,804 | 503 | 6,624 | **14,954** | **46** |
+> | EP-12 | 939 | 5,084 | 1,804 | 503 | 4,665 | 12,995 | 2,005 |
+> | EP-13 | 939 | 5,084 | 1,804 | 503 | 4,740 | 13,070 | 1,930 |
+> | EP-14 | 939 | 5,084 | 1,804 | 503 | 5,057 | 13,387 | 1,613 |
+> | EP-15 | 939 | 5,084 | 1,804 | 503 | 4,456 | 12,786 | 2,214 |
+> | EP-16 | 939 | 5,084 | 1,804 | 503 | 4,530 | 12,860 | 2,140 |
+>
+> P2–P7 range from 9,112 (EP-54) to 12,163 (EP-22) and are not reproduced here; `--context-budget`
+> prints all 55.
+>
+> **Deviation B — the overflow was real but smaller, and in a different brief, than OD-13 predicted.**
+> The ruling estimated load-order items 1–4 at ≈ 11.5k tokens and said `--context-budget` would fail
+> "for at least EP-2 and EP-9". Measured, items 1–4 came to **8.9k–9.0k**, and exactly one brief was
+> ever over: **EP-11 at 15,577** against a 15,000 ceiling. EP-2 was at 13,156 and EP-9 at 14,963 —
+> both under, EP-9 by 31 tokens. The ruling's *shape* was right and its arithmetic was not, and this
+> note records both rather than quietly adopting the number that made the session look prescient.
+>
+> **The remedy was the one OD-13 directed: shrink load-order item 3.** The `DECISIONS.md` index
+> block's `Decides` column went from an average of 84 characters to 55 — a signpost that tells a
+> reader whether to open an entry, rather than a second summary competing with it. **No row was
+> removed and no decision text was touched.** That recovered **623 tokens for every session**, and
+> a dated note above the index block says what was done. The ceiling was not raised and no brief was
+> trimmed.
+>
+> **What the session argued with itself about, recorded because the margin is thin.** After the
+> compression EP-11 clears by **46 tokens** — a pass smaller than the error of the approximation
+> that produced it. Compressing item 3 further was considered and rejected: below about 45 characters
+> the gloss stops letting a session decide whether to open an entry, which spends *more* context in
+> load-order item 6, not less — the check would improve while the session got worse. Compressing
+> item 2 (`GOVERNANCE.md`, 5,084 tokens, 34 % of the ceiling on its own) was out of bounds by the
+> same ruling. Splitting EP-11 renumbers the roadmap. So nothing further was done, and instead the
+> tool now prints the tightest brief and its headroom on **every** run, and the whole question is
+> registered as **OD-16** with the three candidate remedies and what each costs. The structural
+> figure behind it: load-order items 1–3 cost **7,827 tokens, 52 % of the ceiling, before a brief is
+> opened**, and item 3 grows with every new decision.
+>
+> **The tokenizer assumption is load-bearing and is printed, not buried.** No tokenizer is available
+> offline, so the check divides characters by a stated **4.0**. Run it at `--chars-per-token 3.5` —
+> plausible for markdown this dense — and **seven briefs go over**. That is why the constant is a
+> command-line argument, why every run prints it, and why a real tokenizer is parked. Adding one line
+> to `CLAUDE.md` would have cost about 30 tokens and put EP-11 over; **the session wanted to add one
+> and did not.** That is what a 46-token margin means in practice.
+>
+> #### The re-plan's first decision — reviewer recruitment (the brief's own note)
+>
+> **Resolved as the reversal, formally, with a dated addendum under D-64.** P0 closed with no
+> recruitment brief in it. The alternative — add a P0 brief and renumber 47 briefs — was rejected:
+> D-64 already ruled that the pack drafts and outreach opens *together*, at P4, and renumbering the
+> roadmap to satisfy a superseded sentence in D-64's own decision text would be bookkeeping wearing
+> the costume of rigour. The pack is EP-37, upgraded by EP-31. **The cost is restated and not
+> softened: the mode-(a) gate is schedule-exposed** — release-gate item 2 is unmeetable without
+> recruited reviewers, EP-51 is the first brief that cannot proceed without them, and the role that
+> `GOVERNANCE.md` §10 says cannot be silently dropped is the one most affected by starting late. The
+> brief said *do not leave it implicit*; the addendum is the artifact that stops it being implicit.
+>
+> #### The owner rulings this brief was told to discharge
+>
+> All recorded in `roadmap/owner-decisions.md` under **P0 re-plan — EP-8, 2026-09-01**.
+>
+> - **OD-9 — the first by-hand pin review, performed.** `actions/checkout` is pinned to
+>   `3d3c42e5…`, which is the `v7.0.1` tag object, and **v7.0.1 is current**. `astral-sh/setup-uv`
+>   is pinned to `c771a70e…`, which is the `v9.0.0` tag object, and **v10.0.1 has been current since
+>   2026-08-14** — one major version behind. Both pins were confirmed to be the commit the comment
+>   names, so neither comment is decoration. **EP-8 did not bump it:** a major-version bump of a
+>   pinned action is a CI posture change that `ADR-008` reserves for a by-hand review with a run
+>   behind it, and doing it unasked inside a re-plan would be the automation OD-9 declined, wearing a
+>   different hat. Registered as **OD-17**. The obligation is handed forward to EP-16 and to every
+>   re-plan after it; landed as an addendum under **D-42**.
+> - **OD-11 — one hazard register, confirmed.** `--hazards` reads `DESIGN.md` §14 alone and reports
+>   **41 hazards, R-1 … R-41, contiguous**, each naming a mitigating brief that exists and a
+>   verifying gate. It also checks the other direction: every `R-n` cited in any of the 55 briefs
+>   resolves to a row. Zero unmitigated hazards, zero unresolved citations. No second register was
+>   created.
+> - **OD-1 — re-observed, and still divergent.** All four D-76 flags plus the private-reporting path
+>   were read from the API on 2026-09-01: `has_issues true`, `has_discussions false`,
+>   `has_wiki false`, `private-vulnerability-reporting {"enabled": true}` — and
+>   **`has_projects` is still `true`**, against D-76's *off* and against the ruling of 2026-08-31.
+>   The ruling is right and the click has not happened. The row stays `◐` and is handed forward,
+>   because a divergence re-observed and re-recorded without being fixed is how a published decision
+>   quietly becomes false.
+> - **OD-8 — pushed, and still not observed. This is the honest split the brief asked for.** The
+>   commits reached the remote: `origin/main` is at `638a0fe`, the default branch is `main`, and
+>   `.github/ISSUE_TEMPLATE/discussion.yml` is in that tree — the form is published at the path the
+>   platform reads issue forms from. It still could not be seen rendering. The REST route
+>   `repos/{owner}/{repo}/issues/templates` returns 404 with a `documentation_url` pointing at
+>   *get-an-issue*, i.e. a route that does not exist — which is very likely what EP-4 actually hit.
+>   GraphQL's `repository.issueTemplates` returns an **empty list**, and that field is not known to
+>   surface YAML issue *forms*, so the empty list is not evidence either way. An unauthenticated
+>   fetch of `/issues/new/choose` returns the sign-in interstitial, exactly as the
+>   private-vulnerability-reporting form does. **Recorded as: the file is published where the
+>   platform reads it, and the rendered form has not been seen.** The two required acknowledgement
+>   checkboxes have not been exercised. Closing it needs one signed-in human look.
+> - **OD-13 — the five verdicts recorded**, and the one failure resolved as directed (above).
+> - **OD-2 — deliberately not ticked.** `SAFETY.md` §4 was authored at EP-3 from the decisions, and
+>   the approved draft's only remaining copy is private planning state a session may not open (D-2).
+>   EP-8 was told not to tick it and did not.
+>
+> #### The template, ratified — amended, not confirmed unchanged (acceptance, in-scope 3)
+>
+> The six sections were confirmed unchanged; **five rules were added**, each one a convention that
+> nine executions showed nobody had written down: the header is one contiguous block (the bug above);
+> `Depends on`/`Blocks` are exact mirrors; the completion note goes at the very end of the file; a
+> completion note records what was observed and may not claim CI without naming the run (OD-15); and
+> an executed brief is never rewritten. The **charter variant** was added too — five sections, its
+> note, and the acceptance exemption — because 31 of 55 briefs use a form the template did not
+> describe. `--sections` was re-run across all 55: green.
+>
+> **Deviation C — `--sections` had to tolerate a shape the template forbids.** EP-3 and EP-4 both
+> carry their `## Parked →` section **below** their completion note rather than above it. Executed
+> briefs are append-only (`CLAUDE.md`), so neither can be tidied, and a checker that demanded
+> otherwise would be demanding a rule violation. The check therefore compares the *canonical*
+> headings' relative order, counting each at its first occurrence — which also handles EP-2, whose
+> completion note restates a heading. The template now says where the note goes, so no later brief
+> repeats it.
+>
+> **Deviation D — `--acceptance` exempts charter briefs, and the exemption is priced.** The brief
+> asks that every brief's acceptance name a command. Twenty-five of the 31 charter briefs name none,
+> their own notes say *"do not execute from the sketch alone"* and promise that each criterion
+> becomes a named command or artifact at upgrade, and EP-8's out-of-scope forbids upgrading them. So
+> a charter is exempt from naming a command and is instead **required to name the re-plan EP that
+> will make it name one**; the exemptions are counted and listed on every run. A charter nobody ever
+> upgrades is what the count is for. `--hazards` does not double-count them.
+>
+> #### P1 and P2, consistency-checked (in-scope 6 and 7)
+>
+> Mechanically: all 16 briefs pass `--sections`, `--acceptance`, `--deps`, `--table` and
+> `--context-budget`. Beyond the tool: **every `D-n` cited in all 55 briefs resolves** to a row in
+> the index (D-1 … D-79, zero unresolved), and every `R-n` resolves to the register.
+>
+> - **Definition of Ready, all eight P1 briefs: ready. None is marked blocked.** The one candidate
+>   for blocking was the context budget, which EP-11 now passes. The other candidate was EP-5's
+>   parked item — *"resolving SAMHSA and AHRQ reuse terms, carried as an explicit P1 blocker for
+>   public intended-use language"* — and it is **not** an unowned blocker: **EP-10 already owns that
+>   check** (its in-scope item 7), and explicitly allows the outcome *"still unverified"*, with the
+>   conservative `reference-only-pending-rights-check` class and a matrix that forbids the wording
+>   those sources would license. Confirmed, not changed.
+> - **Sizes were not adjusted, and the retro says why** — `roadmap/P0-retro.md`. The only actuals
+>   available are commit timestamps, which record when a session ended and never when it began; they
+>   bound the four briefs that ran back-to-back in one sitting and say nothing about the other five.
+>   Every bounded brief came in well under its size, and the retro **declines to read that as "the
+>   sizes are too generous"**, because every one of those bounds is a warm start inside a run of
+>   briefs — which is not the cold "one supervised session" D-22 describes.
+> - **P2 confirmed, with one live divergence flagged.** EP-22's pandoc handling already matches what
+>   P0 observed: pure-Python default, `--converter pandoc` opt-in behind a `shutil.which` probe,
+>   never invoked implicitly — and its EP-7 dependency (the storage guards) now exists. The
+>   divergence is between **EP-11 and EP-19**: EP-19 §5 describes `clause_weight` as *authored per
+>   activation clause*, while EP-11 keys it by `(input field, predicate kind)` in the composer's
+>   frozen table and forbids it on a concept, because EP-9's deny-list rejects any ordinal or score
+>   field on a concept. EP-11 asks for this to be raised on EP-19; EP-11 has not run, so the re-plan
+>   raised it, as an `> **EP-8 pickup note.**` appended to EP-19. **Nothing in EP-19 was changed** —
+>   reconciling is EP-11's work, and EP-11 precedes EP-19 through EP-17 and EP-18, so the spec will
+>   exist before EP-19 is picked up.
+>
+> #### The mandatory rewrite, and what the human packet item caught (in-scope 8, 10)
+>
+> **`README.md` was wrong, and no scanner could have caught it.** It said the repository holds *"an
+> empty package skeleton"*. True when EP-2 wrote it; false for two briefs by the time EP-8 read it —
+> EP-5, EP-6 and EP-7 landed the rights checks, nine leak scanners with a CI job, and the storage
+> roots with their guards. Corrected: the paragraph now names what is there (a CLI and three
+> packages, every one of which *checks* the project rather than being it) and says plainly that none
+> of the tool runs. `epppsynth/README.md` carried the same claim and was corrected with it.
+> `epppsynth/docs/evidence/design.md`'s *"No engine exists"* box carried the same stale evidence
+> (`__init__.py` and `cli.py` only): **the box did not change state**, its evidence was rewritten,
+> and the file records the re-check with its date. **The badge did not move and could not** — P0
+> produced no engine — and `--status` now asserts the badge, the README status paragraph, the
+> evidence file and `CITATION.cff` agree, which is the four-way check the safety-preconditions table
+> asked for.
+>
+> This was found by **packet item 7, the human one**. The nine scanners were green throughout; the
+> badge check confirmed the badge resolves to a fully ticked evidence file, and it did. What drifted
+> was a sentence about the tree, and reading sentences about the tree is exactly what item 7 is for.
+> The full packet is `epppsynth/docs/pre-publication/2026-09-01-P0-close.md`, signed against this
+> brief's first commit, with two second opinions recorded: **`gitleaks` 8.30.1** (31 commits and the
+> working tree, *no leaks found* both times) and **`reuse lint`** (*compliant with REUSE 3.3*,
+> 137/137 files). Item 5 is recorded as **no input** — zero image files are tracked — never as
+> "screenshots passed".
+>
+> #### Acceptance, as run
+>
+> | # | Criterion | Result |
+> |---|---|---|
+> | 1 | `--all` exits 0 against the real roadmap | ☑ ten checks, `no findings.` |
+> | 2 | seven red runs, seven reverts, one green | ☑ table above; deviation A recorded |
+> | 3 | `--table` recomputes the mix; header matches; old and new side by side | ☑ identical, `2 S · 17 M · 36 L ≈ 90 h` |
+> | 4 | `--hazards` reports R-1 … R-41, each with a brief and a gate; zero unmitigated; zero core briefs without acceptance | ☑ 41 hazards; charter briefs held to naming their upgrader instead (deviation D) |
+> | 5 | `--context-budget` passes for every P0 and P1 brief, recorded as a table | ☑ table above — and the margin is thin; deviation B and OD-16 |
+> | 6 | `final-roadmap.md` keeps every prior entry, plus every parked item and every residual | ☑ **38** mirrored entries tagged one-for-one — 34 from EP-0 … EP-7 plus this brief's 4 — 7 residuals present, nothing removed |
+> | 7 | all eight P1 briefs full, passing, and Ready — or marked blocked | ☑ all eight Ready; none blocked |
+> | 8 | README status paragraph and badge true; `--status` confirms the agreement | ☑ after the correction above |
+> | 9 | packet executed, dated, signed against the P0-closing commit; items 5 and 7 human | ☑ filed at `epppsynth/docs/pre-publication/2026-09-01-P0-close.md` |
+> | 10 | retro records estimate against actual for all nine, and P1's sizes are adjusted **or the retro says no adjustment was warranted** | ☑ `roadmap/P0-retro.md`; **no adjustment**, with the reason |
+> | 11 | CI green, including the new step | **◐ not yet.** Nothing is pushed, so no run exists. Every command CI runs is green locally: `ruff check`, `ruff format --check`, **236 passed**, `epppsynth scan --history` exit 0, `roadmap_check --all` exit 0. Per OD-15 this note does **not** claim CI, and the row stays `◐` until a run id exists |
+> | 12 | *(judgement — the owner)* one P1 brief is executable by a cold session from the load order alone | **offered, unruled.** This session cannot judge it: it has read the whole tree, which is the one condition the criterion excludes |
+>
+> #### Deviations, collected
+>
+> **A** — a red-run revert deleted uncommitted work (above). **B** — the predicted overflow was
+> smaller and in a different brief (above). **C** — `--sections` tolerates EP-3's and EP-4's parked
+> section sitting below the completion note (above). **D** — `--acceptance` exempts charter briefs
+> and prices the exemption (above). **E** — the packet lands in the *second* commit, not the first,
+> because a packet cannot carry the hash of the commit that contains it; the second commit therefore
+> touches two files rather than one. **F** — `../tools/roadmap_check.py` was added to the CI lint
+> steps **by name** rather than widening ruff to `tools/`: `epub_to_md_pipeline.py` predates the
+> toolchain, was imported as-is at EP-0, and has 12 pre-existing lint errors that are not this
+> brief's to fix. **G** — three new owner decisions were opened (**OD-16** the load order's headroom,
+> **OD-17** the `setup-uv` pin, **OD-18** the GiB/GB transcription); each records what EP-8 did *not*
+> do, and why. **H** — this brief's row is set to `◐` in the **first** commit rather than left `☐`
+> until the second. `--hashes` fails a brief that carries a completion note above an unticked box,
+> and rightly so: it hides finished work. Setting the row to `◐` — *done, not landed*, the state
+> EP-6 earned — makes the first commit true and green, and the second adds the hash. The row stays
+> `◐` after that, because acceptance 11 names CI and no run exists yet (OD-15). Push both commits
+> together. **I** — the pre-commit hook **blocked the first commit twice**. EP-6's `phi` scanner
+> found an address-shaped string in the new test file, where the fixture repository configured a
+> git identity in the obvious `name-at-example-dot-invalid` form; the fixture now configures an
+> identity that is not address-shaped, which git accepts happily. It then blocked the commit a
+> second time on **this very deviation**, because the first draft of it quoted the offending string.
+> The scanner is right both times, and the rule it enforces is the one EP-0 set for prose: do not
+> write the shape you are describing. Recorded because it is EP-6's defense in depth firing twice,
+> unprompted, on EP-8's own new files — and because the second firing is the more interesting one.
+>
+> #### What P0 leaves for P1
+>
+> Six owner decisions unresolved and **no P1 brief blocked by any of them**: OD-1 (a click), OD-2
+> (only the owner can compare), OD-8 (one signed-in look), OD-16, OD-17 and OD-18. The by-hand pin
+> review is now EP-16's obligation. Nothing is pushed; the third commit, `docs(roadmap): record EP-8
+> CI run`, follows the push (OD-15).

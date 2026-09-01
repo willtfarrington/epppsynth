@@ -14,10 +14,17 @@ Design and planning artifact — v1 in progress; no release, no demo, no validat
 supplied, structured facts about a fictional clinical encounter and a stated purpose, it is intended
 to produce three to five concise waypoints — what is known and unknown, plural possible concerns each
 carrying a counter-reading and an insufficient-basis clause, and disconfirming questions a clinician
-might ask. Nothing here runs yet: this repository currently holds a roadmap, the governance and
-design documents, and an empty package skeleton. It is built for its author's private local use; the
-repository is public as a source and portfolio artifact, and public source availability is not
-evidence of efficacy, safety, approval, or suitability.
+might ask.
+
+**No part of that runs.** There is no concept registry, no composer, no selection, no abstention
+chain, no renderer and no interface — and until there is, the badge above cannot move. What this
+repository holds today is the roadmap, the governance, design and decision documents, the four
+policy documents, the licensing pack, and a Python package whose entire content is *checking*: the
+leak-prevention scanners, the per-source rights and licence checks, and the storage roots with their
+reserve floor and project ceiling. The tooling that guards the work exists; the work does not. It is
+built for its author's private local use; the repository is public as a source and portfolio
+artifact, and public source availability is not evidence of efficacy, safety, approval, or
+suitability.
 
 ## Intended use, in short
 
