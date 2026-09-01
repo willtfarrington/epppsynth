@@ -33,7 +33,7 @@ Opened **2026-08-31** from the completion notes of EP-1 … EP-4. EP-0 is not su
 | OD-11 | Confirm the hazard register stays in `DESIGN.md` §14 alone | EP-2 dev. 3 | confirmation | EP-8 re-plan note | ☑ 2026-08-31 — confirmed; EP-8 re-plan note |
 | OD-12 | Confirm the banned-phrase ban's documentation carve-out | EP-3 dev. 7 | confirmation | EP-39's lint specification | ☑ 2026-08-31 — confirmed; EP-39 scope sketch item 3 |
 | OD-13 | Owner-judgement acceptance criteria, offered and unruled (× 5) | EP-1 … EP-4 | confirmation | EP-8 re-plan note | ☑ 2026-08-31 — four pass, EP-2 #10 **fails**; EP-8 re-plan note |
-| OD-14 | Ratify the `bibliographic-identity` refinement to the OD-10 modality sweep | EP-6 dev. 1 | confirmation | EP-6's scanner definition; a further ruling if overturned | ☐ **open — raised 2026-08-31, implemented and running** |
+| OD-14 | Ratify the `bibliographic-identity` refinement to the OD-10 modality sweep | EP-6 dev. 1 | confirmation | EP-6's scanner definition; a further ruling if overturned | ☑ 2026-09-01 — ratified as implemented; EP-6 §1.8, `ADR-008` |
 
 **Status at 2026-08-31.** Ten of thirteen ruled and landed. Three are not: **OD-1** is ruled but the
 platform setting has not been changed, **OD-2** can be closed only by the owner, and **OD-8** cannot
@@ -433,6 +433,39 @@ considered and rejected were: a fourth exemption row (needs a ruling anyway, and
 rather than the citation); renaming the `source_id` to drop the stem (leaves the citation title,
 which cannot be renamed); and leaving check 8 red (the brief's acceptance requires a green clean
 run). Recorded in `ADR-008`'s EP-6 amendment as an accounted-for match rather than as an allowlist.
+
+---
+
+## Resolutions — 2026-09-01
+
+**OD-14 — ratified as implemented.** The refinement stands, and it lands where OD-10 landed: in
+EP-6's scanner definition, recorded in the `ADR-008` amendment. No `DECISIONS.md` addendum is
+written, because none is warranted — D-4 is unchanged and D-74 is unchanged; what was wrong was the
+sweep's reading of them, and the sweep is not a decision.
+
+**What is ratified, stated so a later session cannot widen it.** An occurrence of the retired
+modality stem is skipped **only** when it falls inside a string that
+`epppsynth/registry/sources.yaml` declares as a `source_id` or as a citation `title`. Not a file, not
+a directory, not a pattern, not a line. Move the citation and the skip moves with it; delete the row
+from the rights record and every occurrence that depended on it becomes a finding on the next run.
+The exemption is derived from an owner-ratified data file, and that derivation is the whole of its
+authority.
+
+**Why this and not a fourth exemption row.** D-4 retires an expansion of *this project's own name*.
+D-74 requires that every source carry a citable record, and a book's title is bibliographic identity
+that cannot be reworded. The two rules never actually collided; the sweep did. A fourth row would
+have exempted twelve whole files — including `CITATION.cff`, the generated rights table and four
+fixtures — for the sake of one string in each, which is a far wider hole than the one it closed, and
+it would have needed this ruling anyway.
+
+**What stays fixed.** The OD-10 exemption table still has **exactly three** entries and still grows
+only by a further owner ruling; a unit test fails on a fourth. This ratification adds nothing to it.
+The three allowlists remain separately counted and none may reach another's scope.
+
+**What would reopen this.** A source whose `source_id` or title carries the stem *and* which is not
+a real bibliographic record — a placeholder, a fixture row, or an invented identifier added to
+`sources.yaml` to buy a skip. That is a rights-record defect first and a sweep defect second, and it
+is caught by the `rights` check before the modality check ever sees it.
 
 ---
 

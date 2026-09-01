@@ -410,3 +410,51 @@ Additional acceptance:
 > `path:line`, a rule name and a sentence saying what the rule means; `--fix-hints` adds a one-line
 > remedy. No finding prints the matched text, which is deliberate and is itself a limit on
 > legibility: a reader is told where to look and never shown what was found.
+
+> **Addendum (2026-09-01).** **OD-14 is ruled: ratified as implemented.** The `bibliographic-identity`
+> refinement stands at exactly the scope EP-6 built it — a skip only where the stem falls inside a
+> `source_id` or citation `title` that `epppsynth/registry/sources.yaml` declares, never a file, a
+> directory, a pattern or a line. It lands where OD-10 landed, in the scanner definition, with the
+> reasoning recorded in `roadmap/owner-decisions.md` under *Resolutions — 2026-09-01* and the scope
+> restated in `ADR-008`. No `DECISIONS.md` addendum was written and none is warranted: D-4 and D-74
+> are unchanged, and a sweep is not a decision. The OD-10 table still has three entries. Deviation 1
+> of the completion note above is therefore closed; the two CI rows remain the only outstanding work.
+
+> **Addendum (2026-09-01) — a defect the brief's own design created, found by committing.**
+> The completion note above records `uv run epppsynth scan --history` exiting **0**. That was true
+> when it was run and **false one commit later**, and the reason is worth keeping.
+>
+> The tree sweep skips the canary directory by exact path. The history sweep was a flat regex over
+> `git log -p --all` with **no path awareness at all**, so the moment `epppsynth/tests/canaries/`
+> reached a commit, the committed token-shaped fixture put the secrets check permanently red — two
+> findings, on a repository containing no secret. Item 7 of the brief requires those fixtures to be
+> committed and item 1.1 requires the history sweep; the two are in tension, and nothing in the
+> brief resolves it because the tension only appears *after* the first commit lands. The nine local
+> red runs could not have caught it: they were run before the commit existed, which is exactly when
+> a history check has nothing to say.
+>
+> **Fixed by making the history sweep honour the same allowlist by the same path.** `git log -p --all`
+> is split into one segment per file diff, keyed on the `+++ b/…` line (which runs to end-of-line and
+> so survives a path containing spaces; a deletion falls back to `--- a/…`). A segment under the one
+> allowlisted directory is skipped and inventoried under the reason `canary-directory`. **Commit
+> headers and commit messages form the first segment and carry no path, so they can never be exempt** —
+> a secret pasted into a commit message is a secret in the history.
+>
+> Four behaviours were then proven on throwaway repositories, and are now unit tests:
+>
+> | Situation | Observed |
+> |---|---|
+> | the canary committed, nothing else | `passed`, one `canary-directory` skip |
+> | the identical token shape committed **outside** the canary directory | `failed` |
+> | that file then deleted from the tree | `failed` on the history, **zero** tree findings — the "an unreachable object is not a deleted one" property, demonstrated rather than asserted |
+> | the token shape in a **commit message** | `failed` |
+>
+> Adding those tests also tripped the PHI sweep on the test file's own throwaway git-author address,
+> which is the split-literal convention working as intended; the literal is now assembled across a
+> `+`. Test count is 143. `uv run epppsynth scan --history` exits 0 again, and this time on a tree
+> whose history contains the canaries.
+>
+> **What this says about the packet.** A check can be green, correct, and about to become wrong,
+> and no scanner told anybody — the commit did. It is the plainest available argument for
+> `epppsynth/docs/pre-publication-checklist.md` being a human step re-run *before publication*
+> rather than a CI badge: scanners are defense in depth, and this is what the depth is for.

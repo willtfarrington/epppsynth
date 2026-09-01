@@ -120,3 +120,12 @@ check 8 runs green without a fourth exemption row.
 - The `scan` job's log prints paths, line numbers and rule names, and **never a matched string**.
 - Dependency vulnerability scanning is still parked (EP-41), and `gitleaks` / `trufflehog` remain
   uninstalled; the checklist records a second opinion when one happens to be available.
+
+### Ratification (2026-09-01, owner ruling OD-14)
+
+`bibliographic-identity` is **ratified as implemented**. It is an accounted-for match, not a fourth
+allowlist, and its scope is exactly as recorded above: a skip applies only where the retired modality
+stem falls inside a string `epppsynth/registry/sources.yaml` declares as a `source_id` or a citation
+`title` — never a file, a directory, a pattern or a line. The OD-10 exemption table is untouched and
+still has three entries. `roadmap/owner-decisions.md`, *Resolutions — 2026-09-01*, carries the
+ruling and the reasoning; a change to the scope needs a further owner ruling, not an ADR amendment.

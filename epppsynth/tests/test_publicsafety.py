@@ -433,3 +433,75 @@ def test_the_cli_scan_accepts_a_single_check(capsys):
 
     assert cli.main(["scan", "--check", "badge"]) == 0
     assert "badge" in capsys.readouterr().out
+
+
+# ── the history sweep honours the same allowlist, by the same path ───────────
+
+
+#: Split across a `+` so that this file does not contain an email address: the
+#: PHI sweep reads it like any other tracked file, and it is right to.
+THROWAWAY_EMAIL = "nobody@" + "example.invalid"
+
+
+def _commit(root: pathlib.Path, message: str, *, empty: bool = False) -> None:
+    subprocess.run(["git", "add", "-A"], cwd=root, check=True)
+    subprocess.run(
+        ["git", "-c", "user.name=t", "-c", f"user.email={THROWAWAY_EMAIL}", "commit", "-q"]
+        + (["--allow-empty"] if empty else [])
+        + ["-m", message],
+        cwd=root,
+        check=True,
+    )
+
+
+TOKEN = "gh" + "p_" + "X" * 36
+
+
+def test_history_segments_splits_by_file_and_keeps_commit_messages_unattributed():
+    patch = "\n".join(
+        [
+            "commit abc",
+            "    a message",
+            "diff --git a/kept.txt b/kept.txt",
+            "+++ b/kept.txt",
+            "+one",
+            "diff --git a/gone.txt b/gone.txt",
+            "--- a/gone.txt",
+            "+++ /dev/null",
+            "-two",
+        ]
+    )
+    assert [path for path, _ in scan.history_segments(patch)] == [None, "kept.txt", "gone.txt"]
+
+
+def test_the_history_sweep_exempts_the_canary_directory_and_nothing_else(tmp_path):
+    """The committed fixtures would otherwise make this check permanently red."""
+    root = _repo(tmp_path, {"epppsynth/tests/canaries/secrets.txt": f"CANARY FIXTURE\n{TOKEN}\n"})
+    _commit(root, "canary only")
+    clean = scan.scan_secrets(root, history=True)
+    assert clean.status == scan.PASSED
+    assert [skip.reason for skip in clean.skips] == ["canary-directory"]
+
+    (root / "leak.txt").write_text(f"token = {TOKEN}\n", encoding="utf-8")
+    _commit(root, "a real leak")
+    assert scan.scan_secrets(root, history=True).status == scan.FAILED
+
+
+def test_the_history_sweep_still_finds_a_secret_deleted_from_the_tree(tmp_path):
+    """An unreachable object is not a deleted one, which is why `--history` exists."""
+    root = _repo(tmp_path, {"leak.txt": f"token = {TOKEN}\n"})
+    _commit(root, "a real leak")
+    subprocess.run(["git", "rm", "-q", "leak.txt"], cwd=root, check=True)
+    _commit(root, "delete it")
+
+    assert scan.scan_secrets(root).findings == []  # the tree is clean
+    findings = scan.scan_secrets(root, history=True).findings
+    assert [finding.path for finding in findings] == ["<history>"]
+
+
+def test_a_secret_in_a_commit_message_is_never_exempt(tmp_path):
+    """Commit headers carry no path, so they can never fall inside an allowlist."""
+    root = _repo(tmp_path, {"epppsynth/tests/canaries/secrets.txt": "CANARY FIXTURE\nnothing\n"})
+    _commit(root, "first")
+    _commit(root, f"message carrying {TOKEN}", empty=True)
+    assert scan.scan_secrets(root, history=True).status == scan.FAILED

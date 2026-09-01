@@ -107,11 +107,16 @@ SKIP_REASONS: dict[str, str] = {
     ),
     "bibliographic-identity": (
         "the stem falls inside a source identifier or citation title declared in "
-        "sources.yaml, which D-74 requires this project to be able to cite"
+        "sources.yaml, which D-74 requires this project to be able to cite "
+        "(owner ruling OD-14)"
     ),
     "modality-exemption": (
         "one of the three owner-ratified files of the OD-10 exemption table, each "
         "carrying its reason"
+    ),
+    "canary-directory": (
+        "a file diff under the one allowlisted canary directory, matched by the same "
+        "exact path the tree sweep uses; commit headers and messages are never exempt"
     ),
 }
 
@@ -478,6 +483,35 @@ def _scan_rules(
 
 # ── check 1 — secrets ────────────────────────────────────────────────────────
 
+_DIFF_SPLIT = re.compile(r"(?m)^diff --git ")
+_NEW_PATH = re.compile(r"(?m)^\+\+\+ b/(?P<path>.*)$")
+_OLD_PATH = re.compile(r"(?m)^--- a/(?P<path>.*)$")
+
+
+def history_segments(patch: str) -> list[tuple[str | None, str]]:
+    """Split `git log -p --all` into `(path, text)`, one per file diff.
+
+    The tree sweep skips the canary directory by exact path; the history sweep has
+    to skip it by the same path or the committed fixtures make it permanently red
+    — and a check that is always red is a check nobody reads. Splitting the patch
+    is what makes the *same* allowlist apply to both.
+
+    The first segment is everything before the first diff: commit headers and
+    commit messages. Its path is `None`, so it is **never** exempt. A secret
+    pasted into a commit message is a secret in the history.
+
+    The path is read from the `+++ b/…` line, which runs to the end of the line
+    and so survives a path with spaces; a deletion (`+++ /dev/null`) falls back to
+    the `--- a/…` line.
+    """
+    parts = _DIFF_SPLIT.split(patch)
+    segments: list[tuple[str | None, str]] = [(None, parts[0])]
+    for part in parts[1:]:
+        match = _NEW_PATH.search(part) or _OLD_PATH.search(part)
+        path = match.group("path").strip() if match else None
+        segments.append((path, part))
+    return segments
+
 
 def scan_secrets(root: pathlib.Path, *, history: bool = False) -> CheckResult:
     """Token shapes and credential assignments, over the tree and the history.
@@ -508,8 +542,19 @@ def scan_secrets(root: pathlib.Path, *, history: bool = False) -> CheckResult:
         return result.fail()
 
     patch = completed.stdout
+    counts: dict[str, int] = {}
+    exempt: dict[str, int] = {}
+    for path, segment in history_segments(patch):
+        for rule in SECRET_RULES:
+            hits = len(rule.pattern.findall(segment))
+            if not hits:
+                continue
+            if path is not None and is_canary(path):
+                exempt[path] = exempt.get(path, 0) + hits
+            else:
+                counts[rule.name] = counts.get(rule.name, 0) + hits
     for rule in SECRET_RULES:
-        hits = len(rule.pattern.findall(patch))
+        hits = counts.get(rule.name, 0)
         if hits:
             result.findings.append(
                 Finding(
@@ -521,6 +566,15 @@ def scan_secrets(root: pathlib.Path, *, history: bool = False) -> CheckResult:
                     rule.hint,
                 )
             )
+    for path, hits in sorted(exempt.items()):
+        result.skips.append(
+            Skip(
+                path,
+                None,
+                "canary-directory",
+                f"{hits} occurrence(s) in the history of this file",
+            )
+        )
     result.note = f"tree + history ({len(patch)} patch bytes)"
     return result.fail()
 
@@ -992,6 +1046,11 @@ def _bibliographic_spans(root: pathlib.Path, text: str) -> list[tuple[int, int]]
     collision is resolved from the rights record rather than from judgement: a
     span is bibliographic when it is literally a `source_id` or a citation
     `title` that `sources.yaml` declares. Everything else is a finding.
+
+    Ratified by the project owner on 2026-09-01 as **ruling OD-14**, at exactly
+    this scope: never a file, a directory, a pattern or a line. Widening it needs
+    a further ruling. The OD-10 exemption table is untouched and still has three
+    entries.
     """
     from ..rights.load import load_sources
     from ..rights.model import RightsError
