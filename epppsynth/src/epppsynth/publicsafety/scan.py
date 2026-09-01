@@ -59,8 +59,12 @@ from .allowlist import (
     CANARY_ALLOWLIST,
     CANARY_REASON,
     MODALITY_EXEMPTIONS,
+    ROOT_CONSTANT_MODULE,
+    ROOT_CONSTANT_REASON,
+    ROOT_CONSTANT_SYMBOLS,
     Skip,
     is_canary,
+    is_root_constant_line,
     marked_lines,
 )
 
@@ -113,6 +117,10 @@ SKIP_REASONS: dict[str, str] = {
     "modality-exemption": (
         "one of the three owner-ratified files of the OD-10 exemption table, each "
         "carrying its reason"
+    ),
+    "root-constant": (
+        "an assignment line for one of the two allowlisted root symbols, in the one "
+        "allowlisted constants module; by symbol, never by pattern and never by file"
     ),
     "canary-directory": (
         "a file diff under the one allowlisted canary directory, matched by the same "
@@ -880,6 +888,23 @@ def scan_identity(root: pathlib.Path) -> CheckResult:
 # ── check 5 — the index and model roots in the wrong place ──────────────────
 
 
+def _accounted_roots(
+    root: pathlib.Path, path: str, text: str, rule: Rule, match: re.Match[str]
+) -> tuple[str, str] | None:
+    """Allowlist 4: the two root constants, by symbol (EP-7).
+
+    The line is looked up rather than the file: a root anywhere else in that same
+    module — a default argument, a fixture, a docstring example — is still a
+    finding, which is the difference between an allowlist by symbol and one by
+    file.
+    """
+    line_number = _line_of(text, match.start())
+    line = text.splitlines()[line_number - 1]
+    if is_root_constant_line(path, line):
+        return ("root-constant", ROOT_CONSTANT_REASON)
+    return None
+
+
 def scan_roots(root: pathlib.Path) -> CheckResult:
     """The two roots are deliberately public in documentation and nowhere else.
 
@@ -887,13 +912,16 @@ def scan_roots(root: pathlib.Path) -> CheckResult:
     name them, and that is the point of declaring them. In a `.py` file, a
     fixture, a workflow or a configuration default they are a data path, and a
     data path is how an index reaches a published artifact (R-19).
+
+    One exception, allowlisted by symbol: the two constants EP-7's storage
+    package reads its roots from. See `allowlist.ROOT_CONSTANT_SYMBOLS`.
     """
     paths = [
         path
         for path in tracked_files(root)
         if not _is_documentation(path) or path.startswith(QUOTATION_EXCLUDED_PREFIX)
     ]
-    result = _scan_rules(root, "roots", ROOT_RULES, paths)
+    result = _scan_rules(root, "roots", ROOT_RULES, paths, accounted=_accounted_roots)
     result.note = f"{len(paths)} non-documentation file(s)"
     return result
 
@@ -1230,8 +1258,57 @@ def scan_allowlist(root: pathlib.Path, results: Sequence[CheckResult]) -> CheckR
                         "remove the marker; an exemption a file does not need is a future hole",
                     )
                 )
+    result.findings.extend(_root_constant_defects(root))
     result.note = f"{len(used)} marker(s) in use"
     return result.fail()
+
+
+def _root_constant_defects(root: pathlib.Path) -> list[Finding]:
+    """Allowlist 4 checking itself: two symbols, one assignment each, one module.
+
+    An exemption for a symbol that is not there, or a second assignment to one
+    that is, both mean the same thing — the allowlist no longer describes the
+    file it exempts, and an allowlist that has drifted from its subject is an
+    off switch.
+    """
+    package = ROOT_CONSTANT_MODULE.rsplit("/", 1)[0] + "/"
+    tracked = tracked_files(root)
+    if not any(path.startswith(package) for path in tracked):
+        # Not this project's tree — a throwaway fixture repository, say. The
+        # allowlist is not in scope, so there is nothing here to have drifted.
+        return []
+    text = read_text(root, ROOT_CONSTANT_MODULE) if ROOT_CONSTANT_MODULE in tracked else None
+    if text is None:
+        return [
+            Finding(
+                SELF_CHECK,
+                ROOT_CONSTANT_MODULE,
+                None,
+                "absent-root-constant-module",
+                "the module allowlisted to hold the two root constants is not tracked",
+                "remove the allowlist entry, or restore the module it exempts",
+            )
+        ]
+    findings = []
+    for symbol in ROOT_CONSTANT_SYMBOLS:
+        assignments = [
+            number
+            for number, line in enumerate(text.splitlines(), start=1)
+            if is_root_constant_line(ROOT_CONSTANT_MODULE, line) and line.startswith(symbol)
+        ]
+        if len(assignments) != 1:
+            findings.append(
+                Finding(
+                    SELF_CHECK,
+                    ROOT_CONSTANT_MODULE,
+                    assignments[0] if assignments else None,
+                    "root-constant-not-defined-once",
+                    f"the allowlisted symbol {symbol} is assigned "
+                    f"{len(assignments)} time(s), not once",
+                    "one root, one constant, one assignment; a second is a second source of truth",
+                )
+            )
+    return findings
 
 
 # ── the runner ───────────────────────────────────────────────────────────────

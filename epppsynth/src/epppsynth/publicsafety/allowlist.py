@@ -1,10 +1,10 @@
 # SPDX-FileCopyrightText: 2026 W. Taylor Farrington
 # SPDX-License-Identifier: Apache-2.0
-"""The three allowlists, kept apart on purpose.
+"""The four allowlists, kept apart on purpose.
 
 An allowlist is how a scanner quietly stops working, so this module holds all
-three of them in one place, each with its own scope, its own counting rule and
-its own amendment path. **None of the three may be used to reach another's
+four of them in one place, each with its own scope, its own counting rule and
+its own amendment path. **None of the four may be used to reach another's
 scope** (EP-6 §9):
 
 1. :data:`CANARY_ALLOWLIST` — one directory, by exact path. The committed canary
@@ -19,6 +19,13 @@ scope** (EP-6 §9):
    a rule necessarily contains that rule's own pattern, so a line may exempt
    itself. The exemption is line-scoped: never a block, never a file, never a
    directory, never a pattern, and never inherited by the next line.
+4. :data:`ROOT_CONSTANT_SYMBOLS` — **two symbols in one file**, added by EP-7.
+   The model root and the index root have to be written down somewhere, and the
+   `roots` check exists so that somewhere is exactly one place. The exemption is
+   granted **by symbol**, not by pattern and not by file: only an assignment
+   line for one of the two named symbols, in the one named module, is skipped.
+   Any other line of that same file naming a root is still a finding. It grows
+   by an amendment to `ADR-008`, like allowlist 1.
 
 The marker's literal is assembled from two fragments below so that this file,
 which the scanners read like any other, does not accidentally exempt its own
@@ -78,6 +85,41 @@ RULE_DEFINITION_MARKER = "leak-scan-allow:" + " rule-definition"
 #: is a mention and not an exemption. A marker is only a marker in a comment.
 _INLINE_CODE = re.compile(r"`[^`\n]*`")
 _MARKER_IN_COMMENT = re.compile(r"(?:<!--|#|//)[^\n]*" + re.escape(RULE_DEFINITION_MARKER))
+
+
+# ── 4. the root-constant symbols ─────────────────────────────────────────────
+
+#: The one module where the model root and the index root may be written down
+#: (EP-7). Named by exact path, like the canary directory, for the same reason:
+#: a pattern-based exemption is how a real leak later hides.
+ROOT_CONSTANT_MODULE = "epppsynth/src/epppsynth/storage/limits.py"
+
+#: Exactly two symbols. `test_publicsafety` asserts the count, so a third is a
+#: failing test and therefore a deliberate decision (ADR-008 amendment, EP-7).
+ROOT_CONSTANT_SYMBOLS: tuple[str, ...] = ("MODEL_ROOT", "INDEX_ROOT")
+
+ROOT_CONSTANT_COUNT = 2
+
+ROOT_CONSTANT_REASON = (
+    "the two root constants D-30 and D-51 fix, on their assignment lines in the "
+    "one allowlisted constants module; every other line of that file, and every "
+    "other file, is still a finding"
+)
+
+#: An assignment to one of the symbols, with or without an annotation. The match
+#: is anchored at the start of the line: a root inside a call argument, a
+#: docstring or a comment on that same line is not an assignment and is not
+#: exempt.
+_ASSIGNMENT = re.compile(
+    r"^(?P<name>" + "|".join(ROOT_CONSTANT_SYMBOLS) + r")\s*(?::[^=]+)?=",
+)
+
+
+def is_root_constant_line(path: str, line: str) -> bool:
+    """Whether this exact line, in the one allowlisted module, defines a root constant."""
+    if path != ROOT_CONSTANT_MODULE:
+        return False
+    return _ASSIGNMENT.match(line) is not None
 
 
 @dataclass(frozen=True)

@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: 2026 W. Taylor Farrington
 # SPDX-License-Identifier: Apache-2.0
-"""EP-6 acceptance, as tests: the nine scanners, the three allowlists, the packet.
+"""EP-6 acceptance, as tests: the nine scanners, the four allowlists, the packet.
 
 A scanner that has never failed has never been shown to work, so most of what is
 here plants a canary and asserts the scanner fires — and fires on **its own check
@@ -79,7 +79,7 @@ def _text_scan(root: pathlib.Path) -> list[scan.Finding]:
     return findings
 
 
-# ── the three allowlists ─────────────────────────────────────────────────────
+# ── the four allowlists ─────────────────────────────────────────────────────
 
 
 def test_the_canary_allowlist_has_exactly_one_entry():
@@ -148,11 +148,53 @@ def test_the_marker_is_earned_when_the_line_matches_a_rule(tmp_path):
     assert scan.scan_allowlist(root, [identity]).findings == []
 
 
-def test_the_three_allowlists_do_not_reach_into_one_another():
-    """No entry of one allowlist appears in another (ADR-008 EP-6 amendment)."""
+def test_the_four_allowlists_do_not_reach_into_one_another():
+    """No entry of one allowlist appears in another (ADR-008, EP-6 and EP-7 amendments)."""
     assert not set(allowlist.CANARY_ALLOWLIST) & set(allowlist.MODALITY_EXEMPTIONS)
     for path in allowlist.MODALITY_EXEMPTIONS:
         assert not allowlist.is_canary(path)
+    assert allowlist.ROOT_CONSTANT_MODULE not in allowlist.MODALITY_EXEMPTIONS
+    assert not allowlist.is_canary(allowlist.ROOT_CONSTANT_MODULE)
+
+
+def test_the_root_constant_allowlist_is_two_symbols_in_one_module():
+    """EP-7. By symbol, not by pattern: a third symbol is an ADR-008 amendment."""
+    assert allowlist.ROOT_CONSTANT_SYMBOLS == ("MODEL_ROOT", "INDEX_ROOT")
+    assert len(allowlist.ROOT_CONSTANT_SYMBOLS) == allowlist.ROOT_CONSTANT_COUNT == 2
+    assert (ROOT / allowlist.ROOT_CONSTANT_MODULE).is_file()
+    assert allowlist.ROOT_CONSTANT_REASON.strip()
+
+
+def test_the_root_constant_exemption_is_the_assignment_line_and_nothing_else():
+    """A root in a default argument, a docstring or another file is still a finding."""
+    module = allowlist.ROOT_CONSTANT_MODULE
+    assert allowlist.is_root_constant_line(module, "MODEL_ROOT = pathlib.Path(...)")
+    assert allowlist.is_root_constant_line(module, "INDEX_ROOT: pathlib.Path = something")
+    assert not allowlist.is_root_constant_line(
+        module, "    MODEL_ROOT = indented_is_not_module_level"
+    )
+    assert not allowlist.is_root_constant_line(module, "def f(root=MODEL_ROOT): ...")
+    assert not allowlist.is_root_constant_line(module, "#: MODEL_ROOT = a comment")
+    assert not allowlist.is_root_constant_line("epppsynth/src/epppsynth/cli.py", "MODEL_ROOT = x")
+
+
+def test_the_roots_check_skips_the_two_constants_and_reports_the_skip():
+    """The one place a root is written down is exempt, visibly, in the summary."""
+    result = scan.scan_roots(ROOT)
+    assert result.findings == []
+    skips = [skip for skip in result.skips if skip.reason == "root-constant"]
+    assert len(skips) == 2
+    assert {skip.path for skip in skips} == {allowlist.ROOT_CONSTANT_MODULE}
+    assert "root-constant" in scan.SKIP_REASONS
+
+
+def test_a_root_anywhere_else_in_the_allowlisted_module_is_still_a_finding(tmp_path):
+    """The difference between an allowlist by symbol and one by file."""
+    line = "DEFAULT = " + '"C:' + chr(92) + 'epppindex"' + chr(10)
+    root = _repo(tmp_path, {allowlist.ROOT_CONSTANT_MODULE: "MODEL_ROOT = 1" + chr(10) + line})
+    result = scan.scan_roots(root)
+    assert [finding.rule for finding in result.findings] == ["index-root-outside-documentation"]
+    assert result.findings[0].line == 2
 
 
 # ── the canaries, one per scanner ────────────────────────────────────────────

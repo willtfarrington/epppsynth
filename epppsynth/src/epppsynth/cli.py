@@ -9,6 +9,10 @@ registry, template) version triple; all three are placeholders until EP-17
 
 `epppsynth scan` (EP-6) runs the leak-prevention checks. It is the single entry
 point CI and the pre-commit hook both invoke, so the two cannot drift.
+
+`epppsynth storage` (EP-7) reports the machine's free-space floor and the
+project's storage ceiling, and runs the read-only model-cache inventory. CI
+never invokes it: no CI job may touch a model root or an index root (D-42).
 """
 
 import argparse
@@ -40,6 +44,11 @@ def build_parser() -> argparse.ArgumentParser:
         add_help=False,
         help="run the leak-prevention scanners (EP-6); see `epppsynth scan --help`",
     )
+    subcommands.add_parser(
+        "storage",
+        add_help=False,
+        help="storage limits and the read-only inventory (EP-7); see `epppsynth storage --help`",
+    )
     return parser
 
 
@@ -49,6 +58,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         from epppsynth.publicsafety.scan import main as scan_main
 
         return scan_main(argv[1:])
+    if argv and argv[0] == "storage":
+        from epppsynth.storage.cli import main as storage_main
+
+        return storage_main(argv[1:])
     build_parser().parse_args(argv)
     return _version()
 

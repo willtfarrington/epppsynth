@@ -226,3 +226,81 @@ Acceptance:
 - Hard-linking or reusing a verified weight from the third-party cache into `C:\epppmodels` rather
   than re-downloading. Attractive for the ceiling, but it makes the project's footprint depend on a
   directory the project does not own; needs an owner decision.
+
+---
+
+> **Completion note (2026-09-01).**
+>
+> All thirteen acceptance criteria met. `uv run ruff check`, `ruff format --check` and
+> `pytest -m "not requires_index and not requires_model"` are green (**191 passed**, 43 of them new
+> in `epppsynth/tests/test_storage.py`), `uv run epppsynth scan --history` is green across all nine
+> checks plus the self-check, and `uv sync --locked` resolves unchanged.
+>
+> **What was observed on the real machine**, as counts and totals only (D-3):
+>
+> | | |
+> |---|---|
+> | Free on the system volume at the run | 391.8 GiB — 141.8 GiB of headroom above the 250 GiB floor |
+> | Pre-existing third-party cache, before | **8 files, 98,707,247,360 bytes (91.93 GiB)** |
+> | Pre-existing third-party cache, after | **identical** — same file count, same total, and every file's mtime unchanged, compared row by row |
+> | Second third-party root | present and **empty** (0 files) |
+> | Third third-party root | **absent**, recorded as absent rather than as an error |
+> | Reparse points encountered in the real roots | **0**; the record-and-skip path is proved by a unit test that creates a real junction |
+> | Project footprint after the run | 4,192 bytes — the one inventory JSON, and nothing else |
+> | Inventory files written | exactly **1**, under the model root's `inventory/` subtree, outside the repository |
+>
+> `epppsynth storage check` was run **before** the roots existed (footprint 0, exit 0 — acceptance 1)
+> and again after (both roots present with all four subtrees, lockfile absent, exit 0).
+>
+> **Cloud-sync observation (step 9, WS2-A5).** Checked before anything was written. Two sync scopes
+> exist on this machine: one provider mounts a separate drive letter, and one provider's folder sits
+> under the user profile. No known-folder redirection is configured and no mirrored-folder entry
+> covers the system volume's root. **Neither root falls under any sync scope** — both sit directly
+> under the system volume's root. Recorded in `ADR-009` under *Observations*. No machine
+> configuration was changed; a backup exclusion for the index root remains an owner action and stays
+> parked.
+>
+> **Deviations, and why.**
+>
+> 1. **The inventory module does not write its own output.** §2 asks it to emit JSON to
+>    `C:\epppmodels\inventory\`, and the safety-preconditions table forbids it any write path *into
+>    any scanned root* — and the model root **is** one of the four scanned roots. Both hold only if
+>    the emit lives elsewhere: `inventory.collect()` returns a report and `layout.write_json()`
+>    writes it through the package's single guarded write path. That is what lets the AST test assert
+>    the read-only claim structurally rather than by care.
+> 2. **The reparse-point-aware walk lives in `limits.py`, not `inventory.py`.** `project_footprint()`
+>    needs the same walk, and putting it in `inventory` would have made the module that guards writes
+>    import the module that must never write. The arrow points away from the read-only module
+>    instead.
+> 3. **`ADR-008` gained an amendment and EP-6's allowlist a fourth entry.** The brief requires the
+>    roots to be read from "a module constant that EP-6 explicitly allowlists by symbol"; that
+>    allowlist did not exist, so EP-7 created it — two symbols, one module, by exact path, with the
+>    scan summary printing both skips on every run. The alternative that needs no exemption —
+>    building the root from `%SystemDrive%` plus a fragment — was rejected in the ADR: it passes the
+>    scanner *and* blinds it to every future module that does the same, trading a visible hole for an
+>    invisible one. The OD-10 exemption table is untouched and still has three entries.
+> 4. **The roots are created by `storage inventory`, not by `storage check`.** §5 names two
+>    subcommands and describes `check` as reporting; creating directories is a side effect a
+>    reporting command should not have. `check` reports an absent root and names the command that
+>    creates it.
+> 5. **The AST deletion test is name-based and deliberately over-strict.** It cannot tell `os.remove`
+>    from any other object's `.remove`, and that is the point: a package that must never delete
+>    anything can afford never to write the word. The banned set also covers `rename` and
+>    `send2trash`, which the brief's list does not name.
+> 6. **`guarded_write` opens with `xb`.** Overwriting is a deletion with a friendlier name, so the
+>    one write path refuses it.
+>
+> **Pre-publication checklist items re-run.** Item 4 (local paths and machine identity) — the
+> `identity` and `roots` checks are green, and the two root literals appear in exactly two places in
+> tracked code, both inventoried in the scan summary. Item 6 (licence conformance) — the `rights`
+> check is green, and `METADATA.json` carries `licence_id` and `licence_url` as required fields, so a
+> weight whose licence nobody recorded cannot enter the lockfile. Nothing from the real inventory run
+> is committed.
+>
+> **Nothing was deleted, moved or renamed**, on this machine or in this repository. `ADR-007` ships
+> `Status: accepted — no implementation exists`, and
+> `test_the_storage_package_contains_no_deletion_call` is the evidence for that line.
+>
+> **For the P0 re-plan (EP-8):** the deliberate GiB/GB transcription (floor binary, ceiling decimal)
+> is recorded in `ADR-009` and asserted by a unit test; flagging it, as §1 requires. Deciding whether
+> to normalise the units would be an owner decision, not a code change.

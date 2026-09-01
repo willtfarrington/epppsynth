@@ -142,3 +142,38 @@ reported as a finding. The rule fails closed, which is right, and the `phi` chec
 The two unit tests that scan the whole repository and assert it is green are skipped on a shallow
 clone, with that reason. The property is not lost: the `scan` job runs the identical scan with
 `fetch-depth: 0` and fails the build. `fetch-depth: 0` still appears in exactly one job.
+
+### Amendment (2026-09-01, EP-7) — a fourth allowlist: the two root constants, by symbol
+
+**Status:** accepted · **Related:** D-30, D-49, D-51, D-71, D-78, ADR-009
+
+EP-7 gives the project a storage package, and a storage package has to know where its roots are. The
+`roots` check exists so that the two root paths appear in documentation and nowhere else; that rule
+is right, and it needs exactly one hole, cut deliberately and shaped as narrowly as the rule allows.
+
+| # | Allowlist | Size | Grows by |
+|---|---|---|---|
+| 4 | The **root constants** — `MODEL_ROOT` and `INDEX_ROOT`, by **symbol**, on their assignment lines, in `epppsynth/src/epppsynth/storage/limits.py` by **exact path** | exactly 2 symbols in 1 module | an amendment to this ADR |
+
+**By symbol, not by file.** The exemption applies to a line that begins an assignment to one of the
+two named symbols. A root path anywhere else in that same module — a default argument, a docstring
+example, a comment, a second assignment — is still a finding, and a unit test asserts exactly that
+by planting one. A file-scoped exemption would have been one line shorter and would have turned the
+one module that must name the roots into the one module where naming them is free.
+
+It is an **allowlist** and is counted as the fourth, not an accounted-for match: it derives from a
+path list, and the three exceptions this ADR records as accounted-for matches derive from data or
+from git. Calling it an accounted-for match would have understated it.
+
+The construction the exemption exists to prevent is the alternative that was rejected: building the
+root path at run time from `%SystemDrive%` plus a name fragment. That passes the scanner without an
+exemption, which is exactly what is wrong with it — the scanner would then be blind to any future
+module that did the same thing, and the visible hole would have been traded for an invisible one.
+
+The self-check grows with it. `scan_allowlist` now also asserts that the allowlisted module is
+tracked and that each of the two symbols is assigned **exactly once**; an allowlist that has drifted
+from the file it exempts is an off switch. In a tree that does not contain the storage package at
+all — a throwaway fixture repository — the allowlist is out of scope and nothing is reported.
+
+`MODALITY_EXEMPTION_COUNT` is untouched and the OD-10 table still has three entries. None of the four
+allowlists may be used to reach another's scope, and a unit test asserts the four do not overlap.
