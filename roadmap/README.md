@@ -104,7 +104,7 @@ acceptance names CI stays `◐` until that run exists.
 | EP-5 | [Licensing pack + per-source rights table](EP-5-licensing-rights.md) | L | EP-2 | core | ☑ b3424b2 |
 | EP-6 | [Leak-prevention CI + pre-publication packet](EP-6-leak-prevention-ci.md) | L | EP-1, EP-2, EP-5 | core | ☑ c0edef5 + 4efc7a2 |
 | EP-7 | [Storage roots, cache inventory, reserve floor & project ceiling](EP-7-storage-inventory.md) | L | EP-1 | core | ☑ 88faeef |
-| EP-8 | [Roadmap tooling, EP template, re-plan P0](EP-8-replan-p0.md) | L | EP-0 … EP-7 | core | ◐ 0733b2c |
+| EP-8 | [Roadmap tooling, EP template, re-plan P0](EP-8-replan-p0.md) | L | EP-0 … EP-7 | core | ☑ 0733b2c |
 
 > **EP-6 was `◐` for a day, and the distinction earned its keep.** The row was held at *done but not landed* until the two CI rows existed, because a brief recorded as complete on evidence that does not yet exist is the drift the roadmap exists to catch. Closing them took three further commits: the first pushed run caught a shallow-clone defect that no local run could reach. Both runs are recorded in the brief's completion note. `roadmap_check --table` (EP-8) should still read `◐`, because the state recurs.
 

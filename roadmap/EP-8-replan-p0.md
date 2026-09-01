@@ -598,3 +598,22 @@ Acceptance:
 > reach. **Acceptance criterion 12 remains offered and unruled** — the owner declined to rule it on
 > the mechanical checks alone and will read EP-9 first, which is the right answer to a criterion
 > about whether a brief reads well cold.
+
+> **CI (added after the push, OD-15).** Acceptance 11's evidence is run
+> [33549349557](https://github.com/willtfarrington/epppsynth/actions/runs/33549349557) on `main` at
+> `f5ab5a8`, which is the tip of the push carrying this brief's two commits and the owner-rulings
+> commit. **Both jobs green.** `scan` in **26 s**: nine checks, eight `passed`, `ledger`
+> **`skipped — no ledger present`** exactly as designed — there is no `.local/` on a runner and the
+> check is never counted as passed there. `test` in **1 m 57 s**: `ruff check` and
+> `ruff format --check` over the package *and* `../tools/roadmap_check.py` by name, then
+> **234 passed, 2 skipped**. The two skips are the pre-existing shallow-clone guards on the
+> whole-repository scan tests — the `test` job clones shallow, only `scan` fetches the full history —
+> which is why the local run is 236 passed with none skipped.
+>
+> **The new step ran and was green:** `uv run python ../tools/roadmap_check.py --all` reported all
+> ten checks `passed` and `no findings.`, recomputed the size mix from 55 table rows to
+> `2 S | 17 M | 36 L ~ 90 h`, and printed the 31 charter exemptions and the context-budget table on
+> a runner that had never seen this repository. `--immutable` and `--hashes` both worked, which is
+> the reason the step lives in the `scan` job: they need the history that only that job fetches.
+>
+> **The row is now `☑ 0733b2c`.** P0 is closed on a run anyone can open, not on an assertion.
