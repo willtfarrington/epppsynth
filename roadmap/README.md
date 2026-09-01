@@ -60,7 +60,8 @@ upgrades them.
 decisions · `> **EP-n pickup note.**` when a later session picks up a stale brief ·
 `~~risk~~ **Resolved by EP-n (date)**` strike-throughs · two-hash ☑ boxes when an EP spans two
 commits · `EP-n-completion-handoff.md` / `-completion-report.md` pairs for context-limit rescues ·
-commit pairs `feat(epppsynth): … (EP-n)` then `docs(roadmap): record EP-n commit hash` ·
+commit pairs `feat(epppsynth): … (EP-n)` then `docs(roadmap): record EP-n commit hash`, plus a third
+`docs(roadmap): record EP-n CI run` when the work is pushed (OD-15) ·
 `docs(roadmap): add EP-n — …` when a brief is added mid-phase · every brief carries a
 `## Parked → final-roadmap.md` section mirrored at the phase re-plan.
 
@@ -78,7 +79,9 @@ has not made (if one does, the brief is **blocked**, not started) · the context
 **Definition of Done.** Acceptance commands green · `> **Completion note (date).**` appended
 including deviations · any decision change recorded as a dated addendum in `DECISIONS.md` (never an
 edit) · `## Parked →` items mirrored at the next re-plan · two commits · ☑ ticked with the short
-hash · for any brief touching a public artifact, the relevant pre-publication checklist items re-run.
+hash · for any brief touching a public artifact, the relevant pre-publication checklist items re-run
+· **a completion note that claims CI green names the run as a linked id** (OD-15), and a brief whose
+acceptance names CI stays `◐` until that run exists.
 
 ---
 

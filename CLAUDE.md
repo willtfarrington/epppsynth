@@ -66,6 +66,11 @@ The second commit ticks the brief's box in `roadmap/README.md` with the first co
 Append `> **Completion note (date).**` to the brief itself, recording deviations and what was
 **observed**, not what was expected. Commit or push only when asked.
 
+A third commit, `docs(roadmap): record EP-n CI run`, follows **when the work is pushed** (OD-15).
+**A completion note may not claim CI green without naming the run**, as a linked id. Recording it
+costs one line and keeps the brief from claiming CI on a run nobody can find. Not pushed, no run:
+the note says so plainly, and a row whose acceptance names CI stays `◐`, not `☑`.
+
 ## Writing public text
 
 Present tense only for what exists today; everything else carries a `planned (EP-n)` marker and is

@@ -34,6 +34,7 @@ Opened **2026-08-31** from the completion notes of EP-1 … EP-4. EP-0 is not su
 | OD-12 | Confirm the banned-phrase ban's documentation carve-out | EP-3 dev. 7 | confirmation | EP-39's lint specification | ☑ 2026-08-31 — confirmed; EP-39 scope sketch item 3 |
 | OD-13 | Owner-judgement acceptance criteria, offered and unruled (× 5) | EP-1 … EP-4 | confirmation | EP-8 re-plan note | ☑ 2026-08-31 — four pass, EP-2 #10 **fails**; EP-8 re-plan note |
 | OD-14 | Ratify the `bibliographic-identity` refinement to the OD-10 modality sweep | EP-6 dev. 1 | confirmation | EP-6's scanner definition; a further ruling if overturned | ☑ 2026-09-01 — ratified as implemented; EP-6 §1.8, `ADR-008` |
+| OD-15 | Must a completion note name the CI run it claims to be green on? | EP-7 dev. | ruling | `CLAUDE.md` §Committing; `roadmap/README.md` Definition of Done | ☑ 2026-09-01 — yes, as a linked id; both files updated |
 
 **Status at 2026-08-31.** Ten of thirteen ruled and landed. Three are not: **OD-1** is ruled but the
 platform setting has not been changed, **OD-2** can be closed only by the owner, and **OD-8** cannot
@@ -436,6 +437,29 @@ run). Recorded in `ADR-008`'s EP-6 amendment as an accounted-for match rather th
 
 ---
 
+### OD-15 — a completion note that claims CI must name the run
+
+**Class:** ruling · **Raised by:** EP-7 · **Opened:** 2026-09-01
+
+**Observed while executing EP-7.** The brief's acceptance criterion 13 reads *"CI green"*. The two
+commits landed, every command CI runs was green locally, and `ci.yml` was confirmed to reference
+neither storage root — but nothing had been pushed, so no CI run existed. The completion note as
+first written claimed the suite was green **locally**, and the session said plainly that CI had not
+run. On the push, the run went green and its id existed in exactly one place: a terminal that was
+about to close.
+
+**Why this is not new.** EP-6 already recorded run ids as linked URLs, because EP-6's own acceptance
+table happened to carry a `CI run URL` column. One brief's wording produced the right behaviour by
+accident, and the next brief would have had to think of it again.
+
+**The ruling needed.** Whether a completion note must name the CI run it claims to be green on, and
+what a brief's row shows when the work is committed but not pushed. The alternatives are: leave it to
+each brief's acceptance wording (the status quo, which is how EP-7 nearly lost its run id); require
+the push as part of Done (which would override *commit or push only when asked*); or require only
+that the **claim** carry its evidence.
+
+---
+
 ## Resolutions — 2026-09-01
 
 **OD-14 — ratified as implemented.** The refinement stands, and it lands where OD-10 landed: in
@@ -466,6 +490,31 @@ The three allowlists remain separately counted and none may reach another's scop
 a real bibliographic record — a placeholder, a fixture row, or an invented identifier added to
 `sources.yaml` to buy a skip. That is a rights-record defect first and a sweep defect second, and it
 is caught by the `rights` check before the modality check ever sees it.
+
+**OD-15 — yes, as a linked id.** A completion note may not claim CI green without naming the run.
+Where the work is pushed, the run is recorded in a third commit,
+`docs(roadmap): record EP-n CI run`. Where it is not pushed, the note says so and the row stays `◐` —
+*done but not landed* — until the run exists. Recording the id costs one line and keeps the brief
+from claiming CI on a run nobody can find.
+
+**Where it lands.** `CLAUDE.md` §Committing and `roadmap/README.md` — the conventions paragraph and
+the Definition of Done. No `DECISIONS.md` addendum is written: D-42 settles what CI *is*, and this
+settles how a brief cites it, which is a session convention rather than an architecture decision. It
+is the same principle as D-59 (a badge that resolves to an evidence file) and as the `◐` note under
+the P0 table — *a brief recorded as complete on evidence that does not yet exist is the drift the
+roadmap exists to catch* — applied to the one artifact that is generated **after** the commits rather
+than before.
+
+**Scope, stated so a later session cannot widen it.** This governs what a completion note may
+**claim**. It does **not** make pushing part of Done and it does not override *commit or push only
+when asked*: an unpushed brief is finishable, it simply does not get to assert a green CI run, and
+its row shows `◐`. Nothing is retrospective — EP-0 … EP-5 are closed and are not reopened, and
+**EP-7's own note names its run as a bare id rather than a link**, which stays as written, because an
+executed brief is appended to and never edited. The linked form applies from EP-8.
+
+**For EP-8.** `tools/roadmap_check.py` can make the tie mechanical rather than remembered: a
+completion note containing a CI claim must carry a run link, and a `☑` row whose brief names CI in
+its acceptance must have one. A tie to evidence is only real if the tie is mechanical.
 
 ---
 
