@@ -58,6 +58,20 @@ def _repo(tmp_path: pathlib.Path, files: dict[str, str]) -> pathlib.Path:
 TEXT_CHECKS = ("secrets", "phi", "protected-text", "identity", "roots", "modality")
 
 
+#: Two tests below scan the whole repository and assert it is green. That is a
+#: statement about the repository, and a shallow clone is not the repository: the
+#: `git-object-id` exception to the digit-run rule cannot be evaluated without the
+#: history, so the two all-digit short hashes in the roadmap are reported as
+#: findings. Skipped rather than loosened, because the property is still enforced
+#: — the CI `scan` job runs the identical scan with `fetch-depth: 0`, and the
+#: `test` job deliberately does not fetch a history it has no other use for.
+shallow = pytest.mark.skipif(
+    scan.is_shallow(ROOT),
+    reason="shallow clone: the whole-repository scan is enforced by the CI `scan` job, "
+    "which fetches the full history; see ADR-008 (EP-6 amendment)",
+)
+
+
 def _text_scan(root: pathlib.Path) -> list[scan.Finding]:
     findings: list[scan.Finding] = []
     for name in TEXT_CHECKS:
@@ -365,6 +379,7 @@ def test_the_checklist_signature_block_is_empty():
 # ── the clean tree ───────────────────────────────────────────────────────────
 
 
+@shallow
 def test_the_clean_tree_scans_green_and_inventories_every_exemption():
     """EP-6 acceptance 3 and 4, without the history sweep (which CI owns)."""
     report = scan.run_scan(ROOT)
@@ -418,6 +433,7 @@ def test_the_scanners_never_print_the_matched_text(tmp_path):
 # ── the CLI ──────────────────────────────────────────────────────────────────
 
 
+@shallow
 def test_the_cli_exposes_scan_and_returns_zero_on_the_clean_tree(capsys):
     from epppsynth import cli
 
@@ -505,3 +521,13 @@ def test_a_secret_in_a_commit_message_is_never_exempt(tmp_path):
     _commit(root, "first")
     _commit(root, f"message carrying {TOKEN}", empty=True)
     assert scan.scan_secrets(root, history=True).status == scan.FAILED
+
+
+def test_a_shallow_clone_says_so_rather_than_quietly_reporting_phi(tmp_path):
+    """Fail closed, and say why. An unexplained PHI finding is worse than none."""
+    # Split so this file carries no digit run of its own: in a shallow clone the
+    # git-object-id exception cannot be evaluated and the run becomes a finding.
+    root = _repo(tmp_path, {"note.md": "the hash was " + "370" + "6992" + "\n"})
+    _commit(root, "one")
+    assert not scan.is_shallow(root)
+    assert "SHALLOW CLONE" not in scan.scan_phi(root).note

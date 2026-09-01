@@ -581,6 +581,30 @@ def scan_secrets(root: pathlib.Path, *, history: bool = False) -> CheckResult:
 
 # ── check 2 — PHI shapes ─────────────────────────────────────────────────────
 
+
+def is_shallow(root: pathlib.Path) -> bool:
+    """Whether this working tree is a shallow clone.
+
+    It matters for one rule. The `git-object-id` exception to the digit-run rule
+    asks git whether an all-digit run names a real object here; in a shallow
+    clone git cannot answer for anything older than the fetched depth, so the run
+    is reported as a finding. That is the correct failure direction — the rule
+    fails closed — but a reader deserves to be told *why* an otherwise clean tree
+    suddenly has PHI findings, which is what the check's note says.
+
+    The CI `scan` job sets `fetch-depth: 0` and is unaffected. The `test` job
+    deliberately does not, because a deep fetch it does not need would be the
+    smell `ADR-008` warns about.
+    """
+    completed = subprocess.run(
+        ["git", "rev-parse", "--is-shallow-repository"],
+        cwd=root,
+        capture_output=True,
+        text=True,
+    )
+    return completed.stdout.strip() == "true"
+
+
 _GIT_OBJECT_CACHE: dict[tuple[str, str], bool] = {}
 _LOCKFILE_SIZE = re.compile(r"size\s*=\s*$")
 
@@ -640,6 +664,12 @@ def scan_phi(root: pathlib.Path) -> CheckResult:
         if scenarios
         else "no scenario fixtures yet (the D-36 attestation check becomes live at EP-25)"
     )
+    if is_shallow(root):
+        result.note += (
+            "; SHALLOW CLONE - the git-object-id exception cannot be evaluated, so an "
+            "abbreviated object id older than the fetched depth is reported as a finding. "
+            "Re-run with the full history before believing a digit-run finding."
+        )
     return result.fail()
 
 

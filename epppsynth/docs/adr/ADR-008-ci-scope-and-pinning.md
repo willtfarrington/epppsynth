@@ -129,3 +129,16 @@ stem falls inside a string `epppsynth/registry/sources.yaml` declares as a `sour
 `title` — never a file, a directory, a pattern or a line. The OD-10 exemption table is untouched and
 still has three entries. `roadmap/owner-decisions.md`, *Resolutions — 2026-09-01*, carries the
 ruling and the reasoning; a change to the scope needs a further owner ruling, not an ADR amendment.
+
+### Amendment (2026-09-01, EP-6) — shallow clones and the `git-object-id` exception
+
+The `test` job checks out at the default depth and **keeps doing so**: it needs no history, and a deep
+fetch it has no use for is the smell this ADR warns about. One consequence has to be named rather
+than discovered. The `git-object-id` exception asks git whether an all-digit run is a real object
+here; in a shallow clone git cannot answer for anything older than the fetched depth, so the run is
+reported as a finding. The rule fails closed, which is right, and the `phi` check's note now says
+`SHALLOW CLONE` and why, so an unexplained PHI finding is never left unexplained.
+
+The two unit tests that scan the whole repository and assert it is green are skipped on a shallow
+clone, with that reason. The property is not lost: the `scan` job runs the identical scan with
+`fetch-depth: 0` and fails the build. `fetch-depth: 0` still appears in exactly one job.

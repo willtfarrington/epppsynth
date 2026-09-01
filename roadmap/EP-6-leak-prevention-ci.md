@@ -458,3 +458,34 @@ Additional acceptance:
 > and no scanner told anybody — the commit did. It is the plainest available argument for
 > `epppsynth/docs/pre-publication-checklist.md` being a human step re-run *before publication*
 > rather than a CI badge: scanners are defense in depth, and this is what the depth is for.
+
+> **Addendum (2026-09-01) — the first pushed run, and what it caught.**
+> Run [33535486728](https://github.com/willtfarrington/epppsynth/actions/runs/33535486728) on `main`:
+> **`scan` passed in 24 s, `test` failed.** The new job works on a runner — `fetch-depth: 0`, the
+> full-history secret sweep, the `git rev-parse` exception, and `ledger` reporting
+> `skipped — no ledger present` all behaved — and the failure was in the *old* job, caused by the
+> new tests.
+>
+> `actions/checkout` fetches at depth 1 unless told otherwise, and the `test` job is deliberately not
+> told otherwise. The `git-object-id` exception asks git whether an all-digit run names a real object
+> here; in a shallow clone git cannot answer, so the two all-digit short hashes recorded in
+> `roadmap/README.md` and `EP-0` became `mrn-shaped-digit-run` findings, and the two unit tests that
+> scan the whole repository and assert it is green failed. **The rule failed closed, which is
+> right.** What was wrong is that it failed closed *silently*, and an unexplained PHI finding on a
+> repository containing no PHI is worse than none: it teaches a reader to disbelieve the check.
+>
+> **Fixed in three parts, none of which loosens a rule.**
+> 1. `scan_phi` detects a shallow clone and says so in its note — `SHALLOW CLONE - the git-object-id
+>    exception cannot be evaluated … Re-run with the full history before believing a digit-run
+>    finding.` The finding still stands.
+> 2. The two whole-repository tests are skipped on a shallow clone, with that reason named. The
+>    property is not lost: the `scan` job runs the identical scan with the full history and fails the
+>    build. `fetch-depth: 0` still appears in **exactly one job**, and the `test` job still fetches no
+>    history it has no use for — giving it a deep fetch to make a test pass would have been undoing a
+>    deliberate posture for convenience.
+> 3. The new test's own literal `3706992` is split across a `+`, so the test file carries no digit run
+>    of its own. Same convention, same reason.
+>
+> Verified by cloning this repository `--depth 1` and running the CI commands inside it: **142 passed,
+> 2 skipped**, and the `phi` row carries the shallow-clone note. On the full clone: 144 passed,
+> `--history` exit 0. Recorded in `ADR-008` as a second dated EP-6 amendment.

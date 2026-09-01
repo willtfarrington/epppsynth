@@ -88,7 +88,9 @@ the check runs over an empty set and becomes live at EP-25.
 
 Three matches are accounted for rather than reported, each mechanically and each printed in the scan
 summary: an all-digit abbreviated git object id that `git rev-parse` resolves in this repository (a
-run git cannot resolve stays a finding); a `size =` value in the machine-generated resolver lockfile;
+run git cannot resolve stays a finding — and **this one needs the full history**: in a shallow clone
+git cannot answer, the run is reported, and the check's note says `SHALLOW CLONE` so an unexplained
+PHI finding is never left unexplained); a `size =` value in the machine-generated resolver lockfile;
 and the one email address this repository already publishes in its own commit metadata (owner ruling
 OD-7).
 
